@@ -3,452 +3,1059 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design-Auswahl: Visuelle Coaching-Plattform</title>
+<title>Design-Fragebogen: Coaching-Plattform</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--p:#2563eb;--s:#64748b;--a:#f59e0b;--bg:#f8fafc;--sf:#fff;--t:#0f172a;--ts:#475569;--ok:#10b981;--wn:#f59e0b;--er:#ef4444;--r:12px}
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);line-height:1.6}
-.hdr{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;padding:18px 24px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
-.hi{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.br{display:flex;align-items:center;gap:10px}
-.bi{width:36px;height:36px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
-.br h1{font-size:17px;font-weight:700}.br small{font-size:11px;opacity:.55;display:block}
-.pw{display:flex;align-items:center;gap:12px}
-.pb{width:170px;height:6px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}
-.pf{height:100%;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:99px;transition:width .4s;width:0%}
-.pt{font-size:11px;opacity:.65}
-.tabs{background:#fff;border-bottom:1px solid #e2e8f0;position:sticky;top:70px;z-index:99}
-.ti{max-width:1100px;margin:0 auto;display:flex;overflow-x:auto;padding:0 16px}
-.tb{padding:12px 16px;font-size:12.5px;font-weight:500;color:var(--ts);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px;user-select:none;transition:.15s}
-.tb:hover{color:var(--t);background:#f8fafc}.tb.on{color:var(--p);border-bottom-color:var(--p);font-weight:600}
-.tb .n{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#e2e8f0;font-size:10.5px;font-weight:600;color:var(--ts)}
-.tb.on .n{background:var(--p);color:#fff}
-.mn{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
-.sc{display:none;animation:fi .25s}.sc.on{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.st{font-size:22px;font-weight:700;margin-bottom:3px;letter-spacing:-.4px}
-.sd{color:var(--ts);font-size:13.5px;margin-bottom:22px;max-width:620px}
-.cd{background:#fff;border-radius:var(--r);border:1px solid #e2e8f0;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.ct{font-size:14.5px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:7px}
-.cr{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9}.cr:last-child{border-bottom:none}
-.cr label{width:160px;font-size:13px;font-weight:500;flex-shrink:0}
-.cpw{position:relative;width:38px;height:38px;border-radius:8px;overflow:hidden;border:2px solid #e2e8f0;cursor:pointer;flex-shrink:0;transition:.15s}
-.cpw:hover{border-color:var(--p);transform:scale(1.05)}
-.cpw input[type=color]{position:absolute;top:-5px;left:-5px;width:50px;height:50px;border:none;cursor:pointer}
-.cx{font-size:11.5px;font-family:'Courier New',monospace;background:#f1f5f9;padding:4px 7px;border-radius:5px;border:1px solid #e2e8f0;width:78px;text-align:center}
-.cv{flex:1;height:30px;border-radius:6px;border:1px solid #e2e8f0}
-.fo{padding:12px;border:2px solid #e2e8f0;border-radius:var(--r);cursor:pointer;transition:.15s;margin-bottom:7px}
-.fo:hover{border-color:#94a3b8;background:#f8fafc}.fo.sel{border-color:var(--p);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
-.fn{font-size:11.5px;font-weight:600;color:var(--ts);margin-bottom:2px}
-.fp{font-size:20px;color:var(--t);line-height:1.3}
-.sg{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.sg label{width:160px;font-size:13px;font-weight:500;flex-shrink:0}
-.sg input[type=range]{flex:1;height:5px;-webkit-appearance:none;background:#e2e8f0;border-radius:99px;outline:none}
-.sg input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--p);cursor:pointer;box-shadow:0 2px 5px rgba(37,99,235,.25)}
-.sv{min-width:44px;text-align:center;font-size:12.5px;font-weight:600;color:var(--p);background:#eff6ff;padding:3px 7px;border-radius:5px}
-.og{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:9px}
-.oc{padding:12px;border:2px solid #e2e8f0;border-radius:var(--r);cursor:pointer;text-align:center;transition:.15s;user-select:none}
-.oc:hover{border-color:#94a3b8;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.05)}
-.oc.sel{border-color:var(--p);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
-.oc .oi{font-size:24px;margin-bottom:5px;display:block}.oc .ol{font-size:12px;font-weight:600}.oc .od{font-size:10.5px;color:var(--ts);margin-top:2px}
-.tg{display:flex;flex-wrap:wrap;gap:6px}
-.tc{padding:6px 13px;border:2px solid #e2e8f0;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;transition:.15s;user-select:none}
-.tc:hover{border-color:#94a3b8}.tc.sel{border-color:var(--p);background:var(--p);color:#fff}
-.pv{background:#f1f5f9;border-radius:var(--r);padding:18px;margin-top:12px;border:1px solid #e2e8f0}
-.pl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ts);margin-bottom:8px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:.15s}
-.bp{background:var(--p);color:#fff}.bp:hover{background:#1d4ed8;transform:translateY(-1px)}
-.bo{background:transparent;color:var(--p);border:2px solid var(--p)}.bo:hover{background:#eff6ff}
-.bs{background:var(--ok);color:#fff}.bs:hover{background:#059669}
-.bg{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
-.nb{display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid #e2e8f0}
-.smc{background:linear-gradient(135deg,#1e293b,#334155);color:#fff;border-radius:13px;padding:24px;margin-bottom:18px}
-.smc h3{font-size:17px;font-weight:700;margin-bottom:16px}
-.sgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.si{background:rgba(255,255,255,.07);border-radius:8px;padding:10px}
-.si .sl{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;opacity:.5;margin-bottom:2px}
-.si .svl{font-size:12.5px;font-weight:500}
-@media(max-width:768px){.hdr{padding:12px 14px}.br h1{font-size:15px}.pb{width:90px}.ti{padding:0 8px}.tb{padding:9px 10px;font-size:11.5px}.mn{padding:16px 12px 50px}.st{font-size:19px}.cr{flex-wrap:wrap}.cr label{width:100%}.sg{flex-wrap:wrap}.sg label{width:100%}.og{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.sgr{grid-template-columns:1fr}}
-@media print{.hdr,.tabs,.nb,.bg{display:none}.mn{padding:0}}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#2196F3;--s:#4CAF50;--a:#FF9800;--bg:#FFFFFF;--sf:#F5F5F5;--tp:#212121;--ts:#757575;--se:#4CAF50;--sw:#FF9800;--er:#F44336;--ff:'Inter',sans-serif}
+body{font-family:var(--ff);background:var(--bg);color:var(--tp);padding:0;min-height:100vh}
+header{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--sf);z-index:100;padding:16px}
+.header-content{display:flex;align-items:center;justify-content:space-between;gap:16px}
+h1{font-size:20px;font-weight:600;flex-shrink:0}
+.progress-bar{flex:1;height:8px;background:var(--sf);border-radius:4px;overflow:hidden;max-width:400px}
+.progress-fill{height:100%;background:var(--p);transition:width .3s;width:0%}
+.progress-text{font-size:12px;color:var(--ts);white-space:nowrap}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:var(--sf)}
+.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s;border:2px solid transparent;background:var(--bg)}
+.tab.active{background:var(--p);color:#fff}
+.tab:hover:not(.active){border-color:var(--p)}
+main{padding:16px;max-width:1200px;margin:0 auto}
+section{display:none;animation:fadeIn .3s}
+section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--sf);border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p{color:var(--ts);font-size:14px;margin-bottom:16px}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+.desc{font-size:12px;color:var(--ts);margin-bottom:8px}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.option{padding:16px;border:2px solid var(--sf);border-radius:8px;cursor:pointer;transition:.2s;text-align:center;background:var(--bg)}
+.option:hover{border-color:var(--p)}
+.option.selected{border-color:var(--p);background:rgba(33,150,243,0.1)}
+.option-title{font-weight:500;margin-bottom:4px}
+.option-desc{font-size:11px;color:var(--ts)}
+.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.color-circle{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.2s;position:relative}
+.color-circle:hover{transform:scale(1.1)}
+.color-circle.selected{border-color:var(--tp)}
+.color-circle.recent::after{content:'⏱';position:absolute;top:-4px;right:-4px;font-size:10px}
+.color-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.color-preview{width:48px;height:48px;border-radius:8px;border:2px solid var(--sf)}
+.hsv-picker{display:flex;gap:16px;flex-wrap:wrap}
+.hsv-main{flex:1;min-width:250px}
+.hsv-canvas{width:280px;height:200px;border-radius:8px;cursor:crosshair;max-width:100%;border:1px solid var(--sf)}
+.hue-slider{width:280px;height:24px;border-radius:12px;margin-top:8px;cursor:pointer;max-width:100%;border:1px solid var(--sf)}
+.hsv-info{min-width:120px}
+.hsv-preview{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:2px solid var(--sf)}
+.hsv-values{text-align:center;font-size:12px;font-family:monospace}
+.slider-container{margin-bottom:16px}
+.slider{width:100%;height:6px;-webkit-appearance:none;background:var(--sf);border-radius:3px;outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--p);cursor:pointer}
+.slider-value{float:right;font-weight:600}
+.live-preview{background:var(--bg);border:2px dashed var(--sf);border-radius:12px;padding:20px;margin-top:16px}
+.live-preview h3{font-size:14px;color:var(--ts);margin-bottom:12px}
+.preview-colors{display:flex;gap:12px;margin-bottom:12px}
+.preview-tile{flex:1;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.preview-surface{background:var(--sf);padding:16px;border-radius:8px;margin-bottom:12px}
+.status-badges{display:flex;gap:8px}
+.badge{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:500}
+.toggle-chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 16px;border:2px solid var(--sf);border-radius:20px;cursor:pointer;transition:.2s;font-size:14px}
+.chip:hover{border-color:var(--p)}
+.chip.selected{background:var(--p);color:#fff;border-color:var(--p)}
+.btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.2s}
+.btn-primary{background:var(--p);color:#fff}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-secondary{background:var(--sf);color:var(--tp)}
+.btn-next{margin-top:16px;float:right}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.summary-item{background:var(--bg);padding:12px;border-radius:8px}
+.summary-label{font-size:12px;color:var(--ts);margin-bottom:4px}
+.summary-value{font-weight:600}
+.download-btn{background:#4CAF50;color:#fff;padding:16px 32px;font-size:16px;width:100%;margin-top:16px}
+.copy-btn{background:var(--sf);color:var(--tp);padding:12px 24px;margin-top:8px;width:100%}
+@media(max-width:600px){.tabs{padding:8px}.tab{padding:8px 12px;font-size:12px}.card{padding:16px}.option-grid{grid-template-columns:repeat(2,1fr)}.color-grid{grid-template-columns:repeat(5,1fr);gap:6px}}
+@media(max-width:400px){.header-content{flex-wrap:wrap}h1{font-size:16px}.progress-bar{max-width:100%;order:3;margin-top:8px}.tabs{padding:4px}.tab{padding:6px 10px;font-size:11px}.card{padding:12px}.option-grid{grid-template-columns:1fr 1fr;gap:8px}.color-grid{grid-template-columns:repeat(4,1fr);gap:4px}.hsv-picker{flex-direction:column}.hsv-canvas,.hue-slider{width:100%!important}.color-row{flex-direction:column;align-items:stretch;gap:8px}.color-row input[type="color"]{width:100%!important}}
 </style>
 </head>
 <body>
-<div class="hdr"><div class="hi">
-<div class="br"><div class="bi">VC</div><div><h1>Design-Auswahl: Visuelle Coaching-Plattform</h1><small>Professioneller Design-Fragebogen</small></div></div>
-<div class="pw"><div class="pb"><div class="pf" id="pf"></div></div><div class="pt" id="ptx">0 / 6 Bereiche</div></div>
-</div></div>
-<div class="tabs"><div class="ti">
-<div class="tb on" onclick="go(0)"><span class="n">1</span> Farben</div>
-<div class="tb" onclick="go(1)"><span class="n">2</span> Typografie</div>
-<div class="tb" onclick="go(2)"><span class="n">3</span> Spacing</div>
-<div class="tb" onclick="go(3)"><span class="n">4</span> Komponenten</div>
-<div class="tb" onclick="go(4)"><span class="n">5</span> Stimmung</div>
-<div class="tb" onclick="go(5)"><span class="n">6</span> Plattform</div>
-</div></div>
-<div class="mn">
+<header>
+<div class="header-content">
+<h1>🌐 Coaching-Plattform Design</h1>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<span class="progress-text" id="progressText">0/7</span>
+</div>
+</header>
+<nav class="tabs">
+<div class="tab active" data-section="1">🎨 Farben</div>
+<div class="tab" data-section="2">📝 Typografie</div>
+<div class="tab" data-section="3">📐 Layout</div>
+<div class="tab" data-section="4">🔧 Komponenten</div>
+<div class="tab" data-section="5">🎭 Stimmung</div>
+<div class="tab" data-section="6">🌐 Web-Style</div>
+<div class="tab" data-section="7">📋 Download</div>
+</nav>
+<main>
+<!-- SEKTION 1: Farben -->
+<section class="active" id="section1">
+<div class="card">
+<h2>🎨 Primärfarbe</h2>
+<p class="desc">Wird für Hauptbuttons und wichtige Elemente verwendet</p>
+<div id="recentColors1" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette1"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas1"></canvas>
+<canvas class="hue-slider" id="hueSlider1"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview1"></div>
+<div class="hsv-values"><div id="hex1">#2196F3</div><div id="hsl1">HSL(207, 90%, 54%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Sekundärfarbe</h2>
+<p class="desc">Wird für unterstützende Elemente und Akzente verwendet</p>
+<div id="recentColors2" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette2"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas2"></canvas>
+<canvas class="hue-slider" id="hueSlider2"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview2"></div>
+<div class="hsv-values"><div id="hex2">#4CAF50</div><div id="hsl2">HSL(122, 39%, 49%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Akzentfarbe</h2>
+<p class="desc">Wird für Highlights und Call-to-Action Elemente verwendet</p>
+<div id="recentColors3" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette3"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas3"></canvas>
+<canvas class="hue-slider" id="hueSlider3"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview3"></div>
+<div class="hsv-values"><div id="hex3">#FF9800</div><div id="hsl3">HSL(36, 100%, 50%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Weitere Farben</h2>
+<div class="color-row">
+<div>
+<label>Hintergrundfarbe</label>
+<p class="desc">Haupthintergrund der Plattform</p>
+</div>
+<input type="color" id="bgColor" value="#FFFFFF" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Surface-Farbe</label>
+<p class="desc">Hintergrund für Karten und Container</p>
+</div>
+<input type="color" id="sfColor" value="#F5F5F5" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Textfarbe (Primär)</label>
+<p class="desc">Haupttextfarbe</p>
+</div>
+<input type="color" id="tpColor" value="#212121" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Textfarbe (Sekundär)</label>
+<p class="desc">Für weniger wichtige Texte</p>
+</div>
+<input type="color" id="tsColor" value="#757575" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Erfolg</label>
+<p class="desc">Für Erfolgsmeldungen</p>
+</div>
+<input type="color" id="seColor" value="#4CAF50" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Warnung</label>
+<p class="desc">Für Warnungen</p>
+</div>
+<input type="color" id="swColor" value="#FF9800" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Fehler</label>
+<p class="desc">Für Fehlermeldungen</p>
+</div>
+<input type="color" id="erColor" value="#F44336" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div class="preview-colors">
+<div class="preview-tile" id="previewP" style="background:var(--p);color:#fff">Primär</div>
+<div class="preview-tile" id="previewS" style="background:var(--s);color:#fff">Sekundär</div>
+<div class="preview-tile" id="previewA" style="background:var(--a);color:#fff">Akzent</div>
+</div>
+<div class="preview-surface">
+<div style="color:var(--tp);font-weight:600;margin-bottom:8px">Primärer Text</div>
+<div style="color:var(--ts);font-size:14px">Sekundärer Text für Beschreibungen</div>
+</div>
+<div class="status-badges">
+<div class="badge" style="background:var(--se);color:#fff">✓ Erfolg</div>
+<div class="badge" style="background:var(--sw);color:#fff">⚠ Warnung</div>
+<div class="badge" style="background:var(--er);color:#fff">✗ Fehler</div>
+</div>
+</div>
+<button class="btn btn-primary btn-next" onclick="goToSection(2)">Weiter →</button>
+</section>
 
-<!-- S1 -->
-<div class="sc on" data-s="0">
-<h2 class="st">&#x1f3a8; Farben</h2><p class="sd">Farbschema f&#252;r Ihre Coaching-Plattform. &#196;nderungen werden live angezeigt.</p>
-<div class="cd"><div class="ct">&#x1f3af; Hauptfarben</div>
-<div class="cr"><label>Prim&#228;rfarbe</label><div class="cpw"><input type="color" value="#2563eb" data-k="color_primary" onchange="uc(this)"></div><input class="cx" value="#2563eb" data-k="color_primary" oninput="uh(this)"><div class="cv" id="p_primary" style="background:#2563eb"></div></div>
-<div class="cr"><label>Sekund&#228;rfarbe</label><div class="cpw"><input type="color" value="#64748b" data-k="color_secondary" onchange="uc(this)"></div><input class="cx" value="#64748b" data-k="color_secondary" oninput="uh(this)"><div class="cv" id="p_secondary" style="background:#64748b"></div></div>
-<div class="cr"><label>Akzentfarbe</label><div class="cpw"><input type="color" value="#f59e0b" data-k="color_accent" onchange="uc(this)"></div><input class="cx" value="#f59e0b" data-k="color_accent" oninput="uh(this)"><div class="cv" id="p_accent" style="background:#f59e0b"></div></div>
+<!-- SEKTION 2: Typografie -->
+<section id="section2">
+<div class="card">
+<h2>📝 Schriftart</h2>
+<p class="desc">Die Hauptschrift bestimmt Lesbarkeit und Charakter deiner Plattform</p>
+<div class="option-grid" id="fontGrid"></div>
 </div>
-<div class="cd"><div class="ct">&#x1f5bc; Hintergrund</div>
-<div class="cr"><label>Hintergrundfarbe</label><div class="cpw"><input type="color" value="#f8fafc" data-k="color_bg" onchange="uc(this)"></div><input class="cx" value="#f8fafc" data-k="color_bg" oninput="uh(this)"><div class="cv" id="p_bg" style="background:#f8fafc"></div></div>
-<div class="cr"><label>Surface / Karten</label><div class="cpw"><input type="color" value="#ffffff" data-k="color_surface" onchange="uc(this)"></div><input class="cx" value="#ffffff" data-k="color_surface" oninput="uh(this)"><div class="cv" id="p_surface" style="background:#ffffff"></div></div>
+<div class="card">
+<h2>📝 Schriftgrößen</h2>
+<div class="slider-container">
+<label>H1-Größe <span class="slider-value" id="h1Val">32px</span></label>
+<p class="desc">Die Größe der großen Überschriften</p>
+<input type="range" class="slider" id="h1Size" min="24" max="48" value="32">
 </div>
-<div class="cd"><div class="ct">&#x270f; Textfarben</div>
-<div class="cr"><label>Text (prim&#228;r)</label><div class="cpw"><input type="color" value="#0f172a" data-k="color_text" onchange="uc(this)"></div><input class="cx" value="#0f172a" data-k="color_text" oninput="uh(this)"><div class="cv" id="p_text" style="background:#0f172a"></div></div>
-<div class="cr"><label>Text (sekund&#228;r)</label><div class="cpw"><input type="color" value="#475569" data-k="color_text_sec" onchange="uc(this)"></div><input class="cx" value="#475569" data-k="color_text_sec" oninput="uh(this)"><div class="cv" id="p_text_sec" style="background:#475569"></div></div>
+<div class="slider-container">
+<label>H2-Größe <span class="slider-value" id="h2Val">24px</span></label>
+<p class="desc">Die Größe der mittleren Überschriften</p>
+<input type="range" class="slider" id="h2Size" min="18" max="36" value="24">
 </div>
-<div class="cd"><div class="ct">&#x26a1; Statusfarben</div>
-<div class="cr"><label>Erfolg</label><div class="cpw"><input type="color" value="#10b981" data-k="color_success" onchange="uc(this)"></div><input class="cx" value="#10b981" data-k="color_success" oninput="uh(this)"><div class="cv" id="p_success" style="background:#10b981"></div></div>
-<div class="cr"><label>Warnung</label><div class="cpw"><input type="color" value="#f59e0b" data-k="color_warning" onchange="uc(this)"></div><input class="cx" value="#f59e0b" data-k="color_warning" oninput="uh(this)"><div class="cv" id="p_warning" style="background:#f59e0b"></div></div>
-<div class="cr"><label>Fehler</label><div class="cpw"><input type="color" value="#ef4444" data-k="color_error" onchange="uc(this)"></div><input class="cx" value="#ef4444" data-k="color_error" oninput="uh(this)"><div class="cv" id="p_error" style="background:#ef4444"></div></div>
+<div class="slider-container">
+<label>Body-Größe <span class="slider-value" id="bodyVal">16px</span></label>
+<p class="desc">Die Größe des Fließtextes</p>
+<input type="range" class="slider" id="bodySize" min="12" max="20" value="16">
 </div>
-<div class="cd"><div class="ct">&#x1f441; Farb-Vorschau</div>
-<div class="pv" id="cpvB">
-<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-<div id="vp_primary" style="flex:1;min-width:70px;padding:16px;border-radius:6px;color:#fff;text-align:center;font-weight:600;font-size:13px">Prim&#228;r</div>
-<div id="vp_secondary" style="flex:1;min-width:70px;padding:16px;border-radius:6px;color:#fff;text-align:center;font-weight:600;font-size:13px">Sekund&#228;r</div>
-<div id="vp_accent" style="flex:1;min-width:70px;padding:16px;border-radius:6px;color:#fff;text-align:center;font-weight:600;font-size:13px">Akzent</div>
+<div class="slider-container">
+<label>Caption-Größe <span class="slider-value" id="captionVal">12px</span></label>
+<p class="desc">Die Größe für kleine Beschriftungen</p>
+<input type="range" class="slider" id="captionSize" min="10" max="14" value="12">
 </div>
-<div id="vp_surface" style="padding:12px;border-radius:6px;border:1px solid #e2e8f0;margin-bottom:8px">
-<p id="vp_text" style="font-weight:600;margin-bottom:2px;font-size:14px">&#220;berschrift</p>
-<p id="vp_text_sec" style="font-size:12px">Flie&#223;text in Sekund&#228;rfarbe &#8212; so sieht Inhalt aus.</p>
 </div>
-<div style="display:flex;gap:6px;flex-wrap:wrap">
-<span id="vp_success" style="padding:6px 12px;border-radius:4px;color:#fff;font-size:11.5px;font-weight:500">&#10003; Erfolg</span>
-<span id="vp_warning" style="padding:6px 12px;border-radius:4px;color:#fff;font-size:11.5px;font-weight:500">&#9888; Warnung</span>
-<span id="vp_error" style="padding:6px 12px;border-radius:4px;color:#fff;font-size:11.5px;font-weight:500">&#10005; Fehler</span>
-</div></div></div>
-<div class="nb"><button class="btn bp" onclick="go(1)">Weiter zu Typografie &#8594;</button></div>
+<div class="card">
+<h2>📝 Schriftstärken</h2>
+<div class="slider-container">
+<label>H1-Stärke <span class="slider-value" id="h1wVal">700</span></label>
+<p class="desc">Dicke der großen Überschriften</p>
+<input type="range" class="slider" id="h1Weight" min="400" max="900" step="100" value="700">
 </div>
+<div class="slider-container">
+<label>H2-Stärke <span class="slider-value" id="h2wVal">600</span></label>
+<p class="desc">Dicke der mittleren Überschriften</p>
+<input type="range" class="slider" id="h2Weight" min="400" max="900" step="100" value="600">
+</div>
+<div class="slider-container">
+<label>Body-Stärke <span class="slider-value" id="bodywVal">400</span></label>
+<p class="desc">Dicke des Fließtextes</p>
+<input type="range" class="slider" id="bodyWeight" min="300" max="700" step="100" value="400">
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div id="typoPreview"></div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(1)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(3)">Weiter →</button>
+</section>
 
-<!-- S2 -->
-<div class="sc" data-s="1">
-<h2 class="st">&#9999; Typografie</h2><p class="sd">Schriftart und -gr&#246;&#223;en anpassen.</p>
-<div class="cd"><div class="ct">&#x1f524; Schriftart</div><div id="fopts"></div></div>
-<div class="cd"><div class="ct">&#x1f4cf; Gr&#246;&#223;en &amp; Gewichte</div>
-<div class="sg"><label>H1 Gr&#246;&#223;e</label><input type="range" min="24" max="56" value="36" data-k="h1_size" oninput="us(this)"><div class="sv"><span>36</span>px</div></div>
-<div class="sg"><label>H1 St&#228;rke</label><input type="range" min="300" max="900" step="100" value="700" data-k="h1_weight" oninput="us(this)"><div class="sv"><span>700</span></div></div>
-<div class="sg"><label>H2 Gr&#246;&#223;e</label><input type="range" min="20" max="42" value="28" data-k="h2_size" oninput="us(this)"><div class="sv"><span>28</span>px</div></div>
-<div class="sg"><label>H2 St&#228;rke</label><input type="range" min="300" max="900" step="100" value="600" data-k="h2_weight" oninput="us(this)"><div class="sv"><span>600</span></div></div>
-<div class="sg"><label>Body Gr&#246;&#223;e</label><input type="range" min="12" max="22" value="16" data-k="body_size" oninput="us(this)"><div class="sv"><span>16</span>px</div></div>
-<div class="sg"><label>Body St&#228;rke</label><input type="range" min="300" max="700" step="100" value="400" data-k="body_weight" oninput="us(this)"><div class="sv"><span>400</span></div></div>
-<div class="sg"><label>Caption Gr&#246;&#223;e</label><input type="range" min="10" max="16" value="13" data-k="caption_size" oninput="us(this)"><div class="sv"><span>13</span>px</div></div>
-<div class="sg"><label>Caption St&#228;rke</label><input type="range" min="300" max="700" step="100" value="400" data-k="caption_weight" oninput="us(this)"><div class="sv"><span>400</span></div></div>
+<!-- SEKTION 3: Spacing & Layout -->
+<section id="section3">
+<div class="card">
+<h2>📐 Basis-Spacing</h2>
+<div class="slider-container">
+<label>Spacing <span class="slider-value" id="spacingVal">8px</span></label>
+<p class="desc">Bestimmt den Standard-Abstand zwischen Elementen</p>
+<input type="range" class="slider" id="spacing" min="4" max="16" value="8">
 </div>
-<div class="cd"><div class="ct">&#x1f441; Vorschau</div><div class="pv">
-<div id="tp_h1" style="margin-bottom:5px">Ihr Weg zur besseren Performance</div>
-<div id="tp_h2" style="margin-bottom:8px">Individuelle Trainingspl&#228;ne f&#252;r Ihr Ziel</div>
-<div id="tp_body" style="margin-bottom:5px">Unser visuelles Coaching-System erstellt personalisierte Trainingspl&#228;ne.</div>
-<div id="tp_caption">Zuletzt aktualisiert: April 2026</div>
-</div></div>
-<div class="nb"><button class="btn bo" onclick="go(0)">&#8592; Farben</button><button class="btn bp" onclick="go(2)">Weiter &#8594;</button></div>
+<div class="live-preview" id="spacingPreview"></div>
 </div>
+<div class="card">
+<h2>📐 Container-Breite</h2>
+<div class="slider-container">
+<label>Breite <span class="slider-value" id="widthVal">1200px</span></label>
+<p class="desc">Die maximale Breite des Inhaltsbereichs</p>
+<input type="range" class="slider" id="containerWidth" min="960" max="1400" value="1200">
+</div>
+<div class="live-preview" id="widthPreview"></div>
+</div>
+<div class="card">
+<h2>📐 Raster-System</h2>
+<p>Wähle das Spalten-System für das Layout</p>
+<div class="option-grid">
+<div class="option" data-value="12" onclick="selectOption(this,'grid')">
+<div class="option-title">12 Spalten</div>
+<div class="option-desc">Standard für die meisten Websites</div>
+</div>
+<div class="option" data-value="16" onclick="selectOption(this,'grid')">
+<div class="option-title">16 Spalten</div>
+<div class="option-desc">Für komplexere Layouts</div>
+</div>
+<div class="option selected" data-value="flex" onclick="selectOption(this,'grid')">
+<div class="option-title">Flexibel</div>
+<div class="option-desc">Passt sich automatisch an</div>
+</div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(2)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(4)">Weiter →</button>
+</section>
 
-<!-- S3 -->
-<div class="sc" data-s="2">
-<h2 class="st">&#x1f4d0; Spacing &amp; Layout</h2><p class="sd">Raster und Abst&#228;nde.</p>
-<div class="cd"><div class="ct">&#x1f4cf; Basis-Spacing</div>
-<div class="sg"><label>Spacing-Unit</label><input type="range" min="2" max="16" value="8" data-k="spacing_base" oninput="us(this)"><div class="sv"><span>8</span>px</div></div>
-<div class="pv"><div class="pl">Visuell</div><div id="spVis" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
+<!-- SEKTION 4: Komponenten -->
+<section id="section4">
+<div class="card">
+<h2>🔧 Button-Radius</h2>
+<div class="option-grid">
+<div class="option" data-value="0" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Eckige Buttons</div>
 </div>
-<div class="cd"><div class="ct">&#x1f5a5; Container &amp; Raster</div>
-<div class="sg"><label>Container-Breite</label><input type="range" min="960" max="1400" step="20" value="1200" data-k="container_width" oninput="us(this)"><div class="sv"><span>1200</span>px</div></div>
-<div class="pv"><div class="pl">Vorschau</div><div style="background:#e2e8f0;padding:10px;border-radius:6px"><div id="cVis" style="background:var(--p);margin:0 auto;height:36px;border-radius:4px;transition:.3s;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600"></div></div></div>
-<div style="margin-top:14px"><div class="ct" style="font-size:12.5px;color:var(--ts)">Raster-System</div>
-<div class="og">
-<div class="oc sel" data-k="grid_columns" data-v="12" onclick="selOpt(this)"><span class="oi">&#x25a6;</span><div class="ol">12 Spalten</div><div class="od">Klassisch</div></div>
-<div class="oc" data-k="grid_columns" data-v="16" onclick="selOpt(this)"><span class="oi">&#x25a6;</span><div class="ol">16 Spalten</div><div class="od">Feiner</div></div>
-<div class="oc" data-k="grid_columns" data-v="flexible" onclick="selOpt(this)"><span class="oi">&#x301c;</span><div class="ol">Flexibel</div><div class="od">CSS Grid</div></div>
-</div></div></div>
-<div class="nb"><button class="btn bo" onclick="go(1)">&#8592; Typografie</button><button class="btn bp" onclick="go(3)">Weiter &#8594;</button></div>
+<div class="option selected" data-value="8" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Leicht</div>
+<div class="option-desc">Sanft abgerundet</div>
 </div>
+<div class="option" data-value="16" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittelstark abgerundet</div>
+</div>
+<div class="option" data-value="24" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Stark abgerundet</div>
+</div>
+<div class="option" data-value="50" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Rounded</div>
+<div class="option-desc">Komplett rund</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Card-Radius</h2>
+<div class="option-grid">
+<div class="option" data-value="0" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Eckige Karten</div>
+</div>
+<div class="option selected" data-value="12" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Leicht</div>
+<div class="option-desc">Sanft abgerundet</div>
+</div>
+<div class="option" data-value="20" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittelstark abgerundet</div>
+</div>
+<div class="option" data-value="28" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Stark abgerundet</div>
+</div>
+<div class="option" data-value="50" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Rounded</div>
+<div class="option-desc">Komplett rund</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Card-Shadow</h2>
+<div class="option-grid">
+<div class="option" data-value="none" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Ohne Schatten</div>
+</div>
+<div class="option selected" data-value="0 2px 8px rgba(0,0,0,0.1)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Subtil</div>
+<div class="option-desc">Leichter Schatten</div>
+</div>
+<div class="option" data-value="0 4px 16px rgba(0,0,0,0.15)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittlerer Schatten</div>
+</div>
+<div class="option" data-value="0 8px 32px rgba(0,0,0,0.2)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Ausgeprägter Schatten</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Input-Border</h2>
+<div class="option-grid">
+<div class="option selected" data-value="solid" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Solid</div>
+<div class="option-desc">Durchgehende Linie</div>
+</div>
+<div class="option" data-value="dashed" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Dashed</div>
+<div class="option-desc">Gestrichelte Linie</div>
+</div>
+<div class="option" data-value="bottom" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Nur unten</div>
+<div class="option-desc">Unterstrichener Stil</div>
+</div>
+<div class="option" data-value="none" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Ohne Rahmen</div>
+</div>
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div id="compPreview"></div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(3)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(5)">Weiter →</button>
+</section>
 
-<!-- S4 -->
-<div class="sc" data-s="3">
-<h2 class="st">&#x1f9e9; Komponenten</h2><p class="sd">Buttons, Karten, Inputs.</p>
-<div class="cd"><div class="ct">Button Radius</div>
-<div class="og">
-<div class="oc" data-k="btn_radius" data-v="0" onclick="selOpt(this)"><div style="width:34px;height:22px;background:var(--p);margin:0 auto;border-radius:0"></div><div class="ol">Kein</div></div>
-<div class="oc" data-k="btn_radius" data-v="4" onclick="selOpt(this)"><div style="width:34px;height:22px;background:var(--p);margin:0 auto;border-radius:4px"></div><div class="ol">Leicht</div></div>
-<div class="oc sel" data-k="btn_radius" data-v="8" onclick="selOpt(this)"><div style="width:34px;height:22px;background:var(--p);margin:0 auto;border-radius:8px"></div><div class="ol">Medium</div></div>
-<div class="oc" data-k="btn_radius" data-v="16" onclick="selOpt(this)"><div style="width:34px;height:22px;background:var(--p);margin:0 auto;border-radius:16px"></div><div class="ol">Stark</div></div>
-<div class="oc" data-k="btn_radius" data-v="99" onclick="selOpt(this)"><div style="width:34px;height:22px;background:var(--p);margin:0 auto;border-radius:99px"></div><div class="ol">Rounded</div></div>
-</div></div>
-<div class="cd"><div class="ct">Card Radius</div>
-<div class="og">
-<div class="oc" data-k="card_radius" data-v="0" onclick="selOpt(this)"><div style="width:42px;height:26px;background:#e2e8f0;margin:0 auto;border-radius:0"></div><div class="ol">Kein</div></div>
-<div class="oc" data-k="card_radius" data-v="4" onclick="selOpt(this)"><div style="width:42px;height:26px;background:#e2e8f0;margin:0 auto;border-radius:4px"></div><div class="ol">Leicht</div></div>
-<div class="oc sel" data-k="card_radius" data-v="12" onclick="selOpt(this)"><div style="width:42px;height:26px;background:#e2e8f0;margin:0 auto;border-radius:12px"></div><div class="ol">Medium</div></div>
-<div class="oc" data-k="card_radius" data-v="20" onclick="selOpt(this)"><div style="width:42px;height:26px;background:#e2e8f0;margin:0 auto;border-radius:20px"></div><div class="ol">Stark</div></div>
-<div class="oc" data-k="card_radius" data-v="28" onclick="selOpt(this)"><div style="width:42px;height:26px;background:#e2e8f0;margin:0 auto;border-radius:28px"></div><div class="ol">Extra</div></div>
-</div></div>
-<div class="cd"><div class="ct">Input Radius</div>
-<div class="og">
-<div class="oc" data-k="input_radius" data-v="0" onclick="selOpt(this)"><div style="width:42px;height:24px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:0"></div><div class="ol">Kein</div></div>
-<div class="oc sel" data-k="input_radius" data-v="6" onclick="selOpt(this)"><div style="width:42px;height:24px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:6px"></div><div class="ol">Leicht</div></div>
-<div class="oc" data-k="input_radius" data-v="12" onclick="selOpt(this)"><div style="width:42px;height:24px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:12px"></div><div class="ol">Medium</div></div>
-<div class="oc" data-k="input_radius" data-v="99" onclick="selOpt(this)"><div style="width:42px;height:24px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:99px"></div><div class="ol">Rounded</div></div>
-</div></div>
-<div class="cd"><div class="ct">Card Shadow</div>
-<div class="og">
-<div class="oc" data-k="card_shadow" data-v="none" onclick="selOpt(this)"><div style="width:48px;height:28px;background:#fff;border:1px solid #e2e8f0;margin:0 auto">&nbsp;</div><div class="ol">Kein</div></div>
-<div class="oc sel" data-k="card_shadow" data-v="subtle" onclick="selOpt(this)"><div style="width:48px;height:28px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 1px 3px rgba(0,0,0,.08)">&nbsp;</div><div class="ol">Subtil</div></div>
-<div class="oc" data-k="card_shadow" data-v="medium" onclick="selOpt(this)"><div style="width:48px;height:28px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 4px 12px rgba(0,0,0,.1)">&nbsp;</div><div class="ol">Medium</div></div>
-<div class="oc" data-k="card_shadow" data-v="strong" onclick="selOpt(this)"><div style="width:48px;height:28px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 8px 24px rgba(0,0,0,.15)">&nbsp;</div><div class="ol">Stark</div></div>
-</div></div>
-<div class="cd"><div class="ct">Input Border</div>
-<div class="og">
-<div class="oc sel" data-k="input_border" data-v="solid" onclick="selOpt(this)"><div style="width:48px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:6px">&nbsp;</div><div class="ol">Solid</div></div>
-<div class="oc" data-k="input_border" data-v="dashed" onclick="selOpt(this)"><div style="width:48px;height:26px;background:#fff;border:2px dashed #cbd5e1;margin:0 auto;border-radius:6px">&nbsp;</div><div class="ol">Dashed</div></div>
-<div class="oc" data-k="input_border" data-v="bottom" onclick="selOpt(this)"><div style="width:48px;height:26px;background:#fff;border:none;border-bottom:2px solid #cbd5e1;margin:0 auto">&nbsp;</div><div class="ol">Nur unten</div></div>
-<div class="oc" data-k="input_border" data-v="none" onclick="selOpt(this)"><div style="width:48px;height:26px;background:#f1f5f9;border:none;margin:0 auto;border-radius:6px">&nbsp;</div><div class="ol">Kein</div></div>
-</div></div>
-<div class="cd"><div class="ct">Vorschau</div><div class="pv">
-<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-<div id="pv_bs" style="padding:9px 20px;background:var(--p);color:#fff;font-size:12.5px;font-weight:600;border-radius:8px">Solid</div>
-<div id="pv_bo" style="padding:9px 20px;background:transparent;color:var(--p);border:2px solid var(--p);font-size:12.5px;font-weight:600;border-radius:8px">Outline</div>
+<!-- SEKTION 5: Design-Stimmung -->
+<section id="section5">
+<div class="card">
+<h2>🎭 Overall Style</h2>
+<p>Wähle den grundlegenden Design-Stil</p>
+<div class="option-grid">
+<div class="option" data-value="minimal" onclick="selectOption(this,'style')">
+<div class="option-title">Minimalistisch</div>
+<div class="option-desc">Wenig Schnickschnack, Fokus auf Inhalt</div>
 </div>
-<div id="pv_cd" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:12px"><div style="font-weight:600;font-size:13px;margin-bottom:3px">Beispiel-Karte</div><div style="font-size:12px;color:var(--ts)">Karten-Vorschau mit gew&#228;hltem Shadow und Radius.</div></div>
-<div id="pv_in" style="background:#fff;border:2px solid #cbd5e1;border-radius:6px;padding:9px 12px;font-size:12px;color:var(--ts)">E-Mail eingeben...</div>
-</div></div>
-<div class="nb"><button class="btn bo" onclick="go(2)">&#8592; Spacing</button><button class="btn bp" onclick="go(4)">Weiter &#8594;</button></div>
+<div class="option selected" data-value="modern" onclick="selectOption(this,'style')">
+<div class="option-title">Modern</div>
+<div class="option-desc">Aktuell, frisch, zeitgemäß</div>
 </div>
+<div class="option" data-value="corporate" onclick="selectOption(this,'style')">
+<div class="option-title">Corporate</div>
+<div class="option-desc">Professionell, seriös</div>
+</div>
+<div class="option" data-value="premium" onclick="selectOption(this,'style')">
+<div class="option-title">Premium</div>
+<div class="option-desc">Hochwertig, exklusiv</div>
+</div>
+<div class="option" data-value="luxury" onclick="selectOption(this,'style')">
+<div class="option-title">Luxus</div>
+<div class="option-desc">Opulent, edel</div>
+</div>
+<div class="option" data-value="dark" onclick="selectOption(this,'style')">
+<div class="option-title">Dark Mode</div>
+<div class="option-desc">Dunkles Farbschema</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎭 Bild-Stil</h2>
+<p>Welche Art von Bildern soll verwendet werden?</p>
+<div class="option-grid">
+<div class="option selected" data-value="photo" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Fotografie</div>
+<div class="option-desc">Echte Fotos von Menschen/Orten</div>
+</div>
+<div class="option" data-value="illustration" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Illustrationen</div>
+<div class="option-desc">Gezeichnete Grafiken</div>
+</div>
+<div class="option" data-value="icons" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Icons</div>
+<div class="option-desc">Symbolische Darstellungen</div>
+</div>
+<div class="option" data-value="mixed" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Gemischt</div>
+<div class="option-desc">Kombination verschiedener Stile</div>
+</div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(4)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(6)">Weiter →</button>
+</section>
 
-<!-- S5 -->
-<div class="sc" data-s="4">
-<h2 class="st">&#x1f3ad; Design-Stimmung</h2><p class="sd">Charakter der Plattform.</p>
-<div class="cd"><div class="ct">Overall Style</div><div class="og">
-<div class="oc" data-k="overall_style" data-v="minimalistisch" onclick="selOpt(this)"><span class="oi">&#x25fb;</span><div class="ol">Minimalistisch</div><div class="od">Clean</div></div>
-<div class="oc sel" data-k="overall_style" data-v="modern" onclick="selOpt(this)"><span class="oi">&#x25c7;</span><div class="ol">Modern</div><div class="od">Frisch</div></div>
-<div class="oc" data-k="overall_style" data-v="corporate" onclick="selOpt(this)"><span class="oi">&#x25a3;</span><div class="ol">Corporate</div><div class="od">Seri&#246;s</div></div>
-<div class="oc" data-k="overall_style" data-v="premium" onclick="selOpt(this)"><span class="oi">&#x25c6;</span><div class="ol">Premium</div><div class="od">Hochwertig</div></div>
-<div class="oc" data-k="overall_style" data-v="luxus" onclick="selOpt(this)"><span class="oi">&#x2756;</span><div class="ol">Luxus</div><div class="od">Elegant</div></div>
-<div class="oc" data-k="overall_style" data-v="dark_mode" onclick="selOpt(this)"><span class="oi">&#x263e;</span><div class="ol">Dark Mode</div><div class="od">Dunkel</div></div>
-</div></div>
-<div class="cd"><div class="ct">Bild-Stil</div><div class="og">
-<div class="oc" data-k="image_style" data-v="fotografie" onclick="selOpt(this)"><span class="oi">&#x1f4f7;</span><div class="ol">Fotografie</div></div>
-<div class="oc" data-k="image_style" data-v="illustrationen" onclick="selOpt(this)"><span class="oi">&#x1f3a8;</span><div class="ol">Illustrationen</div></div>
-<div class="oc" data-k="image_style" data-v="icons" onclick="selOpt(this)"><span class="oi">&#x2726;</span><div class="ol">Icons</div></div>
-<div class="oc" data-k="image_style" data-v="gemischt" onclick="selOpt(this)"><span class="oi">&#x25c8;</span><div class="ol">Gemischt</div></div>
-</div></div>
-<div class="cd"><div class="ct">Stimmung-Vorschau</div><div class="pv"><div id="moodV" style="border-radius:12px;padding:20px;transition:.3s">
-<div style="font-weight:700;margin-bottom:6px;font-size:17px">Visuelles Coaching</div>
-<div style="font-size:13px;opacity:.8;margin-bottom:10px">Professionelle Trainingspl&#228;ne</div>
-<div style="display:flex;gap:7px"><div style="padding:7px 14px;border-radius:6px;font-size:11.5px;font-weight:600">Jetzt starten</div><div style="padding:7px 14px;border-radius:6px;font-size:11.5px;font-weight:600;border:1px solid currentColor;opacity:.7">Mehr erfahren</div></div>
-</div></div></div>
-<div class="nb"><button class="btn bo" onclick="go(3)">&#8592; Komponenten</button><button class="btn bp" onclick="go(5)">Weiter &#8594;</button></div>
+<!-- SEKTION 6: Web-spezifisch (UNTERSCHIED ZUR MITARBEITER-APP) -->
+<section id="section6">
+<div class="card">
+<h2>🌐 Hero Section</h2>
+<p>Wie soll der erste Blick auf der Startseite aussehen?</p>
+<div class="option-grid">
+<div class="option selected" data-value="fullwidth" onclick="selectOption(this,'hero')">
+<div class="option-title">Full-Width</div>
+<div class="option-desc">Bild über die gesamte Breite</div>
 </div>
+<div class="option" data-value="split" onclick="selectOption(this,'hero')">
+<div class="option-title">Split</div>
+<div class="option-desc">50/50 Aufteilung mit Text/Bild</div>
+</div>
+<div class="option" data-value="video" onclick="selectOption(this,'hero')">
+<div class="option-title">Video</div>
+<div class="option-desc">Video-Hintergrund im Header</div>
+</div>
+<div class="option" data-value="gradient" onclick="selectOption(this,'hero')">
+<div class="option-title">Gradient</div>
+<div class="option-desc">Farbverlauf ohne Bild</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🌐 Preis-Tabelle</h2>
+<p>Wie sollen Preise dargestellt werden?</p>
+<div class="option-grid">
+<div class="option selected" data-value="cards" onclick="selectOption(this,'priceTable')">
+<div class="option-title">Cards</div>
+<div class="option-desc">Preiskarten nebeneinander</div>
+</div>
+<div class="option" data-value="table" onclick="selectOption(this,'priceTable')">
+<div class="option-title">Tabelle</div>
+<div class="option-desc">Klassische Tabelle</div>
+</div>
+<div class="option" data-value="toggle" onclick="selectOption(this,'priceTable')">
+<div class="option-title">Toggle</div>
+<div class="option-desc">Monatlich/Jährlich Umschalter</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🌐 Navigation</h2>
+<p>Wähle die Navigationsart für die Website</p>
+<div class="option-grid">
+<div class="option selected" data-value="topbar" onclick="selectOption(this,'webNav')">
+<div class="option-title">Top Bar</div>
+<div class="option-desc">Klassische Navigation oben</div>
+</div>
+<div class="option" data-value="sidebar" onclick="selectOption(this,'webNav')">
+<div class="option-title">Sidebar</div>
+<div class="option-desc">Seitliches Menü</div>
+</div>
+<div class="option" data-value="mega" onclick="selectOption(this,'webNav')">
+<div class="option-title">Mega Menu</div>
+<div class="option-desc">Erweitertes Dropdown-Menü</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🌐 CTA Button</h2>
+<p>Wie sollen Call-to-Action Buttons aussehen?</p>
+<div class="option-grid">
+<div class="option selected" data-value="solid" onclick="selectOption(this,'cta')">
+<div class="option-title">Solid</div>
+<div class="option-desc">Gefüllter Button</div>
+</div>
+<div class="option" data-value="outline" onclick="selectOption(this,'cta')">
+<div class="option-title">Outline</div>
+<div class="option-desc">Nur Rahmen</div>
+</div>
+<div class="option" data-value="gradient" onclick="selectOption(this,'cta')">
+<div class="option-title">Gradient</div>
+<div class="option-desc">Farbverlauf</div>
+</div>
+<div class="option" data-value="ghost" onclick="selectOption(this,'cta')">
+<div class="option-title">Ghost</div>
+<div class="option-desc">Transparenter Button</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🌐 Trust Elements</h2>
+<p>Welche Vertrauenselemente sollen angezeigt werden?</p>
+<p class="desc">Wähle alle gewünschten Elemente</p>
+<div class="toggle-chips" id="trustChips">
+<div class="chip selected" data-value="testimonials" onclick="toggleChip(this)">💬 Testimonials</div>
+<div class="chip" data-value="logos" onclick="toggleChip(this)">🏢 Partner-Logos</div>
+<div class="chip selected" data-value="stats" onclick="toggleChip(this)">📊 Statistiken</div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(5)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(7)">Weiter →</button>
+</section>
 
-<!-- S6 -->
-<div class="sc" data-s="5">
-<h2 class="st">&#x1f680; Plattform-spezifisch</h2><p class="sd">Design f&#252;r Ihre Coaching-Plattform.</p>
-<div class="cd"><div class="ct">Hero Section</div><div class="og">
-<div class="oc" data-k="hero_style" data-v="fullwidth_image" onclick="selOpt(this)"><span class="oi">&#x1f308;</span><div class="ol">Full-Width</div></div>
-<div class="oc sel" data-k="hero_style" data-v="split" onclick="selOpt(this)"><span class="oi">&#x2b1b;</span><div class="ol">Split</div></div>
-<div class="oc" data-k="hero_style" data-v="video" onclick="selOpt(this)"><span class="oi">&#x25b6;</span><div class="ol">Video</div></div>
-<div class="oc" data-k="hero_style" data-v="gradient" onclick="selOpt(this)"><span class="oi">&#x25d0;</span><div class="ol">Gradient</div></div>
-</div></div>
-<div class="cd"><div class="ct">Preis-Tabelle</div><div class="og">
-<div class="oc sel" data-k="pricing_style" data-v="cards" onclick="selOpt(this)"><span class="oi">&#x1f0cf;</span><div class="ol">Cards</div></div>
-<div class="oc" data-k="pricing_style" data-v="tabelle" onclick="selOpt(this)"><span class="oi">&#x1f4cb;</span><div class="ol">Tabelle</div></div>
-<div class="oc" data-k="pricing_style" data-v="toggle" onclick="selOpt(this)"><span class="oi">&#x1f504;</span><div class="ol">Toggle</div></div>
-</div></div>
-<div class="cd"><div class="ct">Navigation</div><div class="og">
-<div class="oc sel" data-k="navigation" data-v="topbar" onclick="selOpt(this)"><span class="oi">&#x2796;</span><div class="ol">Top Bar</div></div>
-<div class="oc" data-k="navigation" data-v="sidebar" onclick="selOpt(this)"><span class="oi">&#x2551;</span><div class="ol">Sidebar</div></div>
-<div class="oc" data-k="navigation" data-v="mega_menu" onclick="selOpt(this)"><span class="oi">&#x2630;</span><div class="ol">Mega Menu</div></div>
-</div></div>
-<div class="cd"><div class="ct">CTA Button</div><div class="og">
-<div class="oc sel" data-k="cta_style" data-v="solid" onclick="selOpt(this)"><span class="oi">&#x25fc;</span><div class="ol">Solid</div></div>
-<div class="oc" data-k="cta_style" data-v="outline" onclick="selOpt(this)"><span class="oi">&#x25fb;</span><div class="ol">Outline</div></div>
-<div class="oc" data-k="cta_style" data-v="gradient" onclick="selOpt(this)"><span class="oi">&#x25d0;</span><div class="ol">Gradient</div></div>
-<div class="oc" data-k="cta_style" data-v="ghost" onclick="selOpt(this)"><span class="oi">&#x25a2;</span><div class="ol">Ghost</div></div>
-</div></div>
-<div class="cd"><div class="ct">Trust Elements</div><div class="tg">
-<div class="tc sel" data-k="trust_testimonials" onclick="togC(this)">&#11088; Testimonials</div>
-<div class="tc sel" data-k="trust_logos" onclick="togC(this)">&#127970; Partner-Logos</div>
-<div class="tc" data-k="trust_stats" onclick="togC(this)">&#128202; Statistiken</div>
-<div class="tc" data-k="trust_all" onclick="togC(this)">&#10024; Alle</div>
-</div></div>
-<div class="smc" id="smc"><h3>&#x1f4cb; Zusammenfassung</h3><div class="sgr" id="sgr"></div></div>
-<div class="bg"><button class="btn bs" onclick="expJSON()">&#x1f4e5; JSON exportieren</button><button class="btn bo" onclick="cpJSON()">&#x1f4cb; JSON kopieren</button></div>
-<div class="nb"><button class="btn bo" onclick="go(4)">&#8592; Stimmung</button></div>
+<!-- SEKTION 7: Zusammenfassung -->
+<section id="section7">
+<div class="card">
+<h2>📋 Zusammenfassung</h2>
+<p>Überprüfe deine Auswahl und lade die Konfiguration herunter</p>
+<div class="summary-grid" id="summary"></div>
+<button class="btn download-btn" onclick="downloadJSON()">📥 Antworten als JSON herunterladen</button>
+<button class="btn copy-btn" onclick="copyJSON()">📋 JSON kopieren</button>
 </div>
-</div>
+<button class="btn btn-secondary" onclick="goToSection(6)">← Zurück</button>
+</section>
+</main>
+
 <script>
-var D={};
-var FONTS=[
-{n:'Inter',f:"system-ui,-apple-system,sans-serif",l:'Modern, clean'},
-{n:'Roboto',f:"system-ui,sans-serif",l:'Klassisch, lesbar'},
-{n:'Segoe UI',f:"Tahoma,Geneva,sans-serif",l:'Windows-Standard'},
-{n:'Helvetica Neue',f:"Helvetica,Arial,sans-serif",l:'Apple-Klassiker'},
-{n:'Georgia',f:"serif",l:'Elegant, serif'},
-{n:'Menlo',f:"Consolas,monospace",l:'Technisch, mono'},
-{n:'Trebuchet MS',f:"Lucida Grande,sans-serif",l:'Rund, freundlich'},
-{n:'Palatino',f:"Palatino Linotype,serif",l:'Klassisch, edel'}
-];
-function init(){
-var fc=document.getElementById('fopts');
-FONTS.forEach(function(f,i){
-var d=document.createElement('div');d.className='fo'+(i===0?' sel':'');
-d.setAttribute('data-k','font_family');d.setAttribute('data-v',f.n);
-d.onclick=function(){selFont(this)};
-d.innerHTML='<div class="fn">'+f.n+' &mdash; '+f.l+'</div><div class="fp" style="font-family:'+f.f+'">Ihr Weg zur besseren Performance</div>';
-fc.appendChild(d);
-});
-D.font_family='Inter';D.h1_size=36;D.h1_weight=700;D.h2_size=28;D.h2_weight=600;
-D.body_size=16;D.body_weight=400;D.caption_size=13;D.caption_weight=400;
-D.spacing_base=8;D.container_width=1200;D.grid_columns='12';
-D.btn_radius='8';D.card_radius='12';D.input_radius='6';D.card_shadow='subtle';D.input_border='solid';
-D.overall_style='modern';D.image_style='fotografie';
-D.hero_style='split';D.pricing_style='cards';D.navigation='topbar';D.cta_style='solid';
-D.trust_testimonials=true;D.trust_logos=true;D.trust_stats=false;D.trust_all=false;
-D.color_primary='#2563eb';D.color_secondary='#64748b';D.color_accent='#f59e0b';
-D.color_bg='#f8fafc';D.color_surface='#ffffff';D.color_text='#0f172a';D.color_text_sec='#475569';
-D.color_success='#10b981';D.color_warning='#f59e0b';D.color_error='#ef4444';
-upSpVis();upCVis();upMoodV();upCompPv();upProg();upTypo();
-}
-function go(n){
-document.querySelectorAll('.sc').forEach(function(s,i){s.classList.toggle('on',i===n)});
-document.querySelectorAll('.tb').forEach(function(t,i){t.classList.toggle('on',i===n)});
-window.scrollTo({top:0,behavior:'smooth'});
-if(n===5)buildSm();
-}
-function uc(el){var k=el.getAttribute('data-k'),v=el.value;D[k]=v;
-el.closest('.cr').querySelector('.cx').value=v;
-var p=document.getElementById('p_'+k.replace('color_',''));if(p)p.style.background=v;
-syncCPV();upProg()}
-function uh(el){var v=el.value;if(!/^#[0-9a-f]{6}$/i.test(v))return;
-var k=el.getAttribute('data-k');D[k]=v;
-el.closest('.cr').querySelector('input[type=color]').value=v;
-var p=document.getElementById('p_'+k.replace('color_',''));if(p)p.style.background=v;
-syncCPV();upProg()}
-function syncCPV(){
-var m={primary:'color_primary',secondary:'color_secondary',accent:'color_accent'};
-for(var k in m){var e=document.getElementById('vp_'+k);if(e)e.style.background=D[m[k]]}
-var sf=document.getElementById('vp_surface');if(sf)sf.style.background=D.color_surface;
-var tx=document.getElementById('vp_text');if(tx)tx.style.color=D.color_text;
-var ts=document.getElementById('vp_text_sec');if(ts)ts.style.color=D.color_text_sec;
-['success','warning','error'].forEach(function(s){var e=document.getElementById('vp_'+s);if(e)e.style.background=D['color_'+s]});
-}
-function selFont(el){
-el.closest('.cd').querySelectorAll('.fo').forEach(function(f){f.classList.remove('sel')});
-el.classList.add('sel');D.font_family=el.getAttribute('data-v');upTypo();upProg();
-}
-function upTypo(){
-var f=FONTS.find(function(x){return x.n===D.font_family});var ff=f?f.f:'sans-serif';
-var h1=document.getElementById('tp_h1'),h2=document.getElementById('tp_h2');
-var bd=document.getElementById('tp_body'),cp=document.getElementById('tp_caption');
-if(h1){h1.style.fontSize=D.h1_size+'px';h1.style.fontWeight=D.h1_weight;h1.style.fontFamily=ff}
-if(h2){h2.style.fontSize=D.h2_size+'px';h2.style.fontWeight=D.h2_weight;h2.style.fontFamily=ff}
-if(bd){bd.style.fontSize=D.body_size+'px';bd.style.fontWeight=D.body_weight;bd.style.fontFamily=ff}
-if(cp){cp.style.fontSize=D.caption_size+'px';cp.style.fontWeight=D.caption_weight;cp.style.fontFamily=ff}
-}
-function us(el){
-var k=el.getAttribute('data-k'),v=parseFloat(el.value);D[k]=v;
-var sv=el.closest('.sg').querySelector('.sv span');
-if(k.indexOf('weight')>-1){sv.textContent=v}
-else{sv.textContent=v+'px'}
-if(k==='spacing_base')upSpVis();
-if(k==='container_width')upCVis();
-upTypo();upProg();
-}
-function selOpt(el){
-el.closest('.cd').querySelectorAll('.oc').forEach(function(o){o.classList.remove('sel')});
-el.classList.add('sel');D[el.getAttribute('data-k')]=el.getAttribute('data-v');
-var kk=el.getAttribute('data-k');
-if(kk==='overall_style')upMoodV();
-if(kk==='btn_radius'||kk==='card_radius'||kk==='input_radius'||kk==='card_shadow'||kk==='input_border')upCompPv();
-upProg();
-}
-function togC(el){el.classList.toggle('sel');D[el.getAttribute('data-k')]=el.classList.contains('sel');upProg()}
-function upSpVis(){
-var box=document.getElementById('spVis');if(!box)return;var s=D.spacing_base||8;var html='';
-for(var i=1;i<=5;i++){var w=s*i;
-html+='<div style="width:'+w+'px;height:'+w+'px;background:var(--p);opacity:'+(0.3+i*0.15)+';border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:'+(s<6?9:11)+'px;font-weight:600">'+w+'px</div>';
-}box.innerHTML=html;
-}
-function upCVis(){
-var el=document.getElementById('cVis');if(!el)return;var w=D.container_width||1200;
-var maxW=el.parentElement.offsetWidth-20;var pct=Math.min((w/maxW)*100,100);
-el.style.width=pct+'%';el.textContent=w+'px';
-}
-function upMoodV(){
-var el=document.getElementById('moodV');if(!el)return;var s=D.overall_style||'modern';
-var styles={
-minimalistisch:{bg:'#fafafa',color:'#1a1a1a',accent:'#2563eb'},
-modern:{bg:'linear-gradient(135deg,#2563eb,#7c3aed)',color:'#fff',accent:'#fff'},
-corporate:{bg:'linear-gradient(135deg,#1e3a5f,#2d5986)',color:'#fff',accent:'#fbbf24'},
-premium:{bg:'linear-gradient(135deg,#1a1a2e,#16213e)',color:'#fff',accent:'#c9a96e'},
-luxus:{bg:'linear-gradient(135deg,#0a0a0a,#1a1a1a)',color:'#c9a96e',accent:'#c9a96e'},
-dark_mode:{bg:'linear-gradient(135deg,#111827,#1f2937)',color:'#e5e7eb',accent:'#60a5fa'}
+const data={
+colors:{p:'#2196F3',s:'#4CAF50',a:'#FF9800',bg:'#FFFFFF',sf:'#F5F5F5',tp:'#212121',ts:'#757575',se:'#4CAF50',sw:'#FF9800',er:'#F44336'},
+typo:{font:'Inter',h1:32,h2:24,body:16,caption:12,h1w:700,h2w:600,bodyw:400},
+layout:{spacing:8,width:1200,grid:'flex'},
+comp:{btnRadius:8,cardRadius:12,cardShadow:'0 2px 8px rgba(0,0,0,0.1)',inputBorder:'solid'},
+mood:{style:'modern',imageStyle:'photo'},
+web:{hero:'fullwidth',priceTable:'cards',nav:'topbar',cta:'solid',trust:['testimonials','stats']}
 };
-var st=styles[s]||styles.modern;
-el.style.background=st.bg;el.style.color=st.color;
+
+// HSV Picker State für jeden Picker
+const pickerState={
+1:{h:207,s:0.5,v:0.5},
+2:{h:122,s:0.5,v:0.5},
+3:{h:36,s:0.5,v:0.5}
+};
+
+const palette=[
+'#E53935','#C62828','#E91E63','#9C27B0','#673AB7',
+'#2196F3','#1565C0','#009688','#4CAF50','#2E7D32',
+'#FDD835','#FF9800','#795548','#9E9E9E','#424242',
+'#212121','#FFFFFF','#81D4FA','#A5D6A7','#FFF9C4',
+'#F8BBD0','#D1C4E9','#B2DFDB','#FFCCBC','#D7CCC8'
+];
+
+const fonts=[
+{n:'Inter',d:'Moderne, saubere Schrift. Gut lesbar auf allen Geräten.'},
+{n:'Roboto',d:'Google-Standardschrift. Vertraut und professionell.'},
+{n:'Open Sans',d:'Freundlich und offen. Perfekt für Websites.'},
+{n:'Lato',d:'Rund und einladend. Gute Lesbarkeit.'},
+{n:'Montserrat',d:'Geometrisch und modern. Für Headlines.'},
+{n:'Poppins',d:'Rund und modern. Beliebt für Websites.'}
+];
+
+let recentColors=[];
+const MAX_RECENT=10;
+
+function addRecentColor(hex){
+// Entfernen falls schon vorhanden
+recentColors=recentColors.filter(c=>c!==hex);
+// Am Anfang hinzufügen
+recentColors.unshift(hex);
+// Max 10 behalten
+if(recentColors.length>MAX_RECENT)recentColors=recentColors.slice(0,MAX_RECENT);
+// Alle Picker aktualisieren
+renderRecentColors();
 }
-function upCompPv(){
-var br=D.btn_radius||8,cr=D.card_radius||12,ir=D.input_radius||6;
-var sh=D.card_shadow||'subtle',ib=D.input_border||'solid';
-var shadows={none:'none',subtle:'0 1px 3px rgba(0,0,0,.08)',medium:'0 4px 12px rgba(0,0,0,.1)',strong:'0 8px 24px rgba(0,0,0,.15)'};
-var bs=document.getElementById('pv_bs'),bo=document.getElementById('pv_bo');
-var cd=document.getElementById('pv_cd'),inp=document.getElementById('pv_in');
-if(bs)bs.style.borderRadius=br+'px';
-if(bo)bo.style.borderRadius=br+'px';
-if(cd){cd.style.borderRadius=cr+'px';cd.style.boxShadow=shadows[sh]||shadows.subtle}
-if(inp){inp.style.borderRadius=ir+'px';inp.style.border='';inp.style.borderBottom='';inp.style.background='#fff';
-if(ib==='solid')inp.style.border='2px solid #cbd5e1';
-else if(ib==='dashed')inp.style.border='2px dashed #cbd5e1';
-else if(ib==='bottom'){inp.style.borderBottom='2px solid #cbd5e1'}
-else inp.style.background='#f1f5f9';
+
+function renderRecentColors(){
+for(let n=1;n<=3;n++){
+const container=document.getElementById('recentColors'+n);
+if(!container)return;
+if(recentColors.length===0){
+container.style.display='none';
+continue;
 }
-}
-function upProg(){
-var done=0,total=6;
-if(D.color_primary)done++;if(D.font_family)done++;if(D.spacing_base)done++;
-if(D.btn_radius)done++;if(D.overall_style)done++;if(D.hero_style)done++;
-var pct=Math.round((done/total)*100);
-document.getElementById('pf').style.width=pct+'%';
-document.getElementById('ptx').textContent=done+' / '+total+' Bereiche';
-}
-function buildSm(){
-var g=document.getElementById('sgr');if(!g)return;var html='';
-var lb={'color_primary':'Prim\u00e4rfarbe','color_secondary':'Sekund\u00e4r','color_accent':'Akzent','color_bg':'Hintergrund','color_surface':'Surface','color_text':'Text prim\u00e4r','color_text_sec':'Text sek.','color_success':'Erfolg','color_warning':'Warnung','color_error':'Fehler','font_family':'Schriftart','h1_size':'H1 Gr\u00f6\u00dfe','h1_weight':'H1 St\u00e4rke','h2_size':'H2 Gr\u00f6\u00dfe','h2_weight':'H2 St\u00e4rke','body_size':'Body Gr\u00f6\u00dfe','body_weight':'Body St\u00e4rke','caption_size':'Caption Gr\u00f6\u00dfe','caption_weight':'Caption St\u00e4rke','spacing_base':'Basis-Spacing','container_width':'Container','grid_columns':'Raster','btn_radius':'Button R.','card_radius':'Card R.','input_radius':'Input R.','card_shadow':'Shadow','input_border':'Input Border','overall_style':'Stil','image_style':'Bild-Stil','hero_style':'Hero','pricing_style':'Preise','navigation':'Navigation','cta_style':'CTA Button'};
-for(var k in lb){if(!D.hasOwnProperty(k))continue;var v=D[k];
-if(k.indexOf('color_')===0){
-html+='<div class="si"><div class="sl">'+lb[k]+'</div><div class="svl" style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:3px;background:'+v+';display:inline-block"></span>'+v+'</div></div>';
-}else if(k.indexOf('weight')>-1||k.indexOf('size')>-1){
-html+='<div class="si"><div class="sl">'+lb[k]+'</div><div class="svl">'+v+'</div></div>';
-}else{
-html+='<div class="si"><div class="sl">'+lb[k]+'</div><div class="svl">'+v+'</div></div>';
-}}
-var trust=[];if(D.trust_testimonials)trust.push('Testimonials');if(D.trust_logos)trust.push('Partner-Logos');if(D.trust_stats)trust.push('Statistiken');if(D.trust_all)trust.push('Alle');
-if(trust.length)html+='<div class="si"><div class="sl">Trust Elements</div><div class="svl">'+trust.join(', ')+'</div></div>';
-g.innerHTML=html;
-}
-function expJSON(){
-D.exported_at=new Date().toISOString();
-var blob=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});
-var a=document.createElement('a');a.href=URL.createObjectURL(blob);
-a.download='design-auswahl-coaching-'+new Date().toISOString().slice(0,10)+'.json';
-a.click();URL.revokeObjectURL(a.href);
-}
-function cpJSON(){
-D.exported_at=new Date().toISOString();
-navigator.clipboard.writeText(JSON.stringify(D,null,2)).then(function(){
-var btns=document.querySelectorAll('.bg .btn');if(btns.length>1){
-var old=btns[1].textContent;btns[1].textContent='Kopiert!';btns[1].style.background='#eff6ff';
-setTimeout(function(){btns[1].textContent=old;btns[1].style.background=''},1500);
-}
+container.style.display='grid';
+container.innerHTML='';
+recentColors.forEach(color=>{
+const div=document.createElement('div');
+div.className='color-circle recent';
+div.style.background=color;
+div.title='Zuletzt verwendet: '+color;
+div.onclick=()=>selectPreset(n,color);
+container.appendChild(div);
 });
 }
-document.addEventListener('DOMContentLoaded',init);
+}
+
+function init(){
+palette.forEach((c,i)=>{
+for(let n=1;n<=3;n++){
+const div=document.createElement('div');
+div.className='color-circle';
+div.style.background=c;
+div.onclick=()=>selectPreset(n,c);
+document.getElementById('palette'+n).appendChild(div);
+}
+});
+fonts.forEach((f,i)=>{
+const div=document.createElement('div');
+div.className='option'+(i===0?' selected':'');
+div.dataset.value=f.n;
+div.innerHTML=`<div class="option-title" style="font-family:'${f.n}',sans-serif">${f.n}</div><div class="option-desc">${f.d}</div>`;
+div.onclick=()=>selectOption(div,'font');
+document.getElementById('fontGrid').appendChild(div);
+});
+[1,2,3].forEach(n=>initHSV(n));
+updateProgress();
+updateTypoPreview();
+updateSpacingPreview();
+updateWidthPreview();
+updateCompPreview();
+bindSliders();
+}
+
+function initHSV(n){
+const canvas=document.getElementById('hsvCanvas'+n);
+const hueCanvas=document.getElementById('hueSlider'+n);
+const ctx=canvas.getContext('2d');
+const hctx=hueCanvas.getContext('2d');
+
+// Fix: Canvas-Größe zuverlässig setzen
+const canvasWidth=280;
+const canvasHeight=200;
+canvas.width=canvasWidth;
+canvas.height=canvasHeight;
+hueCanvas.width=canvasWidth;
+hueCanvas.height=24;
+
+// State aus pickerState laden
+let h=pickerState[n].h;
+let s=pickerState[n].s;
+let v=pickerState[n].v;
+let isDragging=false;
+
+function drawHueSlider(){
+const grad=hctx.createLinearGradient(0,0,hueCanvas.width,0);
+grad.addColorStop(0,'red');grad.addColorStop(0.17,'yellow');grad.addColorStop(0.33,'lime');
+grad.addColorStop(0.5,'cyan');grad.addColorStop(0.67,'blue');grad.addColorStop(0.83,'magenta');grad.addColorStop(1,'red');
+hctx.fillStyle=grad;
+hctx.fillRect(0,0,hueCanvas.width,hueCanvas.height);
+// Hue-Indikator zeichnen
+const hueX=(h/360)*hueCanvas.width;
+hctx.strokeStyle='#fff';
+hctx.lineWidth=3;
+hctx.beginPath();
+hctx.moveTo(hueX,0);
+hctx.lineTo(hueX,hueCanvas.height);
+hctx.stroke();
+hctx.strokeStyle='#000';
+hctx.lineWidth=1;
+hctx.stroke();
+}
+
+function drawSV(){
+// Sättigungs-Gradient (links weiß, rechts voll gesättigt)
+const grad=ctx.createLinearGradient(0,0,canvas.width,0);
+grad.addColorStop(0,'#fff');
+grad.addColorStop(1,`hsl(${h},100%,50%)`);
+ctx.fillStyle=grad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+// Helligkeits-Gradient (oben transparent, unten schwarz)
+const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
+vGrad.addColorStop(0,'transparent');
+vGrad.addColorStop(1,'#000');
+ctx.fillStyle=vGrad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+// Indikator-Kreis zeichnen
+const x=s*canvas.width;
+const y=(1-v)*canvas.height;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.strokeStyle='#fff';
+ctx.lineWidth=3;
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.strokeStyle='#000';
+ctx.lineWidth=1;
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(x,y,8,0,Math.PI*2);
+ctx.fillStyle='#fff';
+ctx.fill();
+}
+
+function updateAll(){
+drawSV();
+drawHueSlider();
+updateColor();
+}
+
+function updateColor(){
+const rgb=hsvToRgb(h,s*100,v*100);
+const hex=rgbToHex(rgb.r,rgb.g,rgb.b);
+const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+document.getElementById('hsvPreview'+n).style.background=hex;
+document.getElementById('hex'+n).textContent=hex;
+document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+setColor(n,hex);
+// State speichern
+pickerState[n]={h,s,v};
+// Zu recentColors hinzufügen
+addRecentColor(hex);
+}
+
+// Canvas Events
+canvas.addEventListener('mousedown',e=>{isDragging=true;handleSV(e)});
+canvas.addEventListener('mousemove',e=>{if(isDragging)handleSV(e)});
+canvas.addEventListener('mouseup',()=>isDragging=false);
+canvas.addEventListener('mouseleave',()=>isDragging=false);
+canvas.addEventListener('touchstart',e=>{isDragging=true;handleSV(e.touches[0])},{passive:true});
+canvas.addEventListener('touchmove',e=>{if(isDragging){e.preventDefault();handleSV(e.touches[0])}},{passive:false});
+canvas.addEventListener('touchend',()=>isDragging=false);
+
+// Hue-Slider Events
+hueCanvas.addEventListener('mousedown',e=>{isDragging=true;handleH(e)});
+hueCanvas.addEventListener('mousemove',e=>{if(isDragging)handleH(e)});
+hueCanvas.addEventListener('mouseup',()=>isDragging=false);
+hueCanvas.addEventListener('mouseleave',()=>isDragging=false);
+hueCanvas.addEventListener('click',handleH);
+hueCanvas.addEventListener('touchstart',e=>{isDragging=true;handleH(e.touches[0])},{passive:true});
+hueCanvas.addEventListener('touchmove',e=>{if(isDragging){e.preventDefault();handleH(e.touches[0])}},{passive:false});
+hueCanvas.addEventListener('touchend',()=>isDragging=false);
+
+function handleSV(e){
+const rect=canvas.getBoundingClientRect();
+s=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+v=Math.max(0,Math.min(1,1-(e.clientY-rect.top)/rect.height));
+updateAll();
+}
+
+function handleH(e){
+const rect=hueCanvas.getBoundingClientRect();
+h=Math.round(Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width))*360);
+updateAll();
+}
+
+// Initial zeichnen
+updateAll();
+}
+
+function hsvToRgb(h,s,v){
+s/=100;v/=100;
+const i=Math.floor(h/60),f=h/60-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+let r,g,b;
+switch(i%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q}
+return{r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255)};
+}
+
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function rgbToHsl(r,g,b){
+r/=255;g/=255;b/=255;
+const max=Math.max(r,g,b),min=Math.min(r,g,b);
+let h,s,l=(max+min)/2;
+if(max===min){h=s=0}else{
+const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+switch(max){case r:h=((g-b)/d+(g<b?6:0))*60;break;case g:h=((b-r)/d+2)*60;break;case b:h=((r-g)/d+4)*60}
+}
+return{h:Math.round(h),s:Math.round(s*100),l:Math.round(l*100)};
+}
+
+function selectPreset(n,color){
+setColor(n,color);
+document.getElementById('hsvPreview'+n).style.background=color;
+// HEX und HSL aktualisieren
+const rgb=hexToRgb(color);
+const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+document.getElementById('hex'+n).textContent=color;
+document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+// Zu recentColors hinzufügen
+addRecentColor(color);
+// Vordefinierte Palette deselektieren
+document.querySelectorAll('#palette'+n+' .color-circle').forEach(c=>c.classList.remove('selected'));
+}
+
+function hexToRgb(hex){
+const result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+return result?{
+r:parseInt(result[1],16),
+g:parseInt(result[2],16),
+b:parseInt(result[3],16)
+}:null;
+}
+
+function setColor(n,color){
+const key=n===1?'p':n===2?'s':'a';
+data.colors[key]=color;
+document.documentElement.style.setProperty('--'+key,color);
+updateColorPreviews();
+}
+
+function updateColorPreviews(){
+['p','s','a'].forEach(k=>{
+const el=document.getElementById('preview'+k.toUpperCase());
+if(el)el.style.background='var(--'+k+')';
+});
+// Live-Preview Container aktualisieren
+const previewSurface=document.querySelector('.preview-surface');
+if(previewSurface){
+previewSurface.style.background='var(--sf)';
+previewSurface.querySelector('[style*="color:var(--tp)"]').style.color='var(--tp)';
+previewSurface.querySelector('[style*="color:var(--ts)"]').style.color='var(--ts)';
+}
+}
+
+function selectOption(el,group){
+const parent=el.parentElement;
+parent.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+const val=el.dataset.value;
+if(group==='font'){data.typo.font=val;updateTypoPreview()}
+else if(group==='grid')data.layout.grid=val;
+else if(group==='btnRadius')data.comp.btnRadius=parseInt(val);
+else if(group==='cardRadius')data.comp.cardRadius=parseInt(val);
+else if(group==='cardShadow')data.comp.cardShadow=val;
+else if(group==='inputBorder')data.comp.inputBorder=val;
+else if(group==='style')data.mood.style=val;
+else if(group==='imageStyle')data.mood.imageStyle=val;
+else if(group==='hero')data.web.hero=val;
+else if(group==='priceTable')data.web.priceTable=val;
+else if(group==='webNav')data.web.nav=val;
+else if(group==='cta')data.web.cta=val;
+if(group==='btnRadius'||group==='cardRadius'||group==='cardShadow'||group==='inputBorder')updateCompPreview();
+}
+
+function toggleChip(el){
+el.classList.toggle('selected');
+const val=el.dataset.value;
+if(el.classList.contains('selected')){
+if(!data.web.trust.includes(val))data.web.trust.push(val);
+}else{
+data.web.trust=data.web.trust.filter(t=>t!==val);
+}
+}
+
+function bindSliders(){
+const binds=[
+['h1Size','h1Val','px',v=>{data.typo.h1=v;updateTypoPreview()}],
+['h2Size','h2Val','px',v=>{data.typo.h2=v;updateTypoPreview()}],
+['bodySize','bodyVal','px',v=>{data.typo.body=v;updateTypoPreview()}],
+['captionSize','captionVal','px',v=>{data.typo.caption=v;updateTypoPreview()}],
+['h1Weight','h1wVal','',v=>{data.typo.h1w=v;updateTypoPreview()}],
+['h2Weight','h2wVal','',v=>{data.typo.h2w=v;updateTypoPreview()}],
+['bodyWeight','bodywVal','',v=>{data.typo.bodyw=v;updateTypoPreview()}],
+['spacing','spacingVal','px',v=>{data.layout.spacing=v;updateSpacingPreview()}],
+['containerWidth','widthVal','px',v=>{data.layout.width=v;updateWidthPreview()}]
+];
+binds.forEach(([id,valId,unit,cb])=>{
+const el=document.getElementById(id);
+if(el)el.oninput=()=>{document.getElementById(valId).textContent=el.value+unit;cb(parseInt(el.value))};
+});
+['bgColor','sfColor','tpColor','tsColor','seColor','swColor','erColor'].forEach(id=>{
+const el=document.getElementById(id);
+if(el)el.oninput=()=>{
+const keyMap={bgColor:'bg',sfColor:'sf',tpColor:'tp',tsColor:'ts',seColor:'se',swColor:'sw',erColor:'er'};
+const k=keyMap[id];
+data.colors[k]=el.value;
+document.documentElement.style.setProperty('--'+k,el.value);
+updateColorPreviews();
+};
+});
+}
+
+function updateTypoPreview(){
+const d=document.getElementById('typoPreview');
+if(!d)return;
+d.innerHTML=`
+<h1 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h1}px;font-weight:${data.typo.h1w}">H1 Überschrift</h1>
+<h2 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h2}px;font-weight:${data.typo.h2w};margin-top:12px">H2 Überschrift</h2>
+<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.body}px;font-weight:${data.typo.bodyw};margin-top:12px">Body Text für normale Inhalte</p>
+<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.caption}px;color:var(--ts);margin-top:12px">Caption Text für kleine Beschriftungen</p>
+`;
+}
+
+function updateSpacingPreview(){
+const d=document.getElementById('spacingPreview');
+if(!d)return;
+const s=data.layout.spacing;
+d.innerHTML=`<div style="display:flex;gap:${s}px">
+<div style="flex:1;height:40px;background:var(--p);opacity:0.3;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);opacity:0.5;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);opacity:0.7;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);border-radius:4px"></div>
+</div>`;
+}
+
+function updateWidthPreview(){
+const d=document.getElementById('widthPreview');
+if(!d)return;
+const w=data.layout.width;
+d.innerHTML=`<div style="background:var(--sf);border:2px dashed var(--p);border-radius:8px;max-width:100%;padding:12px;text-align:center">
+<div style="background:var(--p);color:#fff;padding:8px;border-radius:4px;display:inline-block">${w}px Container</div>
+</div>`;
+}
+
+function updateCompPreview(){
+const d=document.getElementById('compPreview');
+if(!d)return;
+const br=data.comp.btnRadius;
+const cr=data.comp.cardRadius;
+const cs=data.comp.cardShadow;
+const ib=data.comp.inputBorder;
+let borderStyle='2px solid var(--ts)';
+if(ib==='dashed')borderStyle='2px dashed var(--ts)';
+else if(ib==='bottom')borderStyle='none;border-bottom:2px solid var(--ts)';
+else if(ib==='none')borderStyle='none';
+d.innerHTML=`
+<button style="background:var(--p);color:#fff;border:none;padding:12px 24px;border-radius:${br}px;cursor:pointer;font-size:14px">Button</button>
+<div style="background:var(--bg);padding:16px;border-radius:${cr}px;box-shadow:${cs};margin:16px 0">
+<div style="font-weight:600">Karte</div>
+<div style="font-size:12px;color:var(--ts)">Beispielinhalt</div>
+</div>
+<input type="text" placeholder="Input-Feld" style="width:100%;padding:12px;border:${borderStyle};border-radius:${br}px;font-size:14px;background:var(--bg)">
+`;
+}
+
+function goToSection(n){
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.getElementById('section'+n).classList.add('active');
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelector(`.tab[data-section="${n}"]`).classList.add('active');
+if(n===7)renderSummary();
+updateProgress();
+window.scrollTo(0,0);
+}
+
+function updateProgress(){
+let filled=0;
+for(let i=1;i<=6;i++)filled++;
+document.getElementById('progress').style.width=(filled/7*100)+'%';
+document.getElementById('progressText').textContent=filled+'/7';
+}
+
+function renderSummary(){
+const s=document.getElementById('summary');
+const trustLabels={testimonials:'Testimonials',logos:'Partner-Logos',stats:'Statistiken'};
+s.innerHTML=`
+<div class="summary-item"><div class="summary-label">Primärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.p};vertical-align:middle;margin-right:8px"></span>${data.colors.p}</div></div>
+<div class="summary-item"><div class="summary-label">Sekundärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.s};vertical-align:middle;margin-right:8px"></span>${data.colors.s}</div></div>
+<div class="summary-item"><div class="summary-label">Akzentfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.a};vertical-align:middle;margin-right:8px"></span>${data.colors.a}</div></div>
+<div class="summary-item"><div class="summary-label">Hintergrund</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.bg};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.bg}</div></div>
+<div class="summary-item"><div class="summary-label">Surface</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sf};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.sf}</div></div>
+<div class="summary-item"><div class="summary-label">Text (Primär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.tp};vertical-align:middle;margin-right:8px"></span>${data.colors.tp}</div></div>
+<div class="summary-item"><div class="summary-label">Text (Sekundär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.ts};vertical-align:middle;margin-right:8px"></span>${data.colors.ts}</div></div>
+<div class="summary-item"><div class="summary-label">Erfolg</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.se};vertical-align:middle;margin-right:8px"></span>${data.colors.se}</div></div>
+<div class="summary-item"><div class="summary-label">Warnung</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sw};vertical-align:middle;margin-right:8px"></span>${data.colors.sw}</div></div>
+<div class="summary-item"><div class="summary-label">Fehler</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.er};vertical-align:middle;margin-right:8px"></span>${data.colors.er}</div></div>
+<div class="summary-item"><div class="summary-label">Schriftart</div><div class="summary-value">${data.typo.font}</div></div>
+<div class="summary-item"><div class="summary-label">H1-Größe</div><div class="summary-value">${data.typo.h1}px</div></div>
+<div class="summary-item"><div class="summary-label">H2-Größe</div><div class="summary-value">${data.typo.h2}px</div></div>
+<div class="summary-item"><div class="summary-label">Body-Größe</div><div class="summary-value">${data.typo.body}px</div></div>
+<div class="summary-item"><div class="summary-label">Spacing</div><div class="summary-value">${data.layout.spacing}px</div></div>
+<div class="summary-item"><div class="summary-label">Container</div><div class="summary-value">${data.layout.width}px</div></div>
+<div class="summary-item"><div class="summary-label">Raster</div><div class="summary-value">${data.layout.grid}</div></div>
+<div class="summary-item"><div class="summary-label">Button-Radius</div><div class="summary-value">${data.comp.btnRadius}px</div></div>
+<div class="summary-item"><div class="summary-label">Card-Radius</div><div class="summary-value">${data.comp.cardRadius}px</div></div>
+<div class="summary-item"><div class="summary-label">Card-Shadow</div><div class="summary-value">${data.comp.cardShadow}</div></div>
+<div class="summary-item"><div class="summary-label">Input-Border</div><div class="summary-value">${data.comp.inputBorder}</div></div>
+<div class="summary-item"><div class="summary-label">Style</div><div class="summary-value">${data.mood.style}</div></div>
+<div class="summary-item"><div class="summary-label">Bild-Stil</div><div class="summary-value">${data.mood.imageStyle}</div></div>
+<div class="summary-item"><div class="summary-label">Hero</div><div class="summary-value">${data.web.hero}</div></div>
+<div class="summary-item"><div class="summary-label">Preis-Tabelle</div><div class="summary-value">${data.web.priceTable}</div></div>
+<div class="summary-item"><div class="summary-label">Navigation</div><div class="summary-value">${data.web.nav}</div></div>
+<div class="summary-item"><div class="summary-label">CTA</div><div class="summary-value">${data.web.cta}</div></div>
+<div class="summary-item"><div class="summary-label">Trust</div><div class="summary-value">${data.web.trust.map(t=>trustLabels[t]||t).join(', ')}</div></div>
+`;
+}
+
+function downloadJSON(){
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;
+a.download='design-auswahl-coaching-plattform-2026-04-07.json';
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function copyJSON(){
+navigator.clipboard.writeText(JSON.stringify(data,null,2));
+alert('JSON kopiert!');
+}
+
+document.querySelectorAll('.tab').forEach(t=>{
+t.onclick=()=>goToSection(parseInt(t.dataset.section));
+});
+
+init();
 </script>
 </body>
 </html>

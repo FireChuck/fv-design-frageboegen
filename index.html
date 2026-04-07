@@ -1,2246 +1,1120 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design-Auswahl: Mitarbeiter-App — Just More Fitness</title>
-    <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Default Theme - wird durch User-Input überschrieben */
-            --primary: #E91E63;
-            --secondary: #2196F3;
-            --accent: #FF9800;
-            --bg: #FAFAFA;
-            --surface: #FFFFFF;
-            --text-primary: #212121;
-            --text-secondary: #757575;
-            --success: #4CAF50;
-            --warning: #FFC107;
-            --error: #F44336;
-            --border: #E0E0E0;
-            
-            /* Layout */
-            --radius: 12px;
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            color: var(--text-primary);
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .header .company {
-            font-size: 14px;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        /* ===== PROGRESS BAR ===== */
-        .progress-container {
-            background: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .progress-bar {
-            height: 8px;
-            background: #E0E0E0;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #E91E63, #9C27B0);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-
-        .progress-text {
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        /* ===== NAVIGATION TABS ===== */
-        .nav-tabs {
-            display: flex;
-            overflow-x: auto;
-            background: white;
-            padding: 10px;
-            gap: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .nav-tab {
-            flex: 0 0 auto;
-            padding: 10px 16px;
-            border: 2px solid #E0E0E0;
-            border-radius: 25px;
-            background: white;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .nav-tab:hover {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .nav-tab.active {
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            color: white;
-            border-color: transparent;
-        }
-
-        .nav-tab .check {
-            display: none;
-            margin-left: 5px;
-        }
-
-        .nav-tab.completed .check {
-            display: inline;
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-            padding-bottom: 100px;
-        }
-
-        .section {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #212121;
-        }
-
-        .section-desc {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        /* ===== QUESTION CARD ===== */
-        .question-card {
-            background: #F8F9FA;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .question-card:hover {
-            border-color: #E0E0E0;
-        }
-
-        .question-card.completed {
-            border-color: #4CAF50;
-            background: #F1F8E9;
-        }
-
-        .question-label {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .question-label .required {
-            color: #F44336;
-        }
-
-        /* ===== COLOR PICKER ===== */
-        .color-picker-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .color-picker-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid #E0E0E0;
-        }
-
-        .color-picker-row input[type="color"] {
-            width: 50px;
-            height: 50px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        .color-picker-row input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        .color-picker-row input[type="color"]::-webkit-color-swatch {
-            border: 2px solid #E0E0E0;
-            border-radius: 6px;
-        }
-
-        .color-info {
-            flex: 1;
-        }
-
-        .color-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .color-hex {
-            font-size: 12px;
-            color: #666;
-            font-family: 'Courier New', monospace;
-        }
-
-        .color-preview-card {
-            width: 100%;
-            height: 60px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        /* ===== TYPOGRAPHY ===== */
-        .font-selector {
-            display: grid;
-            gap: 10px;
-        }
-
-        .font-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .font-option:hover {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .font-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-            box-shadow: 0 2px 10px rgba(233, 30, 99, 0.2);
-        }
-
-        .font-option input {
-            display: none;
-        }
-
-        .font-radio {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #999;
-            border-radius: 50%;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .font-option.selected .font-radio {
-            border-color: #E91E63;
-            background: #E91E63;
-        }
-
-        .font-option.selected .font-radio::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-        }
-
-        .font-preview {
-            flex: 1;
-        }
-
-        .font-name {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .font-sample {
-            font-size: 18px;
-            color: #333;
-        }
-
-        /* Typography Size Controls */
-        .type-control {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #E0E0E0;
-        }
-
-        .type-control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .type-control-label {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .type-control-values {
-            display: flex;
-            gap: 10px;
-        }
-
-        .type-value {
-            font-size: 12px;
-            padding: 4px 10px;
-            background: #F0F0F0;
-            border-radius: 12px;
-            font-weight: 600;
-            color: #666;
-        }
-
-        .slider-container {
-            position: relative;
-        }
-
-        .slider-container input[type="range"] {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #E0E0E0;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider-container input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
-        }
-
-        .type-preview {
-            margin-top: 12px;
-            padding: 15px;
-            background: #F8F9FA;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        /* ===== SPACING & LAYOUT ===== */
-        .spacing-options {
-            display: grid;
-            gap: 15px;
-        }
-
-        .spacing-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .spacing-option:hover {
-            border-color: #E91E63;
-        }
-
-        .spacing-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .spacing-option input {
-            display: none;
-        }
-
-        .spacing-preview {
-            width: 80px;
-            height: 60px;
-            background: #F0F0F0;
-            border-radius: 8px;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .spacing-boxes {
-            display: flex;
-            gap: var(--spacing-gap, 8px);
-        }
-
-        .spacing-box {
-            width: 20px;
-            height: 30px;
-            background: #9C27B0;
-            border-radius: 4px;
-        }
-
-        .spacing-info {
-            flex: 1;
-        }
-
-        .spacing-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .spacing-desc {
-            font-size: 12px;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        /* ===== COMPONENTS - Border Radius ===== */
-        .radius-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 12px;
-        }
-
-        .radius-option {
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .radius-option:hover {
-            border-color: #E91E63;
-        }
-
-        .radius-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .radius-option input {
-            display: none;
-        }
-
-        .radius-preview {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            margin: 0 auto 10px;
-        }
-
-        .radius-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        /* ===== SHADOW SELECTOR ===== */
-        .shadow-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px;
-        }
-
-        .shadow-option {
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 10px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .shadow-option:hover {
-            border-color: #E91E63;
-        }
-
-        .shadow-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .shadow-option input {
-            display: none;
-        }
-
-        .shadow-preview {
-            width: 80px;
-            height: 80px;
-            background: white;
-            margin: 0 auto 12px;
-            border-radius: 8px;
-        }
-
-        .shadow-none { box-shadow: none; }
-        .shadow-subtle { box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        .shadow-medium { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-        .shadow-strong { box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
-
-        .shadow-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        /* ===== STYLE SELECTOR ===== */
-        .style-selector {
-            display: grid;
-            gap: 12px;
-        }
-
-        .style-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .style-option:hover {
-            border-color: #E91E63;
-        }
-
-        .style-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .style-option input {
-            display: none;
-        }
-
-        .style-preview {
-            width: 100px;
-            height: 70px;
-            border-radius: 8px;
-            margin-right: 15px;
-            overflow: hidden;
-        }
-
-        .style-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .style-desc {
-            font-size: 12px;
-            color: #666;
-            margin-top: 3px;
-        }
-
-        /* ===== NAVIGATION PREVIEW ===== */
-        .nav-preview-selector {
-            display: grid;
-            gap: 15px;
-        }
-
-        .nav-preview-option {
-            background: white;
-            border: 2px solid #E0E0E0;
-            border-radius: 12px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-preview-option:hover {
-            border-color: #E91E63;
-        }
-
-        .nav-preview-option.selected {
-            border-color: #E91E63;
-            background: #FCE4EC;
-        }
-
-        .nav-preview-option input {
-            display: none;
-        }
-
-        .nav-mockup {
-            background: #F5F5F5;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 12px;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .nav-mockup-bottom {
-            flex-direction: column-reverse;
-        }
-
-        .nav-mockup-top {
-            flex-direction: column;
-        }
-
-        .mockup-bar {
-            height: 40px;
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .mockup-bar-side {
-            width: 50px;
-            height: 100%;
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .mockup-icon {
-            width: 20px;
-            height: 20px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 4px;
-        }
-
-        .mockup-content {
-            flex: 1;
-            background: white;
-            border-radius: 6px;
-            margin: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mockup-content-inner {
-            width: 60%;
-            height: 60%;
-            background: #F0F0F0;
-            border-radius: 4px;
-        }
-
-        .nav-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            text-align: center;
-        }
-
-        /* ===== BUTTON NAVIGATION ===== */
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #F0F0F0;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary {
-            background: #F0F0F0;
-            color: #666;
-        }
-
-        .btn-secondary:hover {
-            background: #E0E0E0;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #E91E63, #9C27B0);
-            color: white;
-            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-
-        /* ===== SUMMARY SECTION ===== */
-        .summary-section {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .summary-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .summary-header h2 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #212121;
-            margin-bottom: 8px;
-        }
-
-        .summary-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .summary-grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .summary-category {
-            background: #F8F9FA;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .summary-category-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #E91E63;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #E0E0E0;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #E0E0E0;
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-
-        .summary-label {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .summary-value {
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .color-swatch {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            border: 2px solid #E0E0E0;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 600px) {
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .section {
-                padding: 20px;
-            }
-
-            .nav-tabs {
-                padding: 8px;
-            }
-
-            .nav-tab {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-
-            .radius-selector {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .shadow-selector {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 900px) {
-            .main-content {
-                display: grid;
-                grid-template-columns: 250px 1fr;
-                gap: 20px;
-                max-width: 1100px;
-            }
-
-            .nav-tabs {
-                flex-direction: column;
-                position: sticky;
-                top: 130px;
-                height: fit-content;
-                background: white;
-                border-radius: 16px;
-                padding: 15px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            }
-
-            .nav-tab {
-                width: 100%;
-            }
-
-            .section-wrapper {
-                max-width: 600px;
-            }
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .completed-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #4CAF50;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            animation: pulse 2s infinite;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design-Fragebogen: Mitarbeiter-App</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#2196F3;--s:#4CAF50;--a:#FF9800;--bg:#FFFFFF;--sf:#F5F5F5;--tp:#212121;--ts:#757575;--se:#4CAF50;--sw:#FF9800;--er:#F44336;--ff:'Inter',sans-serif}
+body{font-family:var(--ff);background:var(--bg);color:var(--tp);padding:0;min-height:100vh}
+header{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--sf);z-index:100;padding:16px}
+.header-content{display:flex;align-items:center;justify-content:space-between;gap:16px}
+h1{font-size:20px;font-weight:600;flex-shrink:0}
+.progress-bar{flex:1;height:8px;background:var(--sf);border-radius:4px;overflow:hidden;max-width:400px}
+.progress-fill{height:100%;background:var(--p);transition:width .3s;width:0%}
+.progress-text{font-size:12px;color:var(--ts);white-space:nowrap}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:var(--sf)}
+.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s;border:2px solid transparent;background:var(--bg)}
+.tab.active{background:var(--p);color:#fff}
+.tab:hover:not(.active){border-color:var(--p)}
+main{padding:16px;max-width:1200px;margin:0 auto}
+section{display:none;animation:fadeIn .3s}
+section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--sf);border-radius:12px;padding:20px;margin-bottom:16px}
+.card h2{font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p{color:var(--ts);font-size:14px;margin-bottom:16px}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+.desc{font-size:12px;color:var(--ts);margin-bottom:8px}
+.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.option{padding:16px;border:2px solid var(--sf);border-radius:8px;cursor:pointer;transition:.2s;text-align:center;background:var(--bg)}
+.option:hover{border-color:var(--p)}
+.option.selected{border-color:var(--p);background:rgba(33,150,243,0.1)}
+.option-title{font-weight:500;margin-bottom:4px}
+.option-desc{font-size:11px;color:var(--ts)}
+.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.color-circle{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.2s;position:relative}
+.color-circle:hover{transform:scale(1.1)}
+.color-circle.selected{border-color:var(--tp)}
+.color-circle.recent::after{content:'⏱';position:absolute;top:-4px;right:-4px;font-size:10px}
+.color-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.color-preview{width:48px;height:48px;border-radius:8px;border:2px solid var(--sf)}
+.hsv-picker{display:flex;gap:16px;flex-wrap:wrap}
+.hsv-main{flex:1;min-width:250px}
+.hsv-canvas{width:100%;height:200px;border-radius:8px;cursor:crosshair}
+.hue-slider{width:100%;height:24px;border-radius:12px;margin-top:8px;cursor:pointer}
+.hsv-info{min-width:120px}
+.hsv-preview{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:2px solid var(--sf)}
+.hsv-values{text-align:center;font-size:12px;font-family:monospace}
+.slider-container{margin-bottom:16px}
+.slider{width:100%;height:6px;-webkit-appearance:none;background:var(--sf);border-radius:3px;outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--p);cursor:pointer}
+.slider-value{float:right;font-weight:600}
+.live-preview{background:var(--bg);border:2px dashed var(--sf);border-radius:12px;padding:20px;margin-top:16px}
+.live-preview h3{font-size:14px;color:var(--ts);margin-bottom:12px}
+.preview-colors{display:flex;gap:12px;margin-bottom:12px}
+.preview-tile{flex:1;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.preview-surface{background:var(--sf);padding:16px;border-radius:8px;margin-bottom:12px}
+.status-badges{display:flex;gap:8px}
+.badge{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:500}
+.btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.2s}
+.btn-primary{background:var(--p);color:#fff}
+.btn-primary:hover{filter:brightness(1.1)}
+.btn-secondary{background:var(--sf);color:var(--tp)}
+.btn-next{margin-top:16px;float:right}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.summary-item{background:var(--bg);padding:12px;border-radius:8px}
+.summary-label{font-size:12px;color:var(--ts);margin-bottom:4px}
+.summary-value{font-weight:600}
+.download-btn{background:#4CAF50;color:#fff;padding:16px 32px;font-size:16px;width:100%;margin-top:16px}
+.copy-btn{background:var(--sf);color:var(--tp);padding:12px 24px;margin-top:8px;width:100%}
+@media(max-width:600px){.tabs{padding:8px}.tab{padding:8px 12px;font-size:12px}.card{padding:16px}.option-grid{grid-template-columns:repeat(2,1fr)}.color-grid{grid-template-columns:repeat(5,1fr);gap:6px}}
+</style>
 </head>
 <body>
-
-    <!-- HEADER -->
-    <div class="header">
-        <h1>Design-Auswahl: Mitarbeiter-App</h1>
-        <div class="company">Just More Fitness</div>
-    </div>
-
-    <!-- PROGRESS -->
-    <div class="progress-container">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-        </div>
-        <div class="progress-text" id="progressText">0 von 6 Sektionen ausgefüllt</div>
-    </div>
-
-    <!-- NAVIGATION TABS -->
-    <div class="nav-tabs" id="navTabs">
-        <button class="nav-tab active" data-section="1">
-            🎨 Farben
-            <span class="check">✓</span>
-        </button>
-        <button class="nav-tab" data-section="2">
-            📝 Typografie
-            <span class="check">✓</span>
-        </button>
-        <button class="nav-tab" data-section="3">
-            📐 Layout
-            <span class="check">✓</span>
-        </button>
-        <button class="nav-tab" data-section="4">
-            🔧 Komponenten
-            <span class="check">✓</span>
-        </button>
-        <button class="nav-tab" data-section="5">
-            ✨ Stil
-            <span class="check">✓</span>
-        </button>
-        <button class="nav-tab" data-section="6">
-            📱 App
-            <span class="check">✓</span>
-        </button>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <div class="section-wrapper">
-
-            <!-- SECTION 1: FARBEN -->
-            <div class="section active" id="section1">
-                <h2 class="section-title">🎨 Farben</h2>
-                <p class="section-desc">Wählen Sie das Farbschema für Ihre Mitarbeiter-App. Jede Farbe hat eine konkrete Funktion im Interface.</p>
-
-                <!-- Primärfarbe -->
-                <div class="question-card" id="q-primary">
-                    <div class="question-label">
-                        Primärfarbe <span class="required">*</span>
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="primaryColor" value="#E91E63" onchange="updateColor('primary', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Primärfarbe</div>
-                            <div class="color-hex" id="primaryHex">#E91E63</div>
-                        </div>
-                        <div class="color-preview-card" id="primaryPreview" style="background: #E91E63"></div>
-                    </div>
-                </div>
-
-                <!-- Sekundärfarbe -->
-                <div class="question-card" id="q-secondary">
-                    <div class="question-label">
-                        Sekundärfarbe <span class="required">*</span>
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="secondaryColor" value="#2196F3" onchange="updateColor('secondary', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Sekundärfarbe</div>
-                            <div class="color-hex" id="secondaryHex">#2196F3</div>
-                        </div>
-                        <div class="color-preview-card" id="secondaryPreview" style="background: #2196F3"></div>
-                    </div>
-                </div>
-
-                <!-- Akzentfarbe -->
-                <div class="question-card" id="q-accent">
-                    <div class="question-label">
-                        Akzentfarbe <span class="required">*</span>
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="accentColor" value="#FF9800" onchange="updateColor('accent', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Akzentfarbe</div>
-                            <div class="color-hex" id="accentHex">#FF9800</div>
-                        </div>
-                        <div class="color-preview-card" id="accentPreview" style="background: #FF9800"></div>
-                    </div>
-                </div>
-
-                <!-- Hintergrund -->
-                <div class="question-card" id="q-background">
-                    <div class="question-label">
-                        Hintergrund <span class="required">*</span>
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="bgColor" value="#FAFAFA" onchange="updateColor('bg', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Hintergrund</div>
-                            <div class="color-hex" id="bgHex">#FAFAFA</div>
-                        </div>
-                        <div class="color-preview-card" id="bgPreview" style="background: #FAFAFA"></div>
-                    </div>
-                </div>
-
-                <!-- Surface -->
-                <div class="question-card" id="q-surface">
-                    <div class="question-label">
-                        Surface (Karten, Container)
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="surfaceColor" value="#FFFFFF" onchange="updateColor('surface', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Surface</div>
-                            <div class="color-hex" id="surfaceHex">#FFFFFF</div>
-                        </div>
-                        <div class="color-preview-card" id="surfacePreview" style="background: #FFFFFF; border: 2px solid #E0E0E0"></div>
-                    </div>
-                </div>
-
-                <!-- Text Primär -->
-                <div class="question-card" id="q-textPrimary">
-                    <div class="question-label">
-                        Text-Primär
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="textPrimaryColor" value="#212121" onchange="updateColor('textPrimary', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Text-Primär</div>
-                            <div class="color-hex" id="textPrimaryHex">#212121</div>
-                        </div>
-                        <div class="color-preview-card" id="textPrimaryPreview" style="background: #212121; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">Aa</div>
-                    </div>
-                </div>
-
-                <!-- Text Sekundär -->
-                <div class="question-card" id="q-textSecondary">
-                    <div class="question-label">
-                        Text-Sekundär
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="textSecondaryColor" value="#757575" onchange="updateColor('textSecondary', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Text-Sekundär</div>
-                            <div class="color-hex" id="textSecondaryHex">#757575</div>
-                        </div>
-                        <div class="color-preview-card" id="textSecondaryPreview" style="background: #757575; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 600;">Aa</div>
-                    </div>
-                </div>
-
-                <!-- Success -->
-                <div class="question-card" id="q-success">
-                    <div class="question-label">
-                        Success (Erfolg)
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="successColor" value="#4CAF50" onchange="updateColor('success', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Success</div>
-                            <div class="color-hex" id="successHex">#4CAF50</div>
-                        </div>
-                        <div class="color-preview-card" id="successPreview" style="background: #4CAF50; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">✓</div>
-                    </div>
-                </div>
-
-                <!-- Warning -->
-                <div class="question-card" id="q-warning">
-                    <div class="question-label">
-                        Warning (Warnung)
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="warningColor" value="#FFC107" onchange="updateColor('warning', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Warning</div>
-                            <div class="color-hex" id="warningHex">#FFC107</div>
-                        </div>
-                        <div class="color-preview-card" id="warningPreview" style="background: #FFC107; display: flex; align-items: center; justify-content: center; color: #333; font-size: 18px;">⚠</div>
-                    </div>
-                </div>
-
-                <!-- Error -->
-                <div class="question-card" id="q-error">
-                    <div class="question-label">
-                        Error (Fehler)
-                    </div>
-                    <div class="color-picker-row">
-                        <input type="color" id="errorColor" value="#F44336" onchange="updateColor('error', this.value)">
-                        <div class="color-info">
-                            <div class="color-name">Error</div>
-                            <div class="color-hex" id="errorHex">#F44336</div>
-                        </div>
-                        <div class="color-preview-card" id="errorPreview" style="background: #F44336; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">✗</div>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-primary" onclick="nextSection(1)">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- SECTION 2: TYPOGRAFIE -->
-            <div class="section" id="section2">
-                <h2 class="section-title">📝 Typografie</h2>
-                <p class="section-desc">Wählen Sie die Schriftarten und Größen für Ihre App. Die Vorschau zeigt, wie der Text aussehen wird.</p>
-
-                <!-- Schriftart -->
-                <div class="question-card" id="q-font">
-                    <div class="question-label">
-                        Schriftart <span class="required">*</span>
-                    </div>
-                    <div class="font-selector">
-                        <label class="font-option selected" onclick="selectFont(this, 'Inter')">
-                            <input type="radio" name="font" value="Inter" checked>
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Inter</div>
-                                <div class="font-sample" style="font-family: 'Inter', sans-serif;">Modern & Clean</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Poppins')">
-                            <input type="radio" name="font" value="Poppins">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Poppins</div>
-                                <div class="font-sample" style="font-family: 'Poppins', sans-serif;">Rund & Freundlich</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Roboto')">
-                            <input type="radio" name="font" value="Roboto">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Roboto</div>
-                                <div class="font-sample" style="font-family: 'Roboto', sans-serif;">Google Standard</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Open Sans')">
-                            <input type="radio" name="font" value="Open Sans">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Open Sans</div>
-                                <div class="font-sample" style="font-family: 'Open Sans', sans-serif;">Neutral & Lesbar</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Montserrat')">
-                            <input type="radio" name="font" value="Montserrat">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Montserrat</div>
-                                <div class="font-sample" style="font-family: 'Montserrat', sans-serif;">Geometrisch & Modern</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Lato')">
-                            <input type="radio" name="font" value="Lato">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Lato</div>
-                                <div class="font-sample" style="font-family: 'Lato', sans-serif;">Elegant & Serious</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Nunito')">
-                            <input type="radio" name="font" value="Nunito">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Nunito</div>
-                                <div class="font-sample" style="font-family: 'Nunito', sans-serif;">Weich & Ansprechend</div>
-                            </div>
-                        </label>
-                        <label class="font-option" onclick="selectFont(this, 'Work Sans')">
-                            <input type="radio" name="font" value="Work Sans">
-                            <div class="font-radio"></div>
-                            <div class="font-preview">
-                                <div class="font-name">Work Sans</div>
-                                <div class="font-sample" style="font-family: 'Work Sans', sans-serif;">Minimalistisch</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- H1 -->
-                <div class="type-control">
-                    <div class="type-control-header">
-                        <span class="type-control-label">H1 - Hauptüberschrift</span>
-                        <div class="type-control-values">
-                            <span class="type-value" id="h1Size">28px</span>
-                            <span class="type-value" id="h1Weight">Bold</span>
-                        </div>
-                    </div>
-                    <div class="slider-container">
-                        <label>Größe: <input type="range" min="24" max="40" value="28" onchange="updateTypeSize('h1', this.value)"></label>
-                        <br><br>
-                        <label>Schriftstärke: 
-                            <select onchange="updateTypeWeight('h1', this.value)">
-                                <option value="600">Semi-Bold</option>
-                                <option value="700" selected>Bold</option>
-                                <option value="800">Extra-Bold</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="type-preview">
-                        <div id="h1Preview" style="font-size: 28px; font-weight: 700;">Willkommen bei Just More Fitness</div>
-                    </div>
-                </div>
-
-                <!-- H2 -->
-                <div class="type-control">
-                    <div class="type-control-header">
-                        <span class="type-control-label">H2 - Unterüberschrift</span>
-                        <div class="type-control-values">
-                            <span class="type-value" id="h2Size">22px</span>
-                            <span class="type-value" id="h2Weight">Semi-Bold</span>
-                        </div>
-                    </div>
-                    <div class="slider-container">
-                        <label>Größe: <input type="range" min="18" max="28" value="22" onchange="updateTypeSize('h2', this.value)"></label>
-                        <br><br>
-                        <label>Schriftstärke: 
-                            <select onchange="updateTypeWeight('h2', this.value)">
-                                <option value="500">Medium</option>
-                                <option value="600" selected>Semi-Bold</option>
-                                <option value="700">Bold</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="type-preview">
-                        <div id="h2Preview" style="font-size: 22px; font-weight: 600;">Ihre Schichtübersicht</div>
-                    </div>
-                </div>
-
-                <!-- Body -->
-                <div class="type-control">
-                    <div class="type-control-header">
-                        <span class="type-control-label">Body - Fließtext</span>
-                        <div class="type-control-values">
-                            <span class="type-value" id="bodySize">15px</span>
-                            <span class="type-value" id="bodyWeight">Regular</span>
-                        </div>
-                    </div>
-                    <div class="slider-container">
-                        <label>Größe: <input type="range" min="13" max="18" value="15" onchange="updateTypeSize('body', this.value)"></label>
-                        <br><br>
-                        <label>Schriftstärke: 
-                            <select onchange="updateTypeWeight('body', this.value)">
-                                <option value="400" selected>Regular</option>
-                                <option value="500">Medium</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="type-preview">
-                        <div id="bodyPreview" style="font-size: 15px; font-weight: 400;">Dies ist ein Beispiel für den Fließtext in Ihrer App. Hier stehen wichtige Informationen.</div>
-                    </div>
-                </div>
-
-                <!-- Caption -->
-                <div class="type-control">
-                    <div class="type-control-header">
-                        <span class="type-control-label">Caption - Beschriftungen</span>
-                        <div class="type-control-values">
-                            <span class="type-value" id="captionSize">12px</span>
-                            <span class="type-value" id="captionWeight">Medium</span>
-                        </div>
-                    </div>
-                    <div class="slider-container">
-                        <label>Größe: <input type="range" min="10" max="14" value="12" onchange="updateTypeSize('caption', this.value)"></label>
-                        <br><br>
-                        <label>Schriftstärke: 
-                            <select onchange="updateTypeWeight('caption', this.value)">
-                                <option value="400">Regular</option>
-                                <option value="500" selected>Medium</option>
-                                <option value="600">Semi-Bold</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div class="type-preview">
-                        <div id="captionPreview" style="font-size: 12px; font-weight: 500;">Letzte Aktualisierung: Heute, 14:32 Uhr</div>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-secondary" onclick="prevSection(2)">← Zurück</button>
-                    <button class="btn btn-primary" onclick="nextSection(2)">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- SECTION 3: SPACING & LAYOUT -->
-            <div class="section" id="section3">
-                <h2 class="section-title">📐 Spacing & Layout</h2>
-                <p class="section-desc">Definieren Sie die Basis-Abstände und das Raster-System für Ihre App.</p>
-
-                <!-- Basis-Unit -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Basis-Unit (Spacing) <span class="required">*</span>
-                    </div>
-                    <div class="spacing-options">
-                        <label class="spacing-option selected" onclick="selectSpacing(this, 4)">
-                            <input type="radio" name="spacing" value="4" checked>
-                            <div class="spacing-preview">
-                                <div class="spacing-boxes" style="--spacing-gap: 4px;">
-                                    <div class="spacing-box"></div>
-                                    <div class="spacing-box"></div>
-                                </div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="spacing-name">4px Basis</div>
-                                <div class="spacing-desc">Feineres Raster, mehr Details</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectSpacing(this, 8)">
-                            <input type="radio" name="spacing" value="8">
-                            <div class="spacing-preview">
-                                <div class="spacing-boxes" style="--spacing-gap: 8px;">
-                                    <div class="spacing-box"></div>
-                                    <div class="spacing-box"></div>
-                                </div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="spacing-name">8px Basis</div>
-                                <div class="spacing-desc">Material Design Standard</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Container-Breite -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Container-Breite (Desktop)
-                    </div>
-                    <div class="spacing-options">
-                        <label class="spacing-option" onclick="selectContainer(this, 1200)">
-                            <input type="radio" name="container" value="1200">
-                            <div class="spacing-info">
-                                <div class="spacing-name">1200px</div>
-                                <div class="spacing-desc">Breiter Container, viel Platz</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option selected" onclick="selectContainer(this, 1024)">
-                            <input type="radio" name="container" value="1024" checked>
-                            <div class="spacing-info">
-                                <div class="spacing-name">1024px</div>
-                                <div class="spacing-desc">Standard-Breite</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectContainer(this, 960)">
-                            <input type="radio" name="container" value="960">
-                            <div class="spacing-info">
-                                <div class="spacing-name">960px</div>
-                                <div class="spacing-desc">Kompakter Container</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Raster-System -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Raster-System
-                    </div>
-                    <div class="spacing-options">
-                        <label class="spacing-option selected" onclick="selectGrid(this, '12-col')">
-                            <input type="radio" name="grid" value="12-col" checked>
-                            <div class="spacing-info">
-                                <div class="spacing-name">12-Spalten</div>
-                                <div class="spacing-desc">Flexibel, Standard für Web</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectGrid(this, '8-col')">
-                            <input type="radio" name="grid" value="8-col">
-                            <div class="spacing-info">
-                                <div class="spacing-name">8-Spalten</div>
-                                <div class="spacing-desc">Einfacher, weniger Optionen</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectGrid(this, 'fluid')">
-                            <input type="radio" name="grid" value="fluid">
-                            <div class="spacing-info">
-                                <div class="spacing-name">Fluid / Kein Raster</div>
-                                <div class="spacing-desc">Flexibles Layout ohne feste Spalten</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-secondary" onclick="prevSection(3)">← Zurück</button>
-                    <button class="btn btn-primary" onclick="nextSection(3)">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- SECTION 4: KOMPONENTEN -->
-            <div class="section" id="section4">
-                <h2 class="section-title">🔧 Komponenten</h2>
-                <p class="section-desc">Passen Sie das Aussehen der UI-Komponenten an. Alle Änderungen sind sofort in der Vorschau sichtbar.</p>
-
-                <!-- Button Border Radius -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Button Border-Radius <span class="required">*</span>
-                    </div>
-                    <div class="radius-selector">
-                        <label class="radius-option" onclick="selectButtonRadius(this, 0)">
-                            <input type="radio" name="buttonRadius" value="0">
-                            <div class="radius-preview" style="border-radius: 0px;"></div>
-                            <div class="radius-name">Eckig (0px)</div>
-                        </label>
-                        <label class="radius-option" onclick="selectButtonRadius(this, 8)">
-                            <input type="radio" name="buttonRadius" value="8">
-                            <div class="radius-preview" style="border-radius: 8px;"></div>
-                            <div class="radius-name">Leicht (8px)</div>
-                        </label>
-                        <label class="radius-option selected" onclick="selectButtonRadius(this, 12)">
-                            <input type="radio" name="buttonRadius" value="12" checked>
-                            <div class="radius-preview" style="border-radius: 12px;"></div>
-                            <div class="radius-name">Rund (12px)</div>
-                        </label>
-                        <label class="radius-option" onclick="selectButtonRadius(this, 24)">
-                            <input type="radio" name="buttonRadius" value="24">
-                            <div class="radius-preview" style="border-radius: 24px;"></div>
-                            <div class="radius-name">Pill (24px)</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Card Border Radius -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Card Border-Radius <span class="required">*</span>
-                    </div>
-                    <div class="radius-selector">
-                        <label class="radius-option" onclick="selectCardRadius(this, 0)">
-                            <input type="radio" name="cardRadius" value="0">
-                            <div class="radius-preview" style="border-radius: 0px;"></div>
-                            <div class="radius-name">Eckig (0px)</div>
-                        </label>
-                        <label class="radius-option" onclick="selectCardRadius(this, 8)">
-                            <input type="radio" name="cardRadius" value="8">
-                            <div class="radius-preview" style="border-radius: 8px;"></div>
-                            <div class="radius-name">Leicht (8px)</div>
-                        </label>
-                        <label class="radius-option selected" onclick="selectCardRadius(this, 16)">
-                            <input type="radio" name="cardRadius" value="16" checked>
-                            <div class="radius-preview" style="border-radius: 16px;"></div>
-                            <div class="radius-name">Rund (16px)</div>
-                        </label>
-                        <label class="radius-option" onclick="selectCardRadius(this, 24)">
-                            <input type="radio" name="cardRadius" value="24">
-                            <div class="radius-preview" style="border-radius: 24px;"></div>
-                            <div class="radius-name">Stark (24px)</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Card Shadow -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Card Shadow <span class="required">*</span>
-                    </div>
-                    <div class="shadow-selector">
-                        <label class="shadow-option" onclick="selectCardShadow(this, 'none')">
-                            <input type="radio" name="cardShadow" value="none">
-                            <div class="shadow-preview shadow-none"></div>
-                            <div class="shadow-name">Kein Shadow</div>
-                        </label>
-                        <label class="shadow-option" onclick="selectCardShadow(this, 'subtle')">
-                            <input type="radio" name="cardShadow" value="subtle">
-                            <div class="shadow-preview shadow-subtle"></div>
-                            <div class="shadow-name">Subtil</div>
-                        </label>
-                        <label class="shadow-option selected" onclick="selectCardShadow(this, 'medium')">
-                            <input type="radio" name="cardShadow" value="medium" checked>
-                            <div class="shadow-preview shadow-medium"></div>
-                            <div class="shadow-name">Medium</div>
-                        </label>
-                        <label class="shadow-option" onclick="selectCardShadow(this, 'strong')">
-                            <input type="radio" name="cardShadow" value="strong">
-                            <div class="shadow-preview shadow-strong"></div>
-                            <div class="shadow-name">Stark</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Input Border Style -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Input Border Style <span class="required">*</span>
-                    </div>
-                    <div class="spacing-options">
-                        <label class="spacing-option selected" onclick="selectInputStyle(this, 'outline')">
-                            <input type="radio" name="inputStyle" value="outline" checked>
-                            <div class="spacing-info">
-                                <div class="spacing-name">Outline (Rand)</div>
-                                <div class="spacing-desc">Klassischer Input mit sichtbarem Rand</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectInputStyle(this, 'filled')">
-                            <input type="radio" name="inputStyle" value="filled">
-                            <div class="spacing-info">
-                                <div class="spacing-name">Filled (Gefüllt)</div>
-                                <div class="spacing-desc">Hintergrund gefärbt, kein Rand</div>
-                            </div>
-                        </label>
-                        <label class="spacing-option" onclick="selectInputStyle(this, 'underline')">
-                            <input type="radio" name="inputStyle" value="underline">
-                            <div class="spacing-info">
-                                <div class="spacing-name">Underline (Unterstrichen)</div>
-                                <div class="spacing-desc">Nur untere Linie, minimalistisch</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-secondary" onclick="prevSection(4)">← Zurück</button>
-                    <button class="btn btn-primary" onclick="nextSection(4)">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- SECTION 5: DESIGN-STIMMUNG -->
-            <div class="section" id="section5">
-                <h2 class="section-title">✨ Design-Stimmung</h2>
-                <p class="section-desc">Wählen Sie den allgemeinen Stil und die Art der visuellen Elemente.</p>
-
-                <!-- Overall Style -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Overall Style <span class="required">*</span>
-                    </div>
-                    <div class="style-selector">
-                        <label class="style-option selected" onclick="selectOverallStyle(this, 'minimal')">
-                            <input type="radio" name="overallStyle" value="minimal" checked>
-                            <div class="style-preview" style="background: linear-gradient(135deg, #f5f5f5, #e0e0e0); display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 60%; height: 2px; background: #333;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Minimalistisch</div>
-                                <div class="style-desc">Wenig Farben, viel Weißraum, clean</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectOverallStyle(this, 'modern')">
-                            <input type="radio" name="overallStyle" value="modern">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 30px; height: 30px; background: white; border-radius: 50%; opacity: 0.5;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Modern</div>
-                                <div class="style-desc">Gradienten, kräftige Farben, dynamisch</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectOverallStyle(this, 'corporate')">
-                            <input type="radio" name="overallStyle" value="corporate">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #1565C0, #0D47A1); display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 40px; height: 3px; background: white; opacity: 0.7;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Corporate</div>
-                                <div class="style-desc">Professionell, seriös, vertrauenswürdig</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectOverallStyle(this, 'playful')">
-                            <input type="radio" name="overallStyle" value="playful">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #FF6B6B, #FFE66D); display: flex; align-items: center; justify-content: center; gap: 5px;">
-                                <div style="width: 15px; height: 15px; background: white; border-radius: 50%; opacity: 0.6;"></div>
-                                <div style="width: 15px; height: 15px; background: white; border-radius: 4px; opacity: 0.6;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Playful</div>
-                                <div class="style-desc">Verspielt, fröhlich, junge Zielgruppe</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectOverallStyle(this, 'dark')">
-                            <input type="radio" name="overallStyle" value="dark">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #1a1a1a, #2d2d2d); display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 30px; height: 30px; background: #333; border-radius: 8px; border: 2px solid #444;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Dark Mode</div>
-                                <div class="style-desc">Dunkles Theme, akzentuierte Farben</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Bild-Stil -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Bild-Stil <span class="required">*</span>
-                    </div>
-                    <div class="style-selector">
-                        <label class="style-option selected" onclick="selectImageStyle(this, 'photography')">
-                            <input type="radio" name="imageStyle" value="photography" checked>
-                            <div class="style-preview" style="background: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%2270%22><rect fill=%22%23E91E63%22 width=%22100%22 height=%2270%22/><circle cx=%2250%22 cy=%2235%22 r=%2220%22 fill=%22%23fff%22 opacity=%220.3%22/></svg>'); background-size: cover;"></div>
-                            <div class="spacing-info">
-                                <div class="style-name">Fotografie</div>
-                                <div class="style-desc">Echte Fotos, authentisch, emotional</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectImageStyle(this, 'illustrations')">
-                            <input type="radio" name="imageStyle" value="illustrations">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #E91E63, #9C27B0); display: flex; align-items: center; justify-content: center;">
-                                <div style="font-size: 30px;">🎨</div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Illustrationen</div>
-                                <div class="style-desc">Gezeichnete Grafiken, einzigartig</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectImageStyle(this, 'icons')">
-                            <input type="radio" name="imageStyle" value="icons">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #2196F3, #03A9F4); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                <div style="font-size: 24px;">📊</div>
-                                <div style="font-size: 24px;">💪</div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Icons</div>
-                                <div class="style-desc">Symbol-basiert, klar, funktional</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectImageStyle(this, 'mixed')">
-                            <input type="radio" name="imageStyle" value="mixed">
-                            <div class="style-preview" style="background: linear-gradient(135deg, #FF9800, #FFC107); display: flex; align-items: center; justify-content: center; gap: 5px;">
-                                <div style="width: 25px; height: 25px; background: white; border-radius: 4px; opacity: 0.5;"></div>
-                                <div style="font-size: 20px;">📷</div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Gemischt</div>
-                                <div class="style-desc">Kombination aus allen Stilen</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-secondary" onclick="prevSection(5)">← Zurück</button>
-                    <button class="btn btn-primary" onclick="nextSection(5)">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- SECTION 6: APP-SPEZIFISCH -->
-            <div class="section" id="section6">
-                <h2 class="section-title">📱 App-Spezifisch</h2>
-                <p class="section-desc">Wählen Sie die Navigation und Listenstile für Ihre Mitarbeiter-App.</p>
-
-                <!-- Navigation -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Navigation <span class="required">*</span>
-                    </div>
-                    <div class="nav-preview-selector">
-                        <label class="nav-preview-option" onclick="selectNavigation(this, 'bottom')">
-                            <input type="radio" name="navigation" value="bottom">
-                            <div class="nav-mockup nav-mockup-bottom">
-                                <div class="mockup-content">
-                                    <div class="mockup-content-inner"></div>
-                                </div>
-                                <div class="mockup-bar">
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                </div>
-                            </div>
-                            <div class="nav-name">Bottom Bar (Unten)</div>
-                        </label>
-                        <label class="nav-preview-option selected" onclick="selectNavigation(this, 'top')">
-                            <input type="radio" name="navigation" value="top" checked>
-                            <div class="nav-mockup nav-mockup-top">
-                                <div class="mockup-bar">
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div class="mockup-content-inner"></div>
-                                </div>
-                            </div>
-                            <div class="nav-name">Top Bar (Oben)</div>
-                        </label>
-                        <label class="nav-preview-option" onclick="selectNavigation(this, 'sidebar')">
-                            <input type="radio" name="navigation" value="sidebar">
-                            <div class="nav-mockup" style="flex-direction: row;">
-                                <div class="mockup-bar-side">
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                    <div class="mockup-icon"></div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div class="mockup-content-inner"></div>
-                                </div>
-                            </div>
-                            <div class="nav-name">Sidebar (Seitlich)</div>
-                        </label>
-                        <label class="nav-preview-option" onclick="selectNavigation(this, 'tabs')">
-                            <input type="radio" name="navigation" value="tabs">
-                            <div class="nav-mockup" style="flex-direction: column;">
-                                <div class="mockup-bar" style="border-radius: 6px 6px 0 0;">
-                                    <div style="background: rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 12px; font-size: 10px; color: white;">Tab 1</div>
-                                    <div style="padding: 5px 15px; font-size: 10px; color: rgba(255,255,255,0.7);">Tab 2</div>
-                                    <div style="padding: 5px 15px; font-size: 10px; color: rgba(255,255,255,0.7);">Tab 3</div>
-                                </div>
-                                <div class="mockup-content">
-                                    <div class="mockup-content-inner"></div>
-                                </div>
-                            </div>
-                            <div class="nav-name">Tab Bar (Tabs oben)</div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Card Style -->
-                <div class="question-card">
-                    <div class="question-label">
-                        Card Style <span class="required">*</span>
-                    </div>
-                    <div class="style-selector">
-                        <label class="style-option selected" onclick="selectCardStyle(this, 'elevated')">
-                            <input type="radio" name="cardStyle" value="elevated" checked>
-                            <div class="style-preview shadow-medium" style="background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 50%; height: 50%; background: #F0F0F0; border-radius: 4px;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Elevated</div>
-                                <div class="style-desc">Karten mit Schatten, gehoben</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectCardStyle(this, 'flat')">
-                            <input type="radio" name="cardStyle" value="flat">
-                            <div class="style-preview" style="background: #F5F5F5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 50%; height: 50%; background: #E0E0E0; border-radius: 4px;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Flat</div>
-                                <div class="style-desc">Flache Karten ohne Schatten</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectCardStyle(this, 'outlined')">
-                            <input type="radio" name="cardStyle" value="outlined">
-                            <div class="style-preview" style="background: white; border-radius: 8px; border: 2px solid #E0E0E0; display: flex; align-items: center; justify-content: center;">
-                                <div style="width: 50%; height: 50%; background: #F0F0F0; border-radius: 4px;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Outlined</div>
-                                <div class="style-desc">Karten mit Rahmen</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- List Style -->
-                <div class="question-card">
-                    <div class="question-label">
-                        List Style <span class="required">*</span>
-                    </div>
-                    <div class="style-selector">
-                        <label class="style-option" onclick="selectListStyle(this, 'simple')">
-                            <input type="radio" name="listStyle" value="simple">
-                            <div class="style-preview" style="background: white; display: flex; flex-direction: column; justify-content: center; gap: 3px; padding: 10px;">
-                                <div style="height: 8px; background: #E0E0E0; border-radius: 2px;"></div>
-                                <div style="height: 8px; background: #E0E0E0; border-radius: 2px;"></div>
-                                <div style="height: 8px; background: #E0E0E0; border-radius: 2px;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Simple</div>
-                                <div class="style-desc">Einfache Listen, minimal</div>
-                            </div>
-                        </label>
-                        <label class="style-option selected" onclick="selectListStyle(this, 'cards')">
-                            <input type="radio" name="listStyle" value="cards" checked>
-                            <div class="style-preview" style="background: white; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 10px;">
-                                <div style="height: 15px; background: #F5F5F5; border-radius: 4px; border: 1px solid #E0E0E0;"></div>
-                                <div style="height: 15px; background: #F5F5F5; border-radius: 4px; border: 1px solid #E0E0E0;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Cards</div>
-                                <div class="style-desc">Listen-Items als Karten</div>
-                            </div>
-                        </label>
-                        <label class="style-option" onclick="selectListStyle(this, 'compact')">
-                            <input type="radio" name="listStyle" value="compact">
-                            <div class="style-preview" style="background: white; display: flex; flex-direction: column; justify-content: center; gap: 1px; padding: 10px;">
-                                <div style="height: 6px; background: #F0F0F0;"></div>
-                                <div style="height: 6px; background: #F0F0F0;"></div>
-                                <div style="height: 6px; background: #F0F0F0;"></div>
-                                <div style="height: 6px; background: #F0F0F0;"></div>
-                            </div>
-                            <div class="spacing-info">
-                                <div class="style-name">Compact</div>
-                                <div class="style-desc">Sehr kompakt, viel Info auf wenig Platz</div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn btn-secondary" onclick="prevSection(6)">← Zurück</button>
-                    <button class="btn btn-success" onclick="showSummary()">Zusammenfassung anzeigen →</button>
-                </div>
-            </div>
-
-            <!-- SUMMARY SECTION -->
-            <div class="section" id="sectionSummary" style="display: none;">
-                <div class="summary-header">
-                    <h2>🎉 Zusammenfassung</h2>
-                    <p>Überprüfen Sie Ihre Auswahl vor dem Export</p>
-                </div>
-
-                <div class="summary-grid" id="summaryGrid">
-                    <!-- Dynamisch befüllt -->
-                </div>
-
-                <div class="nav-buttons" style="margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="backToForm()">← Zurück zum Formular</button>
-                    <button class="btn btn-success" onclick="exportJSON()">📥 JSON Exportieren</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        // ===== STATE =====
-        const state = {
-            colors: {
-                primary: '#E91E63',
-                secondary: '#2196F3',
-                accent: '#FF9800',
-                bg: '#FAFAFA',
-                surface: '#FFFFFF',
-                textPrimary: '#212121',
-                textSecondary: '#757575',
-                success: '#4CAF50',
-                warning: '#FFC107',
-                error: '#F44336'
-            },
-            typography: {
-                font: 'Inter',
-                h1: { size: 28, weight: 700 },
-                h2: { size: 22, weight: 600 },
-                body: { size: 15, weight: 400 },
-                caption: { size: 12, weight: 500 }
-            },
-            layout: {
-                spacing: 4,
-                container: 1024,
-                grid: '12-col'
-            },
-            components: {
-                buttonRadius: 12,
-                cardRadius: 16,
-                cardShadow: 'medium',
-                inputStyle: 'outline'
-            },
-            style: {
-                overall: 'minimal',
-                image: 'photography'
-            },
-            app: {
-                navigation: 'top',
-                cardStyle: 'elevated',
-                listStyle: 'cards'
-            },
-            currentSection: 1,
-            completedSections: new Set()
-        };
-
-        // ===== NAVIGATION =====
-        function showSection(sectionNum) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(`section${sectionNum}`).classList.add('active');
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.nav-tab[data-section="${sectionNum}"]`).classList.add('active');
-            state.currentSection = sectionNum;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function nextSection(current) {
-            state.completedSections.add(current);
-            updateProgress();
-            markTabCompleted(current);
-            if (current < 6) {
-                showSection(current + 1);
-            }
-        }
-
-        function prevSection(current) {
-            if (current > 1) {
-                showSection(current - 1);
-            }
-        }
-
-        function markTabCompleted(sectionNum) {
-            const tab = document.querySelector(`.nav-tab[data-section="${sectionNum}"]`);
-            if (tab) {
-                tab.classList.add('completed');
-            }
-        }
-
-        function updateProgress() {
-            const completed = state.completedSections.size;
-            const percentage = (completed / 6) * 100;
-            document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('progressText').textContent = `${completed} von 6 Sektionen ausgefüllt`;
-        }
-
-        // Tab Click Handler
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const section = parseInt(tab.dataset.section);
-                showSection(section);
-            });
-        });
-
-        // ===== COLOR FUNCTIONS =====
-        function updateColor(type, value) {
-            state.colors[type] = value;
-            document.getElementById(`${type}Hex`).textContent = value;
-            document.getElementById(`${type}Preview`).style.background = value;
-        }
-
-        // ===== TYPOGRAPHY FUNCTIONS =====
-        function selectFont(element, fontName) {
-            document.querySelectorAll('.font-option').forEach(f => f.classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.typography.font = fontName;
-        }
-
-        function updateTypeSize(type, value) {
-            state.typography[type].size = parseInt(value);
-            document.getElementById(`${type}Size`).textContent = value + 'px';
-            const preview = document.getElementById(`${type}Preview`);
-            if (preview) {
-                preview.style.fontSize = value + 'px';
-            }
-        }
-
-        function updateTypeWeight(type, value) {
-            state.typography[type].weight = parseInt(value);
-            const weightNames = { '400': 'Regular', '500': 'Medium', '600': 'Semi-Bold', '700': 'Bold', '800': 'Extra-Bold' };
-            document.getElementById(`${type}Weight`).textContent = weightNames[value] || value;
-            const preview = document.getElementById(`${type}Preview`);
-            if (preview) {
-                preview.style.fontWeight = value;
-            }
-        }
-
-        // ===== SPACING & LAYOUT FUNCTIONS =====
-        function selectSpacing(element, value) {
-            document.querySelectorAll('[name="spacing"]').forEach(p => p.closest('.spacing-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.layout.spacing = value;
-        }
-
-        function selectContainer(element, value) {
-            document.querySelectorAll('[name="container"]').forEach(p => p.closest('.spacing-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.layout.container = value;
-        }
-
-        function selectGrid(element, value) {
-            document.querySelectorAll('[name="grid"]').forEach(p => p.closest('.spacing-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.layout.grid = value;
-        }
-
-        // ===== COMPONENT FUNCTIONS =====
-        function selectButtonRadius(element, value) {
-            document.querySelectorAll('[name="buttonRadius"]').forEach(p => p.closest('.radius-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.components.buttonRadius = value;
-        }
-
-        function selectCardRadius(element, value) {
-            document.querySelectorAll('[name="cardRadius"]').forEach(p => p.closest('.radius-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.components.cardRadius = value;
-        }
-
-        function selectCardShadow(element, value) {
-            document.querySelectorAll('[name="cardShadow"]').forEach(p => p.closest('.shadow-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.components.cardShadow = value;
-        }
-
-        function selectInputStyle(element, value) {
-            document.querySelectorAll('[name="inputStyle"]').forEach(p => p.closest('.spacing-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.components.inputStyle = value;
-        }
-
-        // ===== STYLE FUNCTIONS =====
-        function selectOverallStyle(element, value) {
-            document.querySelectorAll('[name="overallStyle"]').forEach(p => p.closest('.style-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.style.overall = value;
-        }
-
-        function selectImageStyle(element, value) {
-            document.querySelectorAll('[name="imageStyle"]').forEach(p => p.closest('.style-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.style.image = value;
-        }
-
-        // ===== APP FUNCTIONS =====
-        function selectNavigation(element, value) {
-            document.querySelectorAll('[name="navigation"]').forEach(p => p.closest('.nav-preview-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.app.navigation = value;
-        }
-
-        function selectCardStyle(element, value) {
-            document.querySelectorAll('[name="cardStyle"]').forEach(p => p.closest('.style-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.app.cardStyle = value;
-        }
-
-        function selectListStyle(element, value) {
-            document.querySelectorAll('[name="listStyle"]').forEach(p => p.closest('.style-option').classList.remove('selected'));
-            element.classList.add('selected');
-            element.querySelector('input').checked = true;
-            state.app.listStyle = value;
-        }
-
-        // ===== SUMMARY =====
-        function showSummary() {
-            state.completedSections.add(6);
-            updateProgress();
-            markTabCompleted(6);
-
-            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-            document.getElementById('sectionSummary').style.display = 'block';
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-
-            generateSummary();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function backToForm() {
-            document.getElementById('sectionSummary').style.display = 'none';
-            showSection(6);
-        }
-
-        function generateSummary() {
-            const grid = document.getElementById('summaryGrid');
-            
-            const styleNames = {
-                overall: { minimal: 'Minimalistisch', modern: 'Modern', corporate: 'Corporate', playful: 'Playful', dark: 'Dark Mode' },
-                image: { photography: 'Fotografie', illustrations: 'Illustrationen', icons: 'Icons', mixed: 'Gemischt' },
-                navigation: { bottom: 'Bottom Bar', top: 'Top Bar', sidebar: 'Sidebar', tabs: 'Tab Bar' },
-                cardStyle: { elevated: 'Elevated', flat: 'Flat', outlined: 'Outlined' },
-                listStyle: { simple: 'Simple', cards: 'Cards', compact: 'Compact' },
-                cardShadow: { none: 'Kein Shadow', subtle: 'Subtil', medium: 'Medium', strong: 'Stark' },
-                inputStyle: { outline: 'Outline', filled: 'Filled', underline: 'Underline' },
-                grid: { '12-col': '12-Spalten', '8-col': '8-Spalten', fluid: 'Fluid' }
-            };
-
-            const weightNames = { 400: 'Regular', 500: 'Medium', 600: 'Semi-Bold', 700: 'Bold', 800: 'Extra-Bold' };
-
-            grid.innerHTML = `
-                <div class="summary-category">
-                    <div class="summary-category-title">🎨 Farben</div>
-                    ${Object.entries(state.colors).map(([key, value]) => `
-                        <div class="summary-item">
-                            <span class="summary-label">${key}</span>
-                            <span class="summary-value">
-                                <span class="color-swatch" style="background: ${value}"></span>
-                                ${value}
-                            </span>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div class="summary-category">
-                    <div class="summary-category-title">📝 Typografie</div>
-                    <div class="summary-item">
-                        <span class="summary-label">Schriftart</span>
-                        <span class="summary-value">${state.typography.font}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">H1</span>
-                        <span class="summary-value">${state.typography.h1.size}px / ${weightNames[state.typography.h1.weight]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">H2</span>
-                        <span class="summary-value">${state.typography.h2.size}px / ${weightNames[state.typography.h2.weight]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Body</span>
-                        <span class="summary-value">${state.typography.body.size}px / ${weightNames[state.typography.body.weight]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Caption</span>
-                        <span class="summary-value">${state.typography.caption.size}px / ${weightNames[state.typography.caption.weight]}</span>
-                    </div>
-                </div>
-
-                <div class="summary-category">
-                    <div class="summary-category-title">📐 Layout</div>
-                    <div class="summary-item">
-                        <span class="summary-label">Basis-Unit</span>
-                        <span class="summary-value">${state.layout.spacing}px</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Container-Breite</span>
-                        <span class="summary-value">${state.layout.container}px</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Raster-System</span>
-                        <span class="summary-value">${styleNames.grid[state.layout.grid]}</span>
-                    </div>
-                </div>
-
-                <div class="summary-category">
-                    <div class="summary-category-title">🔧 Komponenten</div>
-                    <div class="summary-item">
-                        <span class="summary-label">Button Radius</span>
-                        <span class="summary-value">${state.components.buttonRadius}px</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Card Radius</span>
-                        <span class="summary-value">${state.components.cardRadius}px</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Card Shadow</span>
-                        <span class="summary-value">${styleNames.cardShadow[state.components.cardShadow]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Input Style</span>
-                        <span class="summary-value">${styleNames.inputStyle[state.components.inputStyle]}</span>
-                    </div>
-                </div>
-
-                <div class="summary-category">
-                    <div class="summary-category-title">✨ Design-Stil</div>
-                    <div class="summary-item">
-                        <span class="summary-label">Overall Style</span>
-                        <span class="summary-value">${styleNames.overall[state.style.overall]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Bild-Stil</span>
-                        <span class="summary-value">${styleNames.image[state.style.image]}</span>
-                    </div>
-                </div>
-
-                <div class="summary-category">
-                    <div class="summary-category-title">📱 App-Spezifisch</div>
-                    <div class="summary-item">
-                        <span class="summary-label">Navigation</span>
-                        <span class="summary-value">${styleNames.navigation[state.app.navigation]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Card Style</span>
-                        <span class="summary-value">${styleNames.cardStyle[state.app.cardStyle]}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">List Style</span>
-                        <span class="summary-value">${styleNames.listStyle[state.app.listStyle]}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        // ===== EXPORT =====
-        function exportJSON() {
-            const exportData = {
-                projectName: "Just More Fitness - Mitarbeiter-App",
-                exportDate: new Date().toISOString(),
-                design: {
-                    colors: state.colors,
-                    typography: state.typography,
-                    layout: state.layout,
-                    components: state.components,
-                    style: state.style,
-                    app: state.app
-                }
-            };
-
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'just-more-fitness-design-config.json';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            document.body.insertAdjacentHTML('beforeend','<div style="position:fixed;top:20px;right:20px;background:#10b981;color:#fff;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);animation:fadeIn .3s ease">✅ JSON-Datei erfolgreich exportiert!</div>');setTimeout(function(){document.querySelectorAll('body > div:last-child').forEach(function(e){if(e.style.position==='fixed')e.remove()})},3000);
-        }
-
-        // ===== INIT =====
-        updateProgress();
-    </script>
-
+<header>
+<div class="header-content">
+<h1>📱 Mitarbeiter-App Design</h1>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<span class="progress-text" id="progressText">0/7</span>
+</div>
+</header>
+<nav class="tabs">
+<div class="tab active" data-section="1">🎨 Farben</div>
+<div class="tab" data-section="2">📝 Typografie</div>
+<div class="tab" data-section="3">📐 Layout</div>
+<div class="tab" data-section="4">🔧 Komponenten</div>
+<div class="tab" data-section="5">🎭 Stimmung</div>
+<div class="tab" data-section="6">📱 App-Style</div>
+<div class="tab" data-section="7">📋 Download</div>
+</nav>
+<main>
+<!-- SEKTION 1: Farben -->
+<section class="active" id="section1">
+<div class="card">
+<h2>🎨 Primärfarbe</h2>
+<p class="desc">Wird für Hauptbuttons und wichtige Elemente verwendet</p>
+<div id="recentColors1" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette1"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas1"></canvas>
+<canvas class="hue-slider" id="hueSlider1"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview1"></div>
+<div class="hsv-values"><div id="hex1">#2196F3</div><div id="hsl1">HSL(207, 90%, 54%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Sekundärfarbe</h2>
+<p class="desc">Wird für unterstützende Elemente und Akzente verwendet</p>
+<div id="recentColors2" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette2"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas2"></canvas>
+<canvas class="hue-slider" id="hueSlider2"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview2"></div>
+<div class="hsv-values"><div id="hex2">#4CAF50</div><div id="hsl2">HSL(122, 39%, 49%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Akzentfarbe</h2>
+<p class="desc">Wird für Highlights und Call-to-Action Elemente verwendet</p>
+<div id="recentColors3" class="color-grid" style="display:none;margin-bottom:12px"></div>
+<div class="color-grid" id="palette3"></div>
+<div class="hsv-picker">
+<div class="hsv-main">
+<canvas class="hsv-canvas" id="hsvCanvas3"></canvas>
+<canvas class="hue-slider" id="hueSlider3"></canvas>
+</div>
+<div class="hsv-info">
+<div class="color-preview hsv-preview" id="hsvPreview3"></div>
+<div class="hsv-values"><div id="hex3">#FF9800</div><div id="hsl3">HSL(36, 100%, 50%)</div></div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎨 Weitere Farben</h2>
+<div class="color-row">
+<div>
+<label>Hintergrundfarbe</label>
+<p class="desc">Haupthintergrund der App</p>
+</div>
+<input type="color" id="bgColor" value="#FFFFFF" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Surface-Farbe</label>
+<p class="desc">Hintergrund für Karten und Container</p>
+</div>
+<input type="color" id="sfColor" value="#F5F5F5" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Textfarbe (Primär)</label>
+<p class="desc">Haupttextfarbe</p>
+</div>
+<input type="color" id="tpColor" value="#212121" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Textfarbe (Sekundär)</label>
+<p class="desc">Für weniger wichtige Texte</p>
+</div>
+<input type="color" id="tsColor" value="#757575" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Erfolg</label>
+<p class="desc">Für Erfolgsmeldungen</p>
+</div>
+<input type="color" id="seColor" value="#4CAF50" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Warnung</label>
+<p class="desc">Für Warnungen</p>
+</div>
+<input type="color" id="swColor" value="#FF9800" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+<div class="color-row">
+<div>
+<label>Fehler</label>
+<p class="desc">Für Fehlermeldungen</p>
+</div>
+<input type="color" id="erColor" value="#F44336" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div class="preview-colors">
+<div class="preview-tile" id="previewP" style="background:var(--p);color:#fff">Primär</div>
+<div class="preview-tile" id="previewS" style="background:var(--s);color:#fff">Sekundär</div>
+<div class="preview-tile" id="previewA" style="background:var(--a);color:#fff">Akzent</div>
+</div>
+<div class="preview-surface">
+<div style="color:var(--tp);font-weight:600;margin-bottom:8px">Primärer Text</div>
+<div style="color:var(--ts);font-size:14px">Sekundärer Text für Beschreibungen</div>
+</div>
+<div class="status-badges">
+<div class="badge" style="background:var(--se);color:#fff">✓ Erfolg</div>
+<div class="badge" style="background:var(--sw);color:#fff">⚠ Warnung</div>
+<div class="badge" style="background:var(--er);color:#fff">✗ Fehler</div>
+</div>
+</div>
+<button class="btn btn-primary btn-next" onclick="goToSection(2)">Weiter →</button>
+</section>
+
+<!-- SEKTION 2: Typografie -->
+<section id="section2">
+<div class="card">
+<h2>📝 Schriftart</h2>
+<p>Wähle die Hauptschriftart für deine App</p>
+<div class="option-grid" id="fontGrid"></div>
+</div>
+<div class="card">
+<h2>📝 Schriftgrößen</h2>
+<div class="slider-container">
+<label>H1-Größe <span class="slider-value" id="h1Val">32px</span></label>
+<p class="desc">Die Größe der großen Überschriften</p>
+<input type="range" class="slider" id="h1Size" min="24" max="48" value="32">
+</div>
+<div class="slider-container">
+<label>H2-Größe <span class="slider-value" id="h2Val">24px</span></label>
+<p class="desc">Die Größe der mittleren Überschriften</p>
+<input type="range" class="slider" id="h2Size" min="18" max="36" value="24">
+</div>
+<div class="slider-container">
+<label>Body-Größe <span class="slider-value" id="bodyVal">16px</span></label>
+<p class="desc">Die Größe des Fließtextes</p>
+<input type="range" class="slider" id="bodySize" min="12" max="20" value="16">
+</div>
+<div class="slider-container">
+<label>Caption-Größe <span class="slider-value" id="captionVal">12px</span></label>
+<p class="desc">Die Größe für kleine Beschriftungen</p>
+<input type="range" class="slider" id="captionSize" min="10" max="14" value="12">
+</div>
+</div>
+<div class="card">
+<h2>📝 Schriftstärken</h2>
+<div class="slider-container">
+<label>H1-Stärke <span class="slider-value" id="h1wVal">700</span></label>
+<p class="desc">Dicke der großen Überschriften</p>
+<input type="range" class="slider" id="h1Weight" min="400" max="900" step="100" value="700">
+</div>
+<div class="slider-container">
+<label>H2-Stärke <span class="slider-value" id="h2wVal">600</span></label>
+<p class="desc">Dicke der mittleren Überschriften</p>
+<input type="range" class="slider" id="h2Weight" min="400" max="900" step="100" value="600">
+</div>
+<div class="slider-container">
+<label>Body-Stärke <span class="slider-value" id="bodywVal">400</span></label>
+<p class="desc">Dicke des Fließtextes</p>
+<input type="range" class="slider" id="bodyWeight" min="300" max="700" step="100" value="400">
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div id="typoPreview"></div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(1)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(3)">Weiter →</button>
+</section>
+
+<!-- SEKTION 3: Spacing & Layout -->
+<section id="section3">
+<div class="card">
+<h2>📐 Basis-Spacing</h2>
+<div class="slider-container">
+<label>Spacing <span class="slider-value" id="spacingVal">8px</span></label>
+<p class="desc">Bestimmt den Standard-Abstand zwischen Elementen</p>
+<input type="range" class="slider" id="spacing" min="4" max="16" value="8">
+</div>
+<div class="live-preview" id="spacingPreview"></div>
+</div>
+<div class="card">
+<h2>📐 Container-Breite</h2>
+<div class="slider-container">
+<label>Breite <span class="slider-value" id="widthVal">1200px</span></label>
+<p class="desc">Die maximale Breite des Inhaltsbereichs</p>
+<input type="range" class="slider" id="containerWidth" min="960" max="1400" value="1200">
+</div>
+<div class="live-preview" id="widthPreview"></div>
+</div>
+<div class="card">
+<h2>📐 Raster-System</h2>
+<p>Wähle das Spalten-System für das Layout</p>
+<div class="option-grid">
+<div class="option" data-value="12" onclick="selectOption(this,'grid')">
+<div class="option-title">12 Spalten</div>
+<div class="option-desc">Standard für die meisten Websites</div>
+</div>
+<div class="option" data-value="16" onclick="selectOption(this,'grid')">
+<div class="option-title">16 Spalten</div>
+<div class="option-desc">Für komplexere Layouts</div>
+</div>
+<div class="option selected" data-value="flex" onclick="selectOption(this,'grid')">
+<div class="option-title">Flexibel</div>
+<div class="option-desc">Passt sich automatisch an</div>
+</div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(2)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(4)">Weiter →</button>
+</section>
+
+<!-- SEKTION 4: Komponenten -->
+<section id="section4">
+<div class="card">
+<h2>🔧 Button-Radius</h2>
+<div class="option-grid">
+<div class="option" data-value="0" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Eckige Buttons</div>
+</div>
+<div class="option selected" data-value="8" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Leicht</div>
+<div class="option-desc">Sanft abgerundet</div>
+</div>
+<div class="option" data-value="16" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittelstark abgerundet</div>
+</div>
+<div class="option" data-value="24" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Stark abgerundet</div>
+</div>
+<div class="option" data-value="50" onclick="selectOption(this,'btnRadius')">
+<div class="option-title">Rounded</div>
+<div class="option-desc">Komplett rund</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Card-Radius</h2>
+<div class="option-grid">
+<div class="option" data-value="0" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Eckige Karten</div>
+</div>
+<div class="option selected" data-value="12" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Leicht</div>
+<div class="option-desc">Sanft abgerundet</div>
+</div>
+<div class="option" data-value="20" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittelstark abgerundet</div>
+</div>
+<div class="option" data-value="28" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Stark abgerundet</div>
+</div>
+<div class="option" data-value="50" onclick="selectOption(this,'cardRadius')">
+<div class="option-title">Rounded</div>
+<div class="option-desc">Komplett rund</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Card-Shadow</h2>
+<div class="option-grid">
+<div class="option" data-value="none" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Ohne Schatten</div>
+</div>
+<div class="option selected" data-value="0 2px 8px rgba(0,0,0,0.1)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Subtil</div>
+<div class="option-desc">Leichter Schatten</div>
+</div>
+<div class="option" data-value="0 4px 16px rgba(0,0,0,0.15)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Medium</div>
+<div class="option-desc">Mittlerer Schatten</div>
+</div>
+<div class="option" data-value="0 8px 32px rgba(0,0,0,0.2)" onclick="selectOption(this,'cardShadow')">
+<div class="option-title">Stark</div>
+<div class="option-desc">Ausgeprägter Schatten</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🔧 Input-Border</h2>
+<div class="option-grid">
+<div class="option selected" data-value="solid" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Solid</div>
+<div class="option-desc">Durchgehende Linie</div>
+</div>
+<div class="option" data-value="dashed" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Dashed</div>
+<div class="option-desc">Gestrichelte Linie</div>
+</div>
+<div class="option" data-value="bottom" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Nur unten</div>
+<div class="option-desc">Unterstrichener Stil</div>
+</div>
+<div class="option" data-value="none" onclick="selectOption(this,'inputBorder')">
+<div class="option-title">Kein</div>
+<div class="option-desc">Ohne Rahmen</div>
+</div>
+</div>
+</div>
+<div class="card live-preview">
+<h3>LIVE-VORSCHAU</h3>
+<div id="compPreview"></div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(3)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(5)">Weiter →</button>
+</section>
+
+<!-- SEKTION 5: Design-Stimmung -->
+<section id="section5">
+<div class="card">
+<h2>🎭 Overall Style</h2>
+<p>Wähle den grundlegenden Design-Stil</p>
+<div class="option-grid">
+<div class="option" data-value="minimal" onclick="selectOption(this,'style')">
+<div class="option-title">Minimalistisch</div>
+<div class="option-desc">Wenig Schnickschnack, Fokus auf Inhalt</div>
+</div>
+<div class="option selected" data-value="modern" onclick="selectOption(this,'style')">
+<div class="option-title">Modern</div>
+<div class="option-desc">Aktuell, frisch, zeitgemäß</div>
+</div>
+<div class="option" data-value="corporate" onclick="selectOption(this,'style')">
+<div class="option-title">Corporate</div>
+<div class="option-desc">Professionell, seriös</div>
+</div>
+<div class="option" data-value="premium" onclick="selectOption(this,'style')">
+<div class="option-title">Premium</div>
+<div class="option-desc">Hochwertig, exklusiv</div>
+</div>
+<div class="option" data-value="luxury" onclick="selectOption(this,'style')">
+<div class="option-title">Luxus</div>
+<div class="option-desc">Opulent, edel</div>
+</div>
+<div class="option" data-value="dark" onclick="selectOption(this,'style')">
+<div class="option-title">Dark Mode</div>
+<div class="option-desc">Dunkles Farbschema</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2>🎭 Bild-Stil</h2>
+<p>Welche Art von Bildern soll verwendet werden?</p>
+<div class="option-grid">
+<div class="option selected" data-value="photo" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Fotografie</div>
+<div class="option-desc">Echte Fotos von Menschen/Orten</div>
+</div>
+<div class="option" data-value="illustration" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Illustrationen</div>
+<div class="option-desc">Gezeichnete Grafiken</div>
+</div>
+<div class="option" data-value="icons" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Icons</div>
+<div class="option-desc">Symbolische Darstellungen</div>
+</div>
+<div class="option" data-value="mixed" onclick="selectOption(this,'imageStyle')">
+<div class="option-title">Gemischt</div>
+<div class="option-desc">Kombination verschiedener Stile</div>
+</div>
+</div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(4)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(6)">Weiter →</button>
+</section>
+
+<!-- SEKTION 6: App-spezifisch -->
+<section id="section6">
+<div class="card">
+<h2>📱 Navigation</h2>
+<p>Wähle die Navigationsart für die App</p>
+<div class="option-grid">
+<div class="option selected" data-value="bottom" onclick="selectOption(this,'nav')">
+<div class="option-title">Bottom Bar</div>
+<div class="option-desc">Navigation unten am Bildschirmrand</div>
+</div>
+<div class="option" data-value="top" onclick="selectOption(this,'nav')">
+<div class="option-title">Top Bar</div>
+<div class="option-desc">Navigation oben am Bildschirmrand</div>
+</div>
+<div class="option" data-value="sidebar" onclick="selectOption(this,'nav')">
+<div class="option-title">Sidebar</div>
+<div class="option-desc">Seitliches Menü</div>
+</div>
+<div class="option" data-value="tabs" onclick="selectOption(this,'nav')">
+<div class="option-title">Tab Bar</div>
+<div class="option-desc">Tabs im oberen Bereich</div>
+</div>
+</div>
+<div class="live-preview" id="navPreview"></div>
+</div>
+<div class="card">
+<h2>📱 Card Style</h2>
+<p>Wie sollen Karten in der App aussehen?</p>
+<div class="option-grid">
+<div class="option selected" data-value="elevated" onclick="selectOption(this,'appCard')">
+<div class="option-title">Elevated</div>
+<div class="option-desc">Karten mit Schatten</div>
+</div>
+<div class="option" data-value="flat" onclick="selectOption(this,'appCard')">
+<div class="option-title">Flat</div>
+<div class="option-desc">Flache Karten ohne Schatten</div>
+</div>
+<div class="option" data-value="outlined" onclick="selectOption(this,'appCard')">
+<div class="option-title">Outlined</div>
+<div class="option-desc">Karten mit Rahmen</div>
+</div>
+</div>
+<div class="live-preview" id="cardStylePreview"></div>
+</div>
+<div class="card">
+<h2>📱 List Style</h2>
+<p>Wie sollen Listen dargestellt werden?</p>
+<div class="option-grid">
+<div class="option selected" data-value="simple" onclick="selectOption(this,'listStyle')">
+<div class="option-title">Simple</div>
+<div class="option-desc">Einfache Listenansicht</div>
+</div>
+<div class="option" data-value="cards" onclick="selectOption(this,'listStyle')">
+<div class="option-title">Cards</div>
+<div class="option-desc">Als Karten dargestellt</div>
+</div>
+<div class="option" data-value="compact" onclick="selectOption(this,'listStyle')">
+<div class="option-title">Compact</div>
+<div class="option-desc">Platzsparende Ansicht</div>
+</div>
+</div>
+<div class="live-preview" id="listStylePreview"></div>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(5)">← Zurück</button>
+<button class="btn btn-primary btn-next" onclick="goToSection(7)">Weiter →</button>
+</section>
+
+<!-- SEKTION 7: Zusammenfassung -->
+<section id="section7">
+<div class="card">
+<h2>📋 Zusammenfassung</h2>
+<p>Überprüfe deine Auswahl und lade die Konfiguration herunter</p>
+<div class="summary-grid" id="summary"></div>
+<button class="btn download-btn" onclick="downloadJSON()">📥 Antworten als JSON herunterladen</button>
+<button class="btn copy-btn" onclick="copyJSON()">📋 JSON kopieren</button>
+</div>
+<button class="btn btn-secondary" onclick="goToSection(6)">← Zurück</button>
+</section>
+</main>
+
+<script>
+const data={
+colors:{p:'#2196F3',s:'#4CAF50',a:'#FF9800',bg:'#FFFFFF',sf:'#F5F5F5',tp:'#212121',ts:'#757575',se:'#4CAF50',sw:'#FF9800',er:'#F44336'},
+typo:{font:'Inter',h1:32,h2:24,body:16,caption:12,h1w:700,h2w:600,bodyw:400},
+layout:{spacing:8,width:1200,grid:'flex'},
+comp:{btnRadius:8,cardRadius:12,cardShadow:'0 2px 8px rgba(0,0,0,0.1)',inputBorder:'solid'},
+mood:{style:'modern',imageStyle:'photo'},
+app:{nav:'bottom',card:'elevated',list:'simple'}
+};
+
+const palette=[
+'#E53935','#C62828','#E91E63','#9C27B0','#673AB7',
+'#2196F3','#1565C0','#009688','#4CAF50','#2E7D32',
+'#FDD835','#FF9800','#795548','#9E9E9E','#424242',
+'#212121','#FFFFFF','#81D4FA','#A5D6A7','#FFF9C4',
+'#F8BBD0','#D1C4E9','#B2DFDB','#FFCCBC','#D7CCC8'
+];
+
+const fonts=[
+{n:'Inter',d:'Moderne, saubere Schrift. Gut lesbar auf allen Geräten.'},
+{n:'Roboto',d:'Google-Standardschrift. Vertraut und professionell.'},
+{n:'Open Sans',d:'Freundlich und offen. Perfekt für Apps.'},
+{n:'Lato',d:'Rund und einladend. Gute Lesbarkeit.'},
+{n:'Montserrat',d:'Geometrisch und modern. Für Headlines.'},
+{n:'Poppins',d:'Rund und modern. Beliebt für Apps.'}
+];
+
+let recentColors=[];
+const MAX_RECENT=10;
+let currentHue=[207,122,36];
+let hsvState={1:{h:207,s:0.9,v:0.54},2:{h:122,s:0.39,v:0.49},3:{h:36,s:1,v:0.5}};
+
+function init(){
+palette.forEach((c,i)=>{
+for(let n=1;n<=3;n++){
+const div=document.createElement('div');
+div.className='color-circle';
+div.style.background=c;
+div.onclick=()=>selectPreset(n,c);
+document.getElementById('palette'+n).appendChild(div);
+}
+});
+fonts.forEach((f,i)=>{
+const div=document.createElement('div');
+div.className='option'+(i===0?' selected':'');
+div.dataset.value=f.n;
+div.innerHTML=`<div class="option-title" style="font-family:'${f.n}',sans-serif">${f.n}</div><div class="option-desc">${f.d}</div>`;
+div.onclick=()=>selectOption(div,'font');
+document.getElementById('fontGrid').appendChild(div);
+});
+[1,2,3].forEach(n=>initHSV(n));
+updateProgress();
+updateTypoPreview();
+updateSpacingPreview();
+updateWidthPreview();
+updateCompPreview();
+bindSliders();
+}
+
+function initHSV(n){
+const canvas=document.getElementById('hsvCanvas'+n);
+const hueCanvas=document.getElementById('hueSlider'+n);
+const ctx=canvas.getContext('2d');
+const hctx=hueCanvas.getContext('2d');
+
+// Fix: Canvas-Größe zuverlässig setzen
+const canvasWidth=280;
+const canvasHeight=200;
+canvas.width=canvasWidth;
+canvas.height=canvasHeight;
+hueCanvas.width=canvasWidth;
+hueCanvas.height=24;
+
+let isDragging=false;
+let isHueDragging=false;
+
+function drawSV(){
+const h=hsvState[n].h;
+const grad=ctx.createLinearGradient(0,0,canvas.width,0);
+grad.addColorStop(0,'#fff');
+grad.addColorStop(1,`hsl(${h},100%,50%)`);
+ctx.fillStyle=grad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
+vGrad.addColorStop(0,'transparent');
+vGrad.addColorStop(1,'#000');
+ctx.fillStyle=vGrad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+drawIndicator();
+}
+
+function drawIndicator(){
+const s=hsvState[n].s;
+const v=hsvState[n].v;
+const x=s*canvas.width;
+const y=(1-v)*canvas.height;
+ctx.strokeStyle='#fff';
+ctx.lineWidth=3;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.stroke();
+ctx.strokeStyle='#000';
+ctx.lineWidth=1;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(x,y,8,0,Math.PI*2);
+ctx.fillStyle='#fff';
+ctx.fill();
+}
+
+function updateColor(){
+const h=hsvState[n].h;
+const s=hsvState[n].s;
+const v=hsvState[n].v;
+const rgb=hsvToRgb(h,s*100,v*100);
+const hex=rgbToHex(rgb.r,rgb.g,rgb.b);
+const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+document.getElementById('hsvPreview'+n).style.background=hex;
+document.getElementById('hex'+n).textContent=hex;
+document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+setColor(n,hex);
+addRecentColor(hex);
+}
+drawSV();
+
+canvas.addEventListener('mousedown',e=>{isDragging=true;handleSV(e)});
+canvas.addEventListener('mousemove',e=>{if(isDragging)handleSV(e)});
+canvas.addEventListener('mouseup',()=>isDragging=false);
+canvas.addEventListener('mouseleave',()=>isDragging=false);
+canvas.addEventListener('touchstart',e=>{isDragging=true;handleSV(e.touches[0])},{passive:true});
+canvas.addEventListener('touchmove',e=>{if(isDragging)handleSV(e.touches[0])},{passive:true});
+canvas.addEventListener('touchend',()=>isDragging=false);
+canvas.addEventListener('touchcancel',()=>isDragging=false);
+
+hueCanvas.addEventListener('mousedown',e=>{isHueDragging=true;handleH(e)});
+hueCanvas.addEventListener('mousemove',e=>{if(isHueDragging)handleH(e)});
+hueCanvas.addEventListener('mouseup',()=>isHueDragging=false);
+hueCanvas.addEventListener('mouseleave',()=>isHueDragging=false);
+hueCanvas.addEventListener('click',handleH);
+hueCanvas.addEventListener('touchstart',e=>{isHueDragging=true;handleH(e.touches[0])},{passive:true});
+hueCanvas.addEventListener('touchmove',e=>{if(isHueDragging){e.preventDefault();handleH(e.touches[0])}},{passive:false});
+hueCanvas.addEventListener('touchend',()=>isHueDragging=false);
+
+function handleSV(e){
+const rect=canvas.getBoundingClientRect();
+const s=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+const v=Math.max(0,Math.min(1,1-(e.clientY-rect.top)/rect.height));
+hsvState[n].s=s;
+hsvState[n].v=v;
+drawSV();
+updateColor();
+}
+function handleH(e){
+const rect=hueCanvas.getBoundingClientRect();
+const h=Math.round((e.clientX-rect.left)/rect.width*360);
+hsvState[n].h=h;
+currentHue[n-1]=h;
+drawSV();
+updateColor();
+}
+}
+
+function hsvToRgb(h,s,v){
+s/=100;v/=100;
+const i=Math.floor(h/60),f=h/60-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
+let r,g,b;
+switch(i%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q}
+return{r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255)};
+}
+
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function hexToRgb(hex){
+const result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+return result?{r:parseInt(result[1],16),g:parseInt(result[2],16),b:parseInt(result[3],16)}:{r:0,g:0,b:0};
+}
+function rgbToHsv(r,g,b){
+r/=255;g/=255;b/=255;
+const max=Math.max(r,g,b),min=Math.min(r,g,b);
+let h,s,v=max;
+const d=max-min;
+s=max===0?0:d/max;
+if(max===min){h=0}else{
+switch(max){
+case r:h=((g-b)/d+(g<b?6:0))%6;break;
+case g:h=((b-r)/d+2);break;
+case b:h=((r-g)/d+4);break;
+}
+h=Math.round(h*60);
+}
+return{h:h,s:Math.round(s*100),v:Math.round(v*100)};
+}
+function rgbToHsl(r,g,b){
+r/=255;g/=255;b/=255;
+const max=Math.max(r,g,b),min=Math.min(r,g,b);
+let h,s,l=(max+min)/2;
+if(max===min){h=s=0}else{
+const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+switch(max){case r:h=((g-b)/d+(g<b?6:0))*60;break;case g:h=((b-r)/d+2)*60;break;case b:h=((r-g)/d+4)*60}
+}
+return{h:Math.round(h),s:Math.round(s*100),l:Math.round(l*100)};
+}
+
+function addRecentColor(hex){
+if(recentColors.includes(hex)){
+recentColors=recentColors.filter(c=>c!==hex);
+}
+recentColors.unshift(hex);
+if(recentColors.length>MAX_RECENT)recentColors.pop();
+updateRecentDisplay();
+}
+
+function updateRecentDisplay(){
+[1,2,3].forEach(n=>{
+const container=document.getElementById('recentColors'+n);
+if(recentColors.length===0){
+container.style.display='none';
+return;
+}
+container.style.display='grid';
+container.innerHTML='';
+recentColors.forEach(c=>{
+const div=document.createElement('div');
+div.className='color-circle recent';
+div.style.background=c;
+div.onclick=()=>selectPreset(n,c);
+container.appendChild(div);
+});
+});
+}
+
+function selectPreset(n,color){
+setColor(n,color);
+document.getElementById('hsvPreview'+n).style.background=color;
+const rgb=hexToRgb(color);
+const hsv=rgbToHsv(rgb.r,rgb.g,rgb.b);
+hsvState[n].h=hsv.h;
+hsvState[n].s=hsv.s/100;
+hsvState[n].v=hsv.v/100;
+currentHue[n-1]=hsv.h;
+const canvas=document.getElementById('hsvCanvas'+n);
+if(canvas){
+const ctx=canvas.getContext('2d');
+const h=hsvState[n].h;
+const grad=ctx.createLinearGradient(0,0,canvas.width,0);
+grad.addColorStop(0,'#fff');
+grad.addColorStop(1,`hsl(${h},100%,50%)`);
+ctx.fillStyle=grad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
+vGrad.addColorStop(0,'transparent');
+vGrad.addColorStop(1,'#000');
+ctx.fillStyle=vGrad;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+const s=hsvState[n].s;
+const v=hsvState[n].v;
+const x=s*canvas.width;
+const y=(1-v)*canvas.height;
+ctx.strokeStyle='#fff';
+ctx.lineWidth=3;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.stroke();
+ctx.strokeStyle='#000';
+ctx.lineWidth=1;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.stroke();
+}
+const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
+document.getElementById('hex'+n).textContent=color;
+document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+addRecentColor(color);
+}
+
+function setColor(n,color){
+const key=n===1?'p':n===2?'s':'a';
+data.colors[key]=color;
+document.documentElement.style.setProperty('--'+key,color);
+updateColorPreviews();
+}
+
+function updateColorPreviews(){
+['p','s','a'].forEach(k=>{
+const el=document.getElementById('preview'+k.toUpperCase());
+if(el)el.style.background='var(--'+k+')';
+});
+}
+
+function selectOption(el,group){
+const parent=el.parentElement;
+parent.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+el.classList.add('selected');
+const val=el.dataset.value;
+if(group==='font'){data.typo.font=val;updateTypoPreview()}
+else if(group==='grid')data.layout.grid=val;
+else if(group==='btnRadius')data.comp.btnRadius=parseInt(val);
+else if(group==='cardRadius')data.comp.cardRadius=parseInt(val);
+else if(group==='cardShadow')data.comp.cardShadow=val;
+else if(group==='inputBorder')data.comp.inputBorder=val;
+else if(group==='style')data.mood.style=val;
+else if(group==='imageStyle')data.mood.imageStyle=val;
+else if(group==='nav'){data.app.nav=val;updateNavPreview()}
+else if(group==='appCard'){data.app.card=val;updateCardStylePreview()}
+else if(group==='listStyle'){data.app.list=val;updateListStylePreview()}
+if(group==='btnRadius'||group==='cardRadius'||group==='cardShadow'||group==='inputBorder')updateCompPreview();
+}
+
+function bindSliders(){
+const binds=[
+['h1Size','h1Val','px',v=>{data.typo.h1=v;updateTypoPreview()}],
+['h2Size','h2Val','px',v=>{data.typo.h2=v;updateTypoPreview()}],
+['bodySize','bodyVal','px',v=>{data.typo.body=v;updateTypoPreview()}],
+['captionSize','captionVal','px',v=>{data.typo.caption=v;updateTypoPreview()}],
+['h1Weight','h1wVal','',v=>{data.typo.h1w=v;updateTypoPreview()}],
+['h2Weight','h2wVal','',v=>{data.typo.h2w=v;updateTypoPreview()}],
+['bodyWeight','bodywVal','',v=>{data.typo.bodyw=v;updateTypoPreview()}],
+['spacing','spacingVal','px',v=>{data.layout.spacing=v;updateSpacingPreview()}],
+['containerWidth','widthVal','px',v=>{data.layout.width=v;updateWidthPreview()}]
+];
+binds.forEach(([id,valId,unit,cb])=>{
+const el=document.getElementById(id);
+if(el)el.oninput=()=>{document.getElementById(valId).textContent=el.value+unit;cb(parseInt(el.value))};
+});
+['bgColor','sfColor','tpColor','tsColor','seColor','swColor','erColor'].forEach(id=>{
+const el=document.getElementById(id);
+if(el)el.oninput=()=>{
+const k=id.replace('Color','').replace('sf','sf').replace('tp','tp').replace('ts','ts').replace('se','se').replace('sw','sw').replace('er','er').replace('bg','bg');
+data.colors[k]=el.value;
+document.documentElement.style.setProperty('--'+k,el.value);
+};
+});
+}
+
+function updateTypoPreview(){
+const d=document.getElementById('typoPreview');
+if(!d)return;
+d.innerHTML=`
+<h1 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h1}px;font-weight:${data.typo.h1w}">H1 Überschrift</h1>
+<h2 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h2}px;font-weight:${data.typo.h2w};margin-top:12px">H2 Überschrift</h2>
+<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.body}px;font-weight:${data.typo.bodyw};margin-top:12px">Body Text für normale Inhalte</p>
+<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.caption}px;color:var(--ts);margin-top:12px">Caption Text für kleine Beschriftungen</p>
+`;
+}
+
+function updateSpacingPreview(){
+const d=document.getElementById('spacingPreview');
+if(!d)return;
+const s=data.layout.spacing;
+d.innerHTML=`<div style="display:flex;gap:${s}px">
+<div style="flex:1;height:40px;background:var(--p);opacity:0.3;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);opacity:0.5;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);opacity:0.7;border-radius:4px"></div>
+<div style="flex:1;height:40px;background:var(--p);border-radius:4px"></div>
+</div>`;
+}
+
+function updateWidthPreview(){
+const d=document.getElementById('widthPreview');
+if(!d)return;
+const w=data.layout.width;
+d.innerHTML=`<div style="background:var(--sf);border:2px dashed var(--p);border-radius:8px;max-width:100%;padding:12px;text-align:center">
+<div style="background:var(--p);color:#fff;padding:8px;border-radius:4px;display:inline-block">${w}px Container</div>
+</div>`;
+}
+
+function updateCompPreview(){
+const d=document.getElementById('compPreview');
+if(!d)return;
+const br=data.comp.btnRadius;
+const cr=data.comp.cardRadius;
+const cs=data.comp.cardShadow;
+const ib=data.comp.inputBorder;
+let borderStyle='2px solid var(--ts)';
+if(ib==='dashed')borderStyle='2px dashed var(--ts)';
+else if(ib==='bottom')borderStyle='none;border-bottom:2px solid var(--ts)';
+else if(ib==='none')borderStyle='none';
+d.innerHTML=`
+<button style="background:var(--p);color:#fff;border:none;padding:12px 24px;border-radius:${br}px;cursor:pointer;font-size:14px">Button</button>
+<div style="background:var(--bg);padding:16px;border-radius:${cr}px;box-shadow:${cs};margin:16px 0">
+<div style="font-weight:600">Karte</div>
+<div style="font-size:12px;color:var(--ts)">Beispielinhalt</div>
+</div>
+<input type="text" placeholder="Input-Feld" style="width:100%;padding:12px;border:${borderStyle};border-radius:${br}px;font-size:14px;background:var(--bg)">
+`;
+}
+
+function updateNavPreview(){
+const d=document.getElementById('navPreview');
+if(!d)return;
+const nav=data.app.nav;
+const p=data.colors.p;
+let html='';
+if(nav==='bottom'){
+html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
+<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div>
+<div style="position:absolute;bottom:0;left:0;right:0;height:48px;background:var(--sf);display:flex;justify-content:space-around;align-items:center;border-top:1px solid #ddd">
+<span style="color:${p}">🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
+</div></div>`;
+}else if(nav==='top'){
+html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
+<div style="height:48px;background:${p};display:flex;justify-content:space-around;align-items:center;color:#fff">
+<span>🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
+</div>
+<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
+}else if(nav==='sidebar'){
+html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden;display:flex">
+<div style="width:48px;background:var(--sf);display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:8px">
+<span style="color:${p}">🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
+</div>
+<div style="flex:1;padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
+}else if(nav==='tabs'){
+html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
+<div style="display:flex;border-bottom:2px solid var(--sf)">
+<div style="flex:1;padding:12px;text-align:center;background:${p};color:#fff;font-size:11px">Home</div>
+<div style="flex:1;padding:12px;text-align:center;font-size:11px">Stats</div>
+<div style="flex:1;padding:12px;text-align:center;font-size:11px">Profile</div>
+</div>
+<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
+}
+d.innerHTML=html;
+}
+
+function updateCardStylePreview(){
+const d=document.getElementById('cardStylePreview');
+if(!d)return;
+const style=data.app.card;
+let cardStyle='';
+if(style==='elevated')cardStyle='background:var(--sf);box-shadow:0 4px 12px rgba(0,0,0,0.15);border:none;border-radius:12px';
+else if(style==='flat')cardStyle='background:var(--sf);box-shadow:none;border:none;border-radius:12px';
+else if(style==='outlined')cardStyle='background:var(--bg);box-shadow:none;border:2px solid var(--sf);border-radius:12px';
+d.innerHTML=`<div style="display:flex;gap:12px">
+<div style="flex:1;padding:16px;${cardStyle}">
+<div style="font-weight:600;margin-bottom:4px">Card Title</div>
+<div style="font-size:12px;color:var(--ts)">Elevated Style</div>
+</div>
+<div style="flex:1;padding:16px;${cardStyle}">
+<div style="font-weight:600;margin-bottom:4px">Another Card</div>
+<div style="font-size:12px;color:var(--ts)">Preview</div>
+</div>
+</div>`;
+}
+
+function updateListStylePreview(){
+const d=document.getElementById('listStylePreview');
+if(!d)return;
+const style=data.app.list;
+let html='';
+if(style==='simple'){
+html=`<div style="background:var(--sf);border-radius:8px;overflow:hidden">
+<div style="padding:12px;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--p);border-radius:50%"></div>
+<div><div style="font-weight:500">Item 1</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
+</div>
+<div style="padding:12px;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--s);border-radius:50%"></div>
+<div><div style="font-weight:500">Item 2</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
+</div>
+<div style="padding:12px;display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--a);border-radius:50%"></div>
+<div><div style="font-weight:500">Item 3</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
+</div>
+</div>`;
+}else if(style==='cards'){
+html=`<div style="display:flex;flex-direction:column;gap:8px">
+<div style="background:var(--sf);padding:12px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;background:var(--p);border-radius:8px"></div>
+<div><div style="font-weight:600">Card Item 1</div><div style="font-size:11px;color:var(--ts)">Mit mehr Platz</div></div>
+</div>
+<div style="background:var(--sf);padding:12px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:40px;background:var(--s);border-radius:8px"></div>
+<div><div style="font-weight:600">Card Item 2</div><div style="font-size:11px;color:var(--ts)">Als Karten</div></div>
+</div>
+</div>`;
+}else if(style==='compact'){
+html=`<div style="background:var(--sf);border-radius:8px;overflow:hidden">
+<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 1</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 2</div>
+<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 3</div>
+<div style="padding:8px 12px;font-size:13px">📄 Item 4</div>
+</div>`;
+}
+d.innerHTML=html;
+}
+
+function goToSection(n){
+document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+document.getElementById('section'+n).classList.add('active');
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelector(`.tab[data-section="${n}"]`).classList.add('active');
+if(n===7)renderSummary();
+updateProgress();
+window.scrollTo(0,0);
+}
+
+function updateProgress(){
+let filled=0;
+for(let i=1;i<=6;i++)filled++;
+document.getElementById('progress').style.width=(filled/7*100)+'%';
+document.getElementById('progressText').textContent=filled+'/7';
+}
+
+function renderSummary(){
+const s=document.getElementById('summary');
+const navLabels={bottom:'Bottom Bar',top:'Top Bar',sidebar:'Sidebar',tabs:'Tab Bar'};
+const styleLabels={minimal:'Minimalistisch',modern:'Modern',corporate:'Corporate',premium:'Premium',luxury:'Luxus',dark:'Dark Mode'};
+const cardLabels={elevated:'Elevated',flat:'Flat',outlined:'Outlined'};
+const listLabels={simple:'Simple',cards:'Cards',compact:'Compact'};
+s.innerHTML=`
+<div class="summary-item"><div class="summary-label">Primärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.p};vertical-align:middle;margin-right:8px"></span>${data.colors.p}</div></div>
+<div class="summary-item"><div class="summary-label">Sekundärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.s};vertical-align:middle;margin-right:8px"></span>${data.colors.s}</div></div>
+<div class="summary-item"><div class="summary-label">Akzentfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.a};vertical-align:middle;margin-right:8px"></span>${data.colors.a}</div></div>
+<div class="summary-item"><div class="summary-label">Hintergrund</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.bg};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.bg}</div></div>
+<div class="summary-item"><div class="summary-label">Surface</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sf};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.sf}</div></div>
+<div class="summary-item"><div class="summary-label">Text (Primär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.tp};vertical-align:middle;margin-right:8px"></span>${data.colors.tp}</div></div>
+<div class="summary-item"><div class="summary-label">Text (Sekundär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.ts};vertical-align:middle;margin-right:8px"></span>${data.colors.ts}</div></div>
+<div class="summary-item"><div class="summary-label">Erfolg</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.se};vertical-align:middle;margin-right:8px"></span>${data.colors.se}</div></div>
+<div class="summary-item"><div class="summary-label">Warnung</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sw};vertical-align:middle;margin-right:8px"></span>${data.colors.sw}</div></div>
+<div class="summary-item"><div class="summary-label">Fehler</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.er};vertical-align:middle;margin-right:8px"></span>${data.colors.er}</div></div>
+<div class="summary-item"><div class="summary-label">Schriftart</div><div class="summary-value">${data.typo.font}</div></div>
+<div class="summary-item"><div class="summary-label">H1-Größe</div><div class="summary-value">${data.typo.h1}px</div></div>
+<div class="summary-item"><div class="summary-label">H2-Größe</div><div class="summary-value">${data.typo.h2}px</div></div>
+<div class="summary-item"><div class="summary-label">Body-Größe</div><div class="summary-value">${data.typo.body}px</div></div>
+<div class="summary-item"><div class="summary-label">Caption-Größe</div><div class="summary-value">${data.typo.caption}px</div></div>
+<div class="summary-item"><div class="summary-label">H1-Stärke</div><div class="summary-value">${data.typo.h1w}</div></div>
+<div class="summary-item"><div class="summary-label">H2-Stärke</div><div class="summary-value">${data.typo.h2w}</div></div>
+<div class="summary-item"><div class="summary-label">Body-Stärke</div><div class="summary-value">${data.typo.bodyw}</div></div>
+<div class="summary-item"><div class="summary-label">Spacing</div><div class="summary-value">${data.layout.spacing}px</div></div>
+<div class="summary-item"><div class="summary-label">Container</div><div class="summary-value">${data.layout.width}px</div></div>
+<div class="summary-item"><div class="summary-label">Raster</div><div class="summary-value">${data.layout.grid}</div></div>
+<div class="summary-item"><div class="summary-label">Button-Radius</div><div class="summary-value">${data.comp.btnRadius}px</div></div>
+<div class="summary-item"><div class="summary-label">Card-Radius</div><div class="summary-value">${data.comp.cardRadius}px</div></div>
+<div class="summary-item"><div class="summary-label">Card-Shadow</div><div class="summary-value">${data.comp.cardShadow==='none'?'Kein':'Vorhanden'}</div></div>
+<div class="summary-item"><div class="summary-label">Input-Border</div><div class="summary-value">${data.comp.inputBorder}</div></div>
+<div class="summary-item"><div class="summary-label">Design-Stil</div><div class="summary-value">${styleLabels[data.mood.style]||data.mood.style}</div></div>
+<div class="summary-item"><div class="summary-label">Bild-Stil</div><div class="summary-value">${data.mood.imageStyle}</div></div>
+<div class="summary-item"><div class="summary-label">Navigation</div><div class="summary-value">${navLabels[data.app.nav]||data.app.nav}</div></div>
+<div class="summary-item"><div class="summary-label">Card-Style</div><div class="summary-value">${cardLabels[data.app.card]||data.app.card}</div></div>
+<div class="summary-item"><div class="summary-label">List-Style</div><div class="summary-value">${listLabels[data.app.list]||data.app.list}</div></div>
+`;
+}
+
+function downloadJSON(){
+const now=new Date();
+const dateStr=now.toISOString().split('T')[0];
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;
+a.download=`design-auswahl-mitarbeiter-app-${dateStr}.json`;
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function copyJSON(){
+navigator.clipboard.writeText(JSON.stringify(data,null,2));
+alert('JSON kopiert!');
+}
+
+document.querySelectorAll('.tab').forEach(t=>{
+t.onclick=()=>goToSection(parseInt(t.dataset.section));
+});
+
+init();
+</script>
 </body>
 </html>
