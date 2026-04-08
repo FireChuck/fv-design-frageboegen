@@ -3,1118 +3,664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design-Fragebogen: Mitarbeiter-App</title>
+<title>Design-Fragebogen — Mitarbeiter-App</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--p:#2196F3;--s:#4CAF50;--a:#FF9800;--bg:#FFFFFF;--sf:#F5F5F5;--tp:#212121;--ts:#757575;--se:#4CAF50;--sw:#FF9800;--er:#F44336;--ff:'Inter',sans-serif}
-body{font-family:var(--ff);background:var(--bg);color:var(--tp);padding:0;min-height:100vh}
-header{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--sf);z-index:100;padding:16px}
-.header-content{display:flex;align-items:center;justify-content:space-between;gap:16px}
-h1{font-size:20px;font-weight:600;flex-shrink:0}
-.progress-bar{flex:1;height:8px;background:var(--sf);border-radius:4px;overflow:hidden;max-width:400px}
-.progress-fill{height:100%;background:var(--p);transition:width .3s;width:0%}
-.progress-text{font-size:12px;color:var(--ts);white-space:nowrap}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:var(--sf)}
-.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s;border:2px solid transparent;background:var(--bg)}
-.tab.active{background:var(--p);color:#fff}
-.tab:hover:not(.active){border-color:var(--p)}
-main{padding:16px;max-width:1200px;margin:0 auto}
-section{display:none;animation:fadeIn .3s}
-section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--sf);border-radius:12px;padding:20px;margin-bottom:16px}
-.card h2{font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.card p{color:var(--ts);font-size:14px;margin-bottom:16px}
-label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
-.desc{font-size:12px;color:var(--ts);margin-bottom:8px}
-.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.option{padding:16px;border:2px solid var(--sf);border-radius:8px;cursor:pointer;transition:.2s;text-align:center;background:var(--bg)}
-.option:hover{border-color:var(--p)}
-.option.selected{border-color:var(--p);background:rgba(33,150,243,0.1)}
-.option-title{font-weight:500;margin-bottom:4px}
-.option-desc{font-size:11px;color:var(--ts)}
-.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
-.color-circle{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.2s;position:relative}
-.color-circle:hover{transform:scale(1.1)}
-.color-circle.selected{border-color:var(--tp)}
-.color-circle.recent::after{content:'⏱';position:absolute;top:-4px;right:-4px;font-size:10px}
-.color-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.color-preview{width:48px;height:48px;border-radius:8px;border:2px solid var(--sf)}
-.hsv-picker{display:flex;gap:16px;flex-wrap:wrap}
-.hsv-main{flex:1;min-width:250px}
-.hsv-canvas{width:100%;height:200px;border-radius:8px;cursor:crosshair}
-.hue-slider{width:100%;height:24px;border-radius:12px;margin-top:8px;cursor:pointer}
-.hsv-info{min-width:120px}
-.hsv-preview{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:2px solid var(--sf)}
-.hsv-values{text-align:center;font-size:12px;font-family:monospace}
-.slider-container{margin-bottom:16px}
-.slider{width:100%;height:6px;-webkit-appearance:none;background:var(--sf);border-radius:3px;outline:none}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--p);cursor:pointer}
-.slider-value{float:right;font-weight:600}
-.live-preview{background:var(--bg);border:2px dashed var(--sf);border-radius:12px;padding:20px;margin-top:16px}
-.live-preview h3{font-size:14px;color:var(--ts);margin-bottom:12px}
-.preview-colors{display:flex;gap:12px;margin-bottom:12px}
-.preview-tile{flex:1;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
-.preview-surface{background:var(--sf);padding:16px;border-radius:8px;margin-bottom:12px}
-.status-badges{display:flex;gap:8px}
-.badge{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:500}
-.btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.2s}
-.btn-primary{background:var(--p);color:#fff}
-.btn-primary:hover{filter:brightness(1.1)}
-.btn-secondary{background:var(--sf);color:var(--tp)}
-.btn-next{margin-top:16px;float:right}
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.summary-item{background:var(--bg);padding:12px;border-radius:8px}
-.summary-label{font-size:12px;color:var(--ts);margin-bottom:4px}
-.summary-value{font-weight:600}
-.download-btn{background:#4CAF50;color:#fff;padding:16px 32px;font-size:16px;width:100%;margin-top:16px}
-.copy-btn{background:var(--sf);color:var(--tp);padding:12px 24px;margin-top:8px;width:100%}
-@media(max-width:600px){.tabs{padding:8px}.tab{padding:8px 12px;font-size:12px}.card{padding:16px}.option-grid{grid-template-columns:repeat(2,1fr)}.color-grid{grid-template-columns:repeat(5,1fr);gap:6px}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1E88E5;--secondary:#43A047;--accent:#FFB300;
+  --font:'Inter',sans-serif;--radius:8px;
+  --bg:#FAFAFA;--text:#212121;--text-light:#757575;
+  --surface:#fff;--border:#E0E0E0;
+  --transition:0.3s ease;
+}
+html{font-size:16px;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+
+/* ── Progress Bar ── */
+.progress-bar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.progress-bar h1{font-size:15px;font-weight:600;white-space:nowrap;color:var(--text)}
+.progress-track{flex:1;height:6px;background:#E8E8E8;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);border-radius:3px;transition:width var(--transition);width:16.66%}
+.progress-step{font-size:13px;color:var(--text-light);white-space:nowrap;font-weight:500}
+
+/* ── Layout ── */
+.main-layout{display:flex;min-height:calc(100vh - 52px)}
+.panel-left{width:50%;padding:32px;overflow-y:auto;max-height:calc(100vh - 52px)}
+.panel-right{width:50%;display:flex;align-items:center;justify-content:center;padding:32px;background:#F0F0F0;overflow-y:auto;max-height:calc(100vh - 52px)}
+
+/* ── Steps ── */
+.step{display:none}
+.step.active{display:block;animation:fadeSlide 0.35s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.step-title{font-size:22px;font-weight:700;margin-bottom:4px}
+.step-desc{font-size:14px;color:var(--text-light);margin-bottom:24px}
+
+/* ── Color Section ── */
+.color-section{margin-bottom:28px}
+.color-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.color-label .current{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--border);vertical-align:middle}
+.color-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.color-circle{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all var(--transition);position:relative;flex-shrink:0}
+.color-circle:hover{transform:scale(1.15)}
+.color-circle.selected{border-color:var(--text);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--text)}
+.color-circle.custom{background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;display:flex;align-items:center;justify-content:center}
+.color-circle.custom input{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
+.color-circle.custom::after{content:'+';font-size:18px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);pointer-events:none}
+
+/* ── Font Cards ── */
+.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.font-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all var(--transition);text-align:center}
+.font-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.font-card.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.font-card-name{font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.font-card-preview{font-size:24px;font-weight:500;color:var(--text);line-height:1.3}
+
+/* ── Radius Options ── */
+.radius-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.radius-option{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px 12px;cursor:pointer;transition:all var(--transition);text-align:center}
+.radius-option:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.radius-option.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.radius-option-label{font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:12px}
+.radius-demo-box{width:100%;height:40px;background:var(--primary);margin-bottom:8px}
+.radius-demo-btn{width:100%;padding:6px;background:var(--text);color:#fff;border:none;font-size:11px;font-weight:600;cursor:default}
+
+/* ── Style/Mood Options ── */
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.mood-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all var(--transition)}
+.mood-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.mood-card.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.mood-card-label{font-size:13px;font-weight:600;text-align:center;margin-bottom:12px}
+.mood-preview-mini{height:80px;border-radius:4px;overflow:hidden;position:relative}
+
+/* Mini preview for each style */
+.mood-preview-mini.minimal{background:#fff;border:1px solid #e0e0e0;padding:8px}
+.mood-preview-mini.minimal .mini-bar{height:4px;background:#e0e0e0;border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.minimal .mini-bar:last-child{width:60%;margin-bottom:0}
+.mood-preview-mini.minimal .mini-btn{margin-top:8px;height:20px;background:#212121;border-radius:4px;width:50px}
+
+.mood-preview-mini.modern{background:linear-gradient(135deg,#667eea,#764ba2);padding:10px;border-radius:8px}
+.mood-preview-mini.modern .mini-bar{height:4px;background:rgba(255,255,255,0.4);border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.modern .mini-bar:last-child{width:55%;margin-bottom:0}
+.mood-preview-mini.modern .mini-btn{margin-top:8px;height:20px;background:rgba(255,255,255,0.9);border-radius:10px;width:50px}
+
+.mood-preview-mini.playful{background:#FFF9C4;padding:10px;border-radius:12px}
+.mood-preview-mini.playful .mini-bar{height:6px;border-radius:3px;margin-bottom:6px}
+.mood-preview-mini.playful .mini-b1{background:#FF7043}
+.mood-preview-mini.playful .mini-b2{background:#42A5F5;width:70%}
+.mood-preview-mini.playful .mini-b3{background:#66BB6A;width:45%;margin-bottom:0}
+.mood-preview-mini.playful .mini-btn{margin-top:8px;height:22px;background:#FF7043;border-radius:11px;width:55px}
+
+.mood-preview-mini.classic{background:#FAFAFA;padding:10px;border:1px solid #ccc;border-radius:2px}
+.mood-preview-mini.classic .mini-bar{height:4px;background:#ccc;border-radius:1px;margin-bottom:6px}
+.mood-preview-mini.classic .mini-bar:last-child{width:65%;margin-bottom:0}
+.mood-preview-mini.classic .mini-btn{margin-top:8px;height:20px;background:#37474F;border-radius:2px;width:50px}
+
+.mood-preview-mini.dunkel{background:#1a1a2e;padding:10px;border-radius:8px}
+.mood-preview-mini.dunkel .mini-bar{height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.dunkel .mini-bar:last-child{width:50%;margin-bottom:0}
+.mood-preview-mini.dunkel .mini-btn{margin-top:8px;height:20px;background:#BB86FC;border-radius:10px;width:50px}
+
+/* ── Textarea ── */
+.step-textarea{width:100%;min-height:160px;border:2px solid var(--border);border-radius:var(--radius);padding:16px;font-family:var(--font);font-size:15px;resize:vertical;transition:border-color var(--transition);line-height:1.6}
+.step-textarea:focus{outline:none;border-color:var(--primary)}
+
+/* ── Navigation ── */
+.nav-buttons{display:flex;gap:12px;margin-top:32px;justify-content:space-between}
+.btn{padding:12px 28px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all var(--transition);font-family:var(--font)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:2px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:var(--primary)}
+.btn-download{background:#43A047;color:#fff;padding:14px 32px;font-size:15px}
+.btn-download:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ── Phone Frame ── */
+.phone-frame{width:375px;height:667px;background:#000;border-radius:44px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3),inset 0 0 0 2px #333;position:relative;flex-shrink:0}
+.phone-frame::before{content:'';position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:28px;background:#000;border-radius:0 0 16px 16px;z-index:10}
+.phone-screen{width:100%;height:100%;border-radius:34px;overflow:hidden;overflow-y:auto;background:#fff;position:relative}
+.phone-screen::-webkit-scrollbar{display:none}
+
+/* ── Phone Content (dynamic) ── */
+.phone-statusbar{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 6px;font-size:12px;font-weight:600;position:sticky;top:0;z-index:5}
+.phone-statusbar.dark-text{color:#000}
+.phone-statusbar.light-text{color:#fff}
+.phone-header{padding:16px 20px 12px}
+.phone-header h2{font-size:20px;font-weight:700}
+.phone-header p{font-size:13px;opacity:0.7;margin-top:2px}
+.phone-card{margin:0 16px 12px;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.phone-card-title{font-size:14px;font-weight:600;margin-bottom:6px}
+.phone-card-text{font-size:12px;opacity:0.6;line-height:1.4}
+.phone-list-item{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(0,0,0,0.06)}
+.phone-list-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.phone-list-label{font-size:13px;font-weight:500}
+.phone-list-sub{font-size:11px;opacity:0.5}
+.phone-fab{position:absolute;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.2);cursor:default}
+.phone-btn{margin:12px 16px;padding:12px;text-align:center;color:#fff;font-size:14px;font-weight:600;border:none;cursor:default}
+.phone-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:8px 0 16px;background:#fff;border-top:1px solid rgba(0,0,0,0.08)}
+.phone-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;opacity:0.4}
+.phone-nav-item.active{opacity:1}
+.phone-nav-item svg{width:20px;height:20px}
+
+/* ── Summary ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.summary-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.summary-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-bottom:6px}
+.summary-value{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.summary-value .swatch{width:20px;height:20px;border-radius:50%;border:2px solid var(--border)}
+.summary-full{grid-column:1/-1}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .main-layout{flex-direction:column}
+  .panel-left,.panel-right{width:100%;max-height:none}
+  .panel-right{order:-1;padding:20px}
+  .phone-frame{transform:scale(0.7);transform-origin:top center;margin-bottom:-80px}
+  .font-grid{grid-template-columns:1fr}
+  .radius-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .panel-left{padding:20px 16px}
+  .phone-frame{transform:scale(0.55);margin-bottom:-140px}
+  .mood-grid{grid-template-columns:1fr 1fr}
+  .summary-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<header>
-<div class="header-content">
-<h1>📱 Mitarbeiter-App Design</h1>
-<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-<span class="progress-text" id="progressText">0/7</span>
-</div>
-</header>
-<nav class="tabs">
-<div class="tab active" data-section="1">🎨 Farben</div>
-<div class="tab" data-section="2">📝 Typografie</div>
-<div class="tab" data-section="3">📐 Layout</div>
-<div class="tab" data-section="4">🔧 Komponenten</div>
-<div class="tab" data-section="5">🎭 Stimmung</div>
-<div class="tab" data-section="6">📱 App-Style</div>
-<div class="tab" data-section="7">📋 Download</div>
-</nav>
-<main>
-<!-- SEKTION 1: Farben -->
-<section class="active" id="section1">
-<div class="card">
-<h2>🎨 Primärfarbe</h2>
-<p class="desc">Wird für Hauptbuttons und wichtige Elemente verwendet</p>
-<div id="recentColors1" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette1"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas1"></canvas>
-<canvas class="hue-slider" id="hueSlider1"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview1"></div>
-<div class="hsv-values"><div id="hex1">#2196F3</div><div id="hsl1">HSL(207, 90%, 54%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Sekundärfarbe</h2>
-<p class="desc">Wird für unterstützende Elemente und Akzente verwendet</p>
-<div id="recentColors2" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette2"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas2"></canvas>
-<canvas class="hue-slider" id="hueSlider2"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview2"></div>
-<div class="hsv-values"><div id="hex2">#4CAF50</div><div id="hsl2">HSL(122, 39%, 49%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Akzentfarbe</h2>
-<p class="desc">Wird für Highlights und Call-to-Action Elemente verwendet</p>
-<div id="recentColors3" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette3"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas3"></canvas>
-<canvas class="hue-slider" id="hueSlider3"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview3"></div>
-<div class="hsv-values"><div id="hex3">#FF9800</div><div id="hsl3">HSL(36, 100%, 50%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Weitere Farben</h2>
-<div class="color-row">
-<div>
-<label>Hintergrundfarbe</label>
-<p class="desc">Haupthintergrund der App</p>
-</div>
-<input type="color" id="bgColor" value="#FFFFFF" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Surface-Farbe</label>
-<p class="desc">Hintergrund für Karten und Container</p>
-</div>
-<input type="color" id="sfColor" value="#F5F5F5" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Textfarbe (Primär)</label>
-<p class="desc">Haupttextfarbe</p>
-</div>
-<input type="color" id="tpColor" value="#212121" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Textfarbe (Sekundär)</label>
-<p class="desc">Für weniger wichtige Texte</p>
-</div>
-<input type="color" id="tsColor" value="#757575" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Erfolg</label>
-<p class="desc">Für Erfolgsmeldungen</p>
-</div>
-<input type="color" id="seColor" value="#4CAF50" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Warnung</label>
-<p class="desc">Für Warnungen</p>
-</div>
-<input type="color" id="swColor" value="#FF9800" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Fehler</label>
-<p class="desc">Für Fehlermeldungen</p>
-</div>
-<input type="color" id="erColor" value="#F44336" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div class="preview-colors">
-<div class="preview-tile" id="previewP" style="background:var(--p);color:#fff">Primär</div>
-<div class="preview-tile" id="previewS" style="background:var(--s);color:#fff">Sekundär</div>
-<div class="preview-tile" id="previewA" style="background:var(--a);color:#fff">Akzent</div>
-</div>
-<div class="preview-surface">
-<div style="color:var(--tp);font-weight:600;margin-bottom:8px">Primärer Text</div>
-<div style="color:var(--ts);font-size:14px">Sekundärer Text für Beschreibungen</div>
-</div>
-<div class="status-badges">
-<div class="badge" style="background:var(--se);color:#fff">✓ Erfolg</div>
-<div class="badge" style="background:var(--sw);color:#fff">⚠ Warnung</div>
-<div class="badge" style="background:var(--er);color:#fff">✗ Fehler</div>
-</div>
-</div>
-<button class="btn btn-primary btn-next" onclick="goToSection(2)">Weiter →</button>
-</section>
 
-<!-- SEKTION 2: Typografie -->
-<section id="section2">
-<div class="card">
-<h2>📝 Schriftart</h2>
-<p>Wähle die Hauptschriftart für deine App</p>
-<div class="option-grid" id="fontGrid"></div>
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <h1>🎨 Design-Fragebogen</h1>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-step" id="progressStep">1 / 6</div>
 </div>
-<div class="card">
-<h2>📝 Schriftgrößen</h2>
-<div class="slider-container">
-<label>H1-Größe <span class="slider-value" id="h1Val">32px</span></label>
-<p class="desc">Die Größe der großen Überschriften</p>
-<input type="range" class="slider" id="h1Size" min="24" max="48" value="32">
-</div>
-<div class="slider-container">
-<label>H2-Größe <span class="slider-value" id="h2Val">24px</span></label>
-<p class="desc">Die Größe der mittleren Überschriften</p>
-<input type="range" class="slider" id="h2Size" min="18" max="36" value="24">
-</div>
-<div class="slider-container">
-<label>Body-Größe <span class="slider-value" id="bodyVal">16px</span></label>
-<p class="desc">Die Größe des Fließtextes</p>
-<input type="range" class="slider" id="bodySize" min="12" max="20" value="16">
-</div>
-<div class="slider-container">
-<label>Caption-Größe <span class="slider-value" id="captionVal">12px</span></label>
-<p class="desc">Die Größe für kleine Beschriftungen</p>
-<input type="range" class="slider" id="captionSize" min="10" max="14" value="12">
-</div>
-</div>
-<div class="card">
-<h2>📝 Schriftstärken</h2>
-<div class="slider-container">
-<label>H1-Stärke <span class="slider-value" id="h1wVal">700</span></label>
-<p class="desc">Dicke der großen Überschriften</p>
-<input type="range" class="slider" id="h1Weight" min="400" max="900" step="100" value="700">
-</div>
-<div class="slider-container">
-<label>H2-Stärke <span class="slider-value" id="h2wVal">600</span></label>
-<p class="desc">Dicke der mittleren Überschriften</p>
-<input type="range" class="slider" id="h2Weight" min="400" max="900" step="100" value="600">
-</div>
-<div class="slider-container">
-<label>Body-Stärke <span class="slider-value" id="bodywVal">400</span></label>
-<p class="desc">Dicke des Fließtextes</p>
-<input type="range" class="slider" id="bodyWeight" min="300" max="700" step="100" value="400">
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div id="typoPreview"></div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(1)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(3)">Weiter →</button>
-</section>
 
-<!-- SEKTION 3: Spacing & Layout -->
-<section id="section3">
-<div class="card">
-<h2>📐 Basis-Spacing</h2>
-<div class="slider-container">
-<label>Spacing <span class="slider-value" id="spacingVal">8px</span></label>
-<p class="desc">Bestimmt den Standard-Abstand zwischen Elementen</p>
-<input type="range" class="slider" id="spacing" min="4" max="16" value="8">
-</div>
-<div class="live-preview" id="spacingPreview"></div>
-</div>
-<div class="card">
-<h2>📐 Container-Breite</h2>
-<div class="slider-container">
-<label>Breite <span class="slider-value" id="widthVal">1200px</span></label>
-<p class="desc">Die maximale Breite des Inhaltsbereichs</p>
-<input type="range" class="slider" id="containerWidth" min="960" max="1400" value="1200">
-</div>
-<div class="live-preview" id="widthPreview"></div>
-</div>
-<div class="card">
-<h2>📐 Raster-System</h2>
-<p>Wähle das Spalten-System für das Layout</p>
-<div class="option-grid">
-<div class="option" data-value="12" onclick="selectOption(this,'grid')">
-<div class="option-title">12 Spalten</div>
-<div class="option-desc">Standard für die meisten Websites</div>
-</div>
-<div class="option" data-value="16" onclick="selectOption(this,'grid')">
-<div class="option-title">16 Spalten</div>
-<div class="option-desc">Für komplexere Layouts</div>
-</div>
-<div class="option selected" data-value="flex" onclick="selectOption(this,'grid')">
-<div class="option-title">Flexibel</div>
-<div class="option-desc">Passt sich automatisch an</div>
-</div>
-</div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(2)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(4)">Weiter →</button>
-</section>
+<!-- Main Layout -->
+<div class="main-layout">
+  <!-- Left Panel: Steps -->
+  <div class="panel-left">
 
-<!-- SEKTION 4: Komponenten -->
-<section id="section4">
-<div class="card">
-<h2>🔧 Button-Radius</h2>
-<div class="option-grid">
-<div class="option" data-value="0" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Eckige Buttons</div>
-</div>
-<div class="option selected" data-value="8" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Leicht</div>
-<div class="option-desc">Sanft abgerundet</div>
-</div>
-<div class="option" data-value="16" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittelstark abgerundet</div>
-</div>
-<div class="option" data-value="24" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Stark abgerundet</div>
-</div>
-<div class="option" data-value="50" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Rounded</div>
-<div class="option-desc">Komplett rund</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Card-Radius</h2>
-<div class="option-grid">
-<div class="option" data-value="0" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Eckige Karten</div>
-</div>
-<div class="option selected" data-value="12" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Leicht</div>
-<div class="option-desc">Sanft abgerundet</div>
-</div>
-<div class="option" data-value="20" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittelstark abgerundet</div>
-</div>
-<div class="option" data-value="28" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Stark abgerundet</div>
-</div>
-<div class="option" data-value="50" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Rounded</div>
-<div class="option-desc">Komplett rund</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Card-Shadow</h2>
-<div class="option-grid">
-<div class="option" data-value="none" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Ohne Schatten</div>
-</div>
-<div class="option selected" data-value="0 2px 8px rgba(0,0,0,0.1)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Subtil</div>
-<div class="option-desc">Leichter Schatten</div>
-</div>
-<div class="option" data-value="0 4px 16px rgba(0,0,0,0.15)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittlerer Schatten</div>
-</div>
-<div class="option" data-value="0 8px 32px rgba(0,0,0,0.2)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Ausgeprägter Schatten</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Input-Border</h2>
-<div class="option-grid">
-<div class="option selected" data-value="solid" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Solid</div>
-<div class="option-desc">Durchgehende Linie</div>
-</div>
-<div class="option" data-value="dashed" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Dashed</div>
-<div class="option-desc">Gestrichelte Linie</div>
-</div>
-<div class="option" data-value="bottom" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Nur unten</div>
-<div class="option-desc">Unterstrichener Stil</div>
-</div>
-<div class="option" data-value="none" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Ohne Rahmen</div>
-</div>
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div id="compPreview"></div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(3)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(5)">Weiter →</button>
-</section>
+    <!-- STEP 1: Colors -->
+    <div class="step active" data-step="1">
+      <h2 class="step-title">🎨 Farben</h2>
+      <p class="step-desc">Wähle die drei Hauptfarben deiner App. Kreise anklicken oder Custom wählen.</p>
 
-<!-- SEKTION 5: Design-Stimmung -->
-<section id="section5">
-<div class="card">
-<h2>🎭 Overall Style</h2>
-<p>Wähle den grundlegenden Design-Stil</p>
-<div class="option-grid">
-<div class="option" data-value="minimal" onclick="selectOption(this,'style')">
-<div class="option-title">Minimalistisch</div>
-<div class="option-desc">Wenig Schnickschnack, Fokus auf Inhalt</div>
-</div>
-<div class="option selected" data-value="modern" onclick="selectOption(this,'style')">
-<div class="option-title">Modern</div>
-<div class="option-desc">Aktuell, frisch, zeitgemäß</div>
-</div>
-<div class="option" data-value="corporate" onclick="selectOption(this,'style')">
-<div class="option-title">Corporate</div>
-<div class="option-desc">Professionell, seriös</div>
-</div>
-<div class="option" data-value="premium" onclick="selectOption(this,'style')">
-<div class="option-title">Premium</div>
-<div class="option-desc">Hochwertig, exklusiv</div>
-</div>
-<div class="option" data-value="luxury" onclick="selectOption(this,'style')">
-<div class="option-title">Luxus</div>
-<div class="option-desc">Opulent, edel</div>
-</div>
-<div class="option" data-value="dark" onclick="selectOption(this,'style')">
-<div class="option-title">Dark Mode</div>
-<div class="option-desc">Dunkles Farbschema</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎭 Bild-Stil</h2>
-<p>Welche Art von Bildern soll verwendet werden?</p>
-<div class="option-grid">
-<div class="option selected" data-value="photo" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Fotografie</div>
-<div class="option-desc">Echte Fotos von Menschen/Orten</div>
-</div>
-<div class="option" data-value="illustration" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Illustrationen</div>
-<div class="option-desc">Gezeichnete Grafiken</div>
-</div>
-<div class="option" data-value="icons" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Icons</div>
-<div class="option-desc">Symbolische Darstellungen</div>
-</div>
-<div class="option" data-value="mixed" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Gemischt</div>
-<div class="option-desc">Kombination verschiedener Stile</div>
-</div>
-</div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(4)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(6)">Weiter →</button>
-</section>
+      <div class="color-section">
+        <div class="color-label">Hauptfarbe <span class="current" id="previewPrimary" style="background:#1E88E5"></span></div>
+        <div class="color-row" data-target="primary">
+          <div class="color-circle selected" style="background:#1E88E5" data-color="#1E88E5"></div>
+          <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
+          <div class="color-circle" style="background:#42A5F5" data-color="#42A5F5"></div>
+          <div class="color-circle" style="background:#0D47A1" data-color="#0D47A1"></div>
+          <div class="color-circle custom"><input type="color" value="#1E88E5" data-target="primary"></div>
+        </div>
+      </div>
 
-<!-- SEKTION 6: App-spezifisch -->
-<section id="section6">
-<div class="card">
-<h2>📱 Navigation</h2>
-<p>Wähle die Navigationsart für die App</p>
-<div class="option-grid">
-<div class="option selected" data-value="bottom" onclick="selectOption(this,'nav')">
-<div class="option-title">Bottom Bar</div>
-<div class="option-desc">Navigation unten am Bildschirmrand</div>
-</div>
-<div class="option" data-value="top" onclick="selectOption(this,'nav')">
-<div class="option-title">Top Bar</div>
-<div class="option-desc">Navigation oben am Bildschirmrand</div>
-</div>
-<div class="option" data-value="sidebar" onclick="selectOption(this,'nav')">
-<div class="option-title">Sidebar</div>
-<div class="option-desc">Seitliches Menü</div>
-</div>
-<div class="option" data-value="tabs" onclick="selectOption(this,'nav')">
-<div class="option-title">Tab Bar</div>
-<div class="option-desc">Tabs im oberen Bereich</div>
-</div>
-</div>
-<div class="live-preview" id="navPreview"></div>
-</div>
-<div class="card">
-<h2>📱 Card Style</h2>
-<p>Wie sollen Karten in der App aussehen?</p>
-<div class="option-grid">
-<div class="option selected" data-value="elevated" onclick="selectOption(this,'appCard')">
-<div class="option-title">Elevated</div>
-<div class="option-desc">Karten mit Schatten</div>
-</div>
-<div class="option" data-value="flat" onclick="selectOption(this,'appCard')">
-<div class="option-title">Flat</div>
-<div class="option-desc">Flache Karten ohne Schatten</div>
-</div>
-<div class="option" data-value="outlined" onclick="selectOption(this,'appCard')">
-<div class="option-title">Outlined</div>
-<div class="option-desc">Karten mit Rahmen</div>
-</div>
-</div>
-<div class="live-preview" id="cardStylePreview"></div>
-</div>
-<div class="card">
-<h2>📱 List Style</h2>
-<p>Wie sollen Listen dargestellt werden?</p>
-<div class="option-grid">
-<div class="option selected" data-value="simple" onclick="selectOption(this,'listStyle')">
-<div class="option-title">Simple</div>
-<div class="option-desc">Einfache Listenansicht</div>
-</div>
-<div class="option" data-value="cards" onclick="selectOption(this,'listStyle')">
-<div class="option-title">Cards</div>
-<div class="option-desc">Als Karten dargestellt</div>
-</div>
-<div class="option" data-value="compact" onclick="selectOption(this,'listStyle')">
-<div class="option-title">Compact</div>
-<div class="option-desc">Platzsparende Ansicht</div>
-</div>
-</div>
-<div class="live-preview" id="listStylePreview"></div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(5)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(7)">Weiter →</button>
-</section>
+      <div class="color-section">
+        <div class="color-label">Sekundärfarbe <span class="current" id="previewSecondary" style="background:#43A047"></span></div>
+        <div class="color-row" data-target="secondary">
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
+          <div class="color-circle" style="background:#66BB6A" data-color="#66BB6A"></div>
+          <div class="color-circle" style="background:#1B5E20" data-color="#1B5E20"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#C62828" data-color="#C62828"></div>
+          <div class="color-circle" style="background:#EF5350" data-color="#EF5350"></div>
+          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#F57C00" data-color="#F57C00"></div>
+          <div class="color-circle" style="background:#FFA726" data-color="#FFA726"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#7B1FA2" data-color="#7B1FA2"></div>
+          <div class="color-circle" style="background:#AB47BC" data-color="#AB47BC"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#00838F" data-color="#00838F"></div>
+          <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
+          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#455A64" data-color="#455A64"></div>
+          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle custom"><input type="color" value="#43A047" data-target="secondary"></div>
+        </div>
+      </div>
 
-<!-- SEKTION 7: Zusammenfassung -->
-<section id="section7">
-<div class="card">
-<h2>📋 Zusammenfassung</h2>
-<p>Überprüfe deine Auswahl und lade die Konfiguration herunter</p>
-<div class="summary-grid" id="summary"></div>
-<button class="btn download-btn" onclick="downloadJSON()">📥 Antworten als JSON herunterladen</button>
-<button class="btn copy-btn" onclick="copyJSON()">📋 JSON kopieren</button>
+      <div class="color-section">
+        <div class="color-label">Akzentfarbe <span class="current" id="previewAccent" style="background:#FFB300"></span></div>
+        <div class="color-row" data-target="accent">
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#1E88E5" data-color="#1E88E5"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle custom"><input type="color" value="#FFB300" data-target="accent"></div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="goStep(2)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Font -->
+    <div class="step" data-step="2">
+      <h2 class="step-title">✏️ Schriftart</h2>
+      <p class="step-desc">Wähle die Haupschriftart. Jede Karte zeigt eine Live-Vorschau.</p>
+      <div class="font-grid">
+        <div class="font-card selected" data-font="'Inter',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Inter</div>
+          <div class="font-card-preview" style="font-family:'Inter',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Poppins',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Poppins</div>
+          <div class="font-card-preview" style="font-family:'Poppins',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Montserrat',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Montserrat</div>
+          <div class="font-card-preview" style="font-family:'Montserrat',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Roboto',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Roboto</div>
+          <div class="font-card-preview" style="font-family:'Roboto',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Playfair Display',serif" onclick="selectFont(this)">
+          <div class="font-card-name">Playfair Display</div>
+          <div class="font-card-preview" style="font-family:'Playfair Display',serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Space Grotesk',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Space Grotesk</div>
+          <div class="font-card-preview" style="font-family:'Space Grotesk',sans-serif">ABC abc 123</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(1)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Radius -->
+    <div class="step" data-step="3">
+      <h2 class="step-title">⬜ Eckrundung</h2>
+      <p class="step-desc">Wie abgerundet sollen Karten und Buttons sein?</p>
+      <div class="radius-grid">
+        <div class="radius-option" data-radius="0" onclick="selectRadius(this)">
+          <div class="radius-option-label">Eckig</div>
+          <div class="radius-demo-box" style="border-radius:0"></div>
+          <div class="radius-demo-btn" style="border-radius:0">Button</div>
+        </div>
+        <div class="radius-option selected" data-radius="8" onclick="selectRadius(this)">
+          <div class="radius-option-label">Leicht</div>
+          <div class="radius-demo-box" style="border-radius:8px"></div>
+          <div class="radius-demo-btn" style="border-radius:8px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="16" onclick="selectRadius(this)">
+          <div class="radius-option-label">Stark</div>
+          <div class="radius-demo-box" style="border-radius:16px"></div>
+          <div class="radius-demo-btn" style="border-radius:16px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="999" onclick="selectRadius(this)">
+          <div class="radius-option-label">Pills</div>
+          <div class="radius-demo-box" style="border-radius:999px"></div>
+          <div class="radius-demo-btn" style="border-radius:999px">Button</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(2)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(4)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Style/Mood -->
+    <div class="step" data-step="4">
+      <h2 class="step-title">🎭 Stil & Stimmung</h2>
+      <p class="step-desc">Welcher Gesamteindruck soll die App machen?</p>
+      <div class="mood-grid">
+        <div class="mood-card" data-mood="minimalistisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Minimalistisch</div>
+          <div class="mood-preview-mini minimal">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+        </div>
+        <div class="mood-card selected" data-mood="modern" onclick="selectMood(this)">
+          <div class="mood-card-label">Modern</div>
+          <div class="mood-preview-mini modern">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+        </div>
+        <div class="mood-card" data-mood="spielerisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Spielerisch</div>
+          <div class="mood-preview-mini playful">
+            <div class="mini-bar mini-b1"></div><div class="mini-bar mini-b2"></div><div class="mini-bar mini-b3"></div>
+            <div class="mini-btn"></div>
+          </div>
+        </div>
+        <div class="mood-card" data-mood="klassisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Klassisch</div>
+          <div class="mood-preview-mini classic">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+        </div>
+        <div class="mood-card" data-mood="dunkel" onclick="selectMood(this)">
+          <div class="mood-card-label">Dunkel</div>
+          <div class="mood-preview-mini dunkel">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(3)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(5)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Wishes -->
+    <div class="step" data-step="5">
+      <h2 class="step-title">💬 Wünsche & Anmerkungen</h2>
+      <p class="step-desc">Alles was dir noch wichtig ist — oder lass einfach leer.</p>
+      <textarea class="step-textarea" id="wishesText" placeholder="z.B. &quot;Schlicht, nicht zu bunt&quot; oder &quot;Im Dunkel-Modus bitte lavender Akzente&quot;..." oninput="state.wishes=this.value;updatePreview()"></textarea>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(4)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(6)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Summary -->
+    <div class="step" data-step="6">
+      <h2 class="step-title">✅ Zusammenfassung</h2>
+      <p class="step-desc">Prüfe deine Auswahl und lade das Ergebnis herunter.</p>
+      <div class="summary-grid" id="summaryGrid"></div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-download" onclick="downloadJSON()">⬇ JSON herunterladen</button>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(5)">← Zurück</button>
+        <div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Panel: Phone Preview -->
+  <div class="panel-right">
+    <div class="phone-frame">
+      <div class="phone-screen" id="phoneScreen"></div>
+    </div>
+  </div>
 </div>
-<button class="btn btn-secondary" onclick="goToSection(6)">← Zurück</button>
-</section>
-</main>
 
 <script>
-const data={
-colors:{p:'#2196F3',s:'#4CAF50',a:'#FF9800',bg:'#FFFFFF',sf:'#F5F5F5',tp:'#212121',ts:'#757575',se:'#4CAF50',sw:'#FF9800',er:'#F44336'},
-typo:{font:'Inter',h1:32,h2:24,body:16,caption:12,h1w:700,h2w:600,bodyw:400},
-layout:{spacing:8,width:1200,grid:'flex'},
-comp:{btnRadius:8,cardRadius:12,cardShadow:'0 2px 8px rgba(0,0,0,0.1)',inputBorder:'solid'},
-mood:{style:'modern',imageStyle:'photo'},
-app:{nav:'bottom',card:'elevated',list:'simple'}
+// ── State ──
+const state = {
+  primaryColor: '#1E88E5',
+  secondaryColor: '#43A047',
+  accentColor: '#FFB300',
+  fontFamily: "'Inter',sans-serif",
+  borderRadius: 8,
+  style: 'modern',
+  wishes: '',
+  currentStep: 1
 };
 
-const palette=[
-'#E53935','#C62828','#E91E63','#9C27B0','#673AB7',
-'#2196F3','#1565C0','#009688','#4CAF50','#2E7D32',
-'#FDD835','#FF9800','#795548','#9E9E9E','#424242',
-'#212121','#FFFFFF','#81D4FA','#A5D6A7','#FFF9C4',
-'#F8BBD0','#D1C4E9','#B2DFDB','#FFCCBC','#D7CCC8'
-];
-
-const fonts=[
-{n:'Inter',d:'Moderne, saubere Schrift. Gut lesbar auf allen Geräten.'},
-{n:'Roboto',d:'Google-Standardschrift. Vertraut und professionell.'},
-{n:'Open Sans',d:'Freundlich und offen. Perfekt für Apps.'},
-{n:'Lato',d:'Rund und einladend. Gute Lesbarkeit.'},
-{n:'Montserrat',d:'Geometrisch und modern. Für Headlines.'},
-{n:'Poppins',d:'Rund und modern. Beliebt für Apps.'}
-];
-
-let recentColors=[];
-const MAX_RECENT=10;
-let currentHue=[207,122,36];
-let hsvState={1:{h:207,s:0.9,v:0.54},2:{h:122,s:0.39,v:0.49},3:{h:36,s:1,v:0.5}};
-
-function init(){
-palette.forEach((c,i)=>{
-for(let n=1;n<=3;n++){
-const div=document.createElement('div');
-div.className='color-circle';
-div.style.background=c;
-div.onclick=()=>selectPreset(n,c);
-document.getElementById('palette'+n).appendChild(div);
-}
-});
-fonts.forEach((f,i)=>{
-const div=document.createElement('div');
-div.className='option'+(i===0?' selected':'');
-div.dataset.value=f.n;
-div.innerHTML=`<div class="option-title" style="font-family:'${f.n}',sans-serif">${f.n}</div><div class="option-desc">${f.d}</div>`;
-div.onclick=()=>selectOption(div,'font');
-document.getElementById('fontGrid').appendChild(div);
-});
-[1,2,3].forEach(n=>initHSV(n));
-updateProgress();
-updateTypoPreview();
-updateSpacingPreview();
-updateWidthPreview();
-updateCompPreview();
-bindSliders();
-}
-
-function initHSV(n){
-const canvas=document.getElementById('hsvCanvas'+n);
-const hueCanvas=document.getElementById('hueSlider'+n);
-const ctx=canvas.getContext('2d');
-const hctx=hueCanvas.getContext('2d');
-
-// Fix: Canvas-Größe zuverlässig setzen
-const canvasWidth=280;
-const canvasHeight=200;
-canvas.width=canvasWidth;
-canvas.height=canvasHeight;
-hueCanvas.width=canvasWidth;
-hueCanvas.height=24;
-
-let isDragging=false;
-let isHueDragging=false;
-
-function drawSV(){
-const h=hsvState[n].h;
-const grad=ctx.createLinearGradient(0,0,canvas.width,0);
-grad.addColorStop(0,'#fff');
-grad.addColorStop(1,`hsl(${h},100%,50%)`);
-ctx.fillStyle=grad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
-vGrad.addColorStop(0,'transparent');
-vGrad.addColorStop(1,'#000');
-ctx.fillStyle=vGrad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-drawIndicator();
-}
-
-function drawIndicator(){
-const s=hsvState[n].s;
-const v=hsvState[n].v;
-const x=s*canvas.width;
-const y=(1-v)*canvas.height;
-ctx.strokeStyle='#fff';
-ctx.lineWidth=3;
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.stroke();
-ctx.strokeStyle='#000';
-ctx.lineWidth=1;
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.stroke();
-ctx.beginPath();
-ctx.arc(x,y,8,0,Math.PI*2);
-ctx.fillStyle='#fff';
-ctx.fill();
-}
-
-function updateColor(){
-const h=hsvState[n].h;
-const s=hsvState[n].s;
-const v=hsvState[n].v;
-const rgb=hsvToRgb(h,s*100,v*100);
-const hex=rgbToHex(rgb.r,rgb.g,rgb.b);
-const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
-document.getElementById('hsvPreview'+n).style.background=hex;
-document.getElementById('hex'+n).textContent=hex;
-document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-setColor(n,hex);
-addRecentColor(hex);
-}
-drawSV();
-
-canvas.addEventListener('mousedown',e=>{isDragging=true;handleSV(e)});
-canvas.addEventListener('mousemove',e=>{if(isDragging)handleSV(e)});
-canvas.addEventListener('mouseup',()=>isDragging=false);
-canvas.addEventListener('mouseleave',()=>isDragging=false);
-canvas.addEventListener('touchstart',e=>{isDragging=true;handleSV(e.touches[0])},{passive:true});
-canvas.addEventListener('touchmove',e=>{if(isDragging)handleSV(e.touches[0])},{passive:true});
-canvas.addEventListener('touchend',()=>isDragging=false);
-canvas.addEventListener('touchcancel',()=>isDragging=false);
-
-hueCanvas.addEventListener('mousedown',e=>{isHueDragging=true;handleH(e)});
-hueCanvas.addEventListener('mousemove',e=>{if(isHueDragging)handleH(e)});
-hueCanvas.addEventListener('mouseup',()=>isHueDragging=false);
-hueCanvas.addEventListener('mouseleave',()=>isHueDragging=false);
-hueCanvas.addEventListener('click',handleH);
-hueCanvas.addEventListener('touchstart',e=>{isHueDragging=true;handleH(e.touches[0])},{passive:true});
-hueCanvas.addEventListener('touchmove',e=>{if(isHueDragging){e.preventDefault();handleH(e.touches[0])}},{passive:false});
-hueCanvas.addEventListener('touchend',()=>isHueDragging=false);
-
-function handleSV(e){
-const rect=canvas.getBoundingClientRect();
-const s=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
-const v=Math.max(0,Math.min(1,1-(e.clientY-rect.top)/rect.height));
-hsvState[n].s=s;
-hsvState[n].v=v;
-drawSV();
-updateColor();
-}
-function handleH(e){
-const rect=hueCanvas.getBoundingClientRect();
-const h=Math.round((e.clientX-rect.left)/rect.width*360);
-hsvState[n].h=h;
-currentHue[n-1]=h;
-drawSV();
-updateColor();
-}
-}
-
-function hsvToRgb(h,s,v){
-s/=100;v/=100;
-const i=Math.floor(h/60),f=h/60-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
-let r,g,b;
-switch(i%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q}
-return{r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255)};
-}
-
-function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
-function hexToRgb(hex){
-const result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-return result?{r:parseInt(result[1],16),g:parseInt(result[2],16),b:parseInt(result[3],16)}:{r:0,g:0,b:0};
-}
-function rgbToHsv(r,g,b){
-r/=255;g/=255;b/=255;
-const max=Math.max(r,g,b),min=Math.min(r,g,b);
-let h,s,v=max;
-const d=max-min;
-s=max===0?0:d/max;
-if(max===min){h=0}else{
-switch(max){
-case r:h=((g-b)/d+(g<b?6:0))%6;break;
-case g:h=((b-r)/d+2);break;
-case b:h=((r-g)/d+4);break;
-}
-h=Math.round(h*60);
-}
-return{h:h,s:Math.round(s*100),v:Math.round(v*100)};
-}
-function rgbToHsl(r,g,b){
-r/=255;g/=255;b/=255;
-const max=Math.max(r,g,b),min=Math.min(r,g,b);
-let h,s,l=(max+min)/2;
-if(max===min){h=s=0}else{
-const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
-switch(max){case r:h=((g-b)/d+(g<b?6:0))*60;break;case g:h=((b-r)/d+2)*60;break;case b:h=((r-g)/d+4)*60}
-}
-return{h:Math.round(h),s:Math.round(s*100),l:Math.round(l*100)};
-}
-
-function addRecentColor(hex){
-if(recentColors.includes(hex)){
-recentColors=recentColors.filter(c=>c!==hex);
-}
-recentColors.unshift(hex);
-if(recentColors.length>MAX_RECENT)recentColors.pop();
-updateRecentDisplay();
-}
-
-function updateRecentDisplay(){
-[1,2,3].forEach(n=>{
-const container=document.getElementById('recentColors'+n);
-if(recentColors.length===0){
-container.style.display='none';
-return;
-}
-container.style.display='grid';
-container.innerHTML='';
-recentColors.forEach(c=>{
-const div=document.createElement('div');
-div.className='color-circle recent';
-div.style.background=c;
-div.onclick=()=>selectPreset(n,c);
-container.appendChild(div);
-});
-});
-}
-
-function selectPreset(n,color){
-setColor(n,color);
-document.getElementById('hsvPreview'+n).style.background=color;
-const rgb=hexToRgb(color);
-const hsv=rgbToHsv(rgb.r,rgb.g,rgb.b);
-hsvState[n].h=hsv.h;
-hsvState[n].s=hsv.s/100;
-hsvState[n].v=hsv.v/100;
-currentHue[n-1]=hsv.h;
-const canvas=document.getElementById('hsvCanvas'+n);
-if(canvas){
-const ctx=canvas.getContext('2d');
-const h=hsvState[n].h;
-const grad=ctx.createLinearGradient(0,0,canvas.width,0);
-grad.addColorStop(0,'#fff');
-grad.addColorStop(1,`hsl(${h},100%,50%)`);
-ctx.fillStyle=grad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
-vGrad.addColorStop(0,'transparent');
-vGrad.addColorStop(1,'#000');
-ctx.fillStyle=vGrad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-const s=hsvState[n].s;
-const v=hsvState[n].v;
-const x=s*canvas.width;
-const y=(1-v)*canvas.height;
-ctx.strokeStyle='#fff';
-ctx.lineWidth=3;
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.stroke();
-ctx.strokeStyle='#000';
-ctx.lineWidth=1;
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.stroke();
-}
-const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
-document.getElementById('hex'+n).textContent=color;
-document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-addRecentColor(color);
-}
-
-function setColor(n,color){
-const key=n===1?'p':n===2?'s':'a';
-data.colors[key]=color;
-document.documentElement.style.setProperty('--'+key,color);
-updateColorPreviews();
-}
-
-function updateColorPreviews(){
-['p','s','a'].forEach(k=>{
-const el=document.getElementById('preview'+k.toUpperCase());
-if(el)el.style.background='var(--'+k+')';
-});
-}
-
-function selectOption(el,group){
-const parent=el.parentElement;
-parent.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
-el.classList.add('selected');
-const val=el.dataset.value;
-if(group==='font'){data.typo.font=val;updateTypoPreview()}
-else if(group==='grid')data.layout.grid=val;
-else if(group==='btnRadius')data.comp.btnRadius=parseInt(val);
-else if(group==='cardRadius')data.comp.cardRadius=parseInt(val);
-else if(group==='cardShadow')data.comp.cardShadow=val;
-else if(group==='inputBorder')data.comp.inputBorder=val;
-else if(group==='style')data.mood.style=val;
-else if(group==='imageStyle')data.mood.imageStyle=val;
-else if(group==='nav'){data.app.nav=val;updateNavPreview()}
-else if(group==='appCard'){data.app.card=val;updateCardStylePreview()}
-else if(group==='listStyle'){data.app.list=val;updateListStylePreview()}
-if(group==='btnRadius'||group==='cardRadius'||group==='cardShadow'||group==='inputBorder')updateCompPreview();
-}
-
-function bindSliders(){
-const binds=[
-['h1Size','h1Val','px',v=>{data.typo.h1=v;updateTypoPreview()}],
-['h2Size','h2Val','px',v=>{data.typo.h2=v;updateTypoPreview()}],
-['bodySize','bodyVal','px',v=>{data.typo.body=v;updateTypoPreview()}],
-['captionSize','captionVal','px',v=>{data.typo.caption=v;updateTypoPreview()}],
-['h1Weight','h1wVal','',v=>{data.typo.h1w=v;updateTypoPreview()}],
-['h2Weight','h2wVal','',v=>{data.typo.h2w=v;updateTypoPreview()}],
-['bodyWeight','bodywVal','',v=>{data.typo.bodyw=v;updateTypoPreview()}],
-['spacing','spacingVal','px',v=>{data.layout.spacing=v;updateSpacingPreview()}],
-['containerWidth','widthVal','px',v=>{data.layout.width=v;updateWidthPreview()}]
-];
-binds.forEach(([id,valId,unit,cb])=>{
-const el=document.getElementById(id);
-if(el)el.oninput=()=>{document.getElementById(valId).textContent=el.value+unit;cb(parseInt(el.value))};
-});
-['bgColor','sfColor','tpColor','tsColor','seColor','swColor','erColor'].forEach(id=>{
-const el=document.getElementById(id);
-if(el)el.oninput=()=>{
-const k=id.replace('Color','').replace('sf','sf').replace('tp','tp').replace('ts','ts').replace('se','se').replace('sw','sw').replace('er','er').replace('bg','bg');
-data.colors[k]=el.value;
-document.documentElement.style.setProperty('--'+k,el.value);
-};
-});
-}
-
-function updateTypoPreview(){
-const d=document.getElementById('typoPreview');
-if(!d)return;
-d.innerHTML=`
-<h1 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h1}px;font-weight:${data.typo.h1w}">H1 Überschrift</h1>
-<h2 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h2}px;font-weight:${data.typo.h2w};margin-top:12px">H2 Überschrift</h2>
-<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.body}px;font-weight:${data.typo.bodyw};margin-top:12px">Body Text für normale Inhalte</p>
-<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.caption}px;color:var(--ts);margin-top:12px">Caption Text für kleine Beschriftungen</p>
-`;
-}
-
-function updateSpacingPreview(){
-const d=document.getElementById('spacingPreview');
-if(!d)return;
-const s=data.layout.spacing;
-d.innerHTML=`<div style="display:flex;gap:${s}px">
-<div style="flex:1;height:40px;background:var(--p);opacity:0.3;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);opacity:0.5;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);opacity:0.7;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);border-radius:4px"></div>
-</div>`;
-}
-
-function updateWidthPreview(){
-const d=document.getElementById('widthPreview');
-if(!d)return;
-const w=data.layout.width;
-d.innerHTML=`<div style="background:var(--sf);border:2px dashed var(--p);border-radius:8px;max-width:100%;padding:12px;text-align:center">
-<div style="background:var(--p);color:#fff;padding:8px;border-radius:4px;display:inline-block">${w}px Container</div>
-</div>`;
-}
-
-function updateCompPreview(){
-const d=document.getElementById('compPreview');
-if(!d)return;
-const br=data.comp.btnRadius;
-const cr=data.comp.cardRadius;
-const cs=data.comp.cardShadow;
-const ib=data.comp.inputBorder;
-let borderStyle='2px solid var(--ts)';
-if(ib==='dashed')borderStyle='2px dashed var(--ts)';
-else if(ib==='bottom')borderStyle='none;border-bottom:2px solid var(--ts)';
-else if(ib==='none')borderStyle='none';
-d.innerHTML=`
-<button style="background:var(--p);color:#fff;border:none;padding:12px 24px;border-radius:${br}px;cursor:pointer;font-size:14px">Button</button>
-<div style="background:var(--bg);padding:16px;border-radius:${cr}px;box-shadow:${cs};margin:16px 0">
-<div style="font-weight:600">Karte</div>
-<div style="font-size:12px;color:var(--ts)">Beispielinhalt</div>
-</div>
-<input type="text" placeholder="Input-Feld" style="width:100%;padding:12px;border:${borderStyle};border-radius:${br}px;font-size:14px;background:var(--bg)">
-`;
-}
-
-function updateNavPreview(){
-const d=document.getElementById('navPreview');
-if(!d)return;
-const nav=data.app.nav;
-const p=data.colors.p;
-let html='';
-if(nav==='bottom'){
-html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
-<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div>
-<div style="position:absolute;bottom:0;left:0;right:0;height:48px;background:var(--sf);display:flex;justify-content:space-around;align-items:center;border-top:1px solid #ddd">
-<span style="color:${p}">🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
-</div></div>`;
-}else if(nav==='top'){
-html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
-<div style="height:48px;background:${p};display:flex;justify-content:space-around;align-items:center;color:#fff">
-<span>🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
-</div>
-<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
-}else if(nav==='sidebar'){
-html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden;display:flex">
-<div style="width:48px;background:var(--sf);display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:8px">
-<span style="color:${p}">🏠</span><span>📊</span><span>👤</span><span>⚙️</span>
-</div>
-<div style="flex:1;padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
-}else if(nav==='tabs'){
-html=`<div style="position:relative;height:120px;background:var(--bg);border-radius:8px;overflow:hidden">
-<div style="display:flex;border-bottom:2px solid var(--sf)">
-<div style="flex:1;padding:12px;text-align:center;background:${p};color:#fff;font-size:11px">Home</div>
-<div style="flex:1;padding:12px;text-align:center;font-size:11px">Stats</div>
-<div style="flex:1;padding:12px;text-align:center;font-size:11px">Profile</div>
-</div>
-<div style="padding:12px;text-align:center;color:var(--ts);font-size:12px">App-Inhalt</div></div>`;
-}
-d.innerHTML=html;
-}
-
-function updateCardStylePreview(){
-const d=document.getElementById('cardStylePreview');
-if(!d)return;
-const style=data.app.card;
-let cardStyle='';
-if(style==='elevated')cardStyle='background:var(--sf);box-shadow:0 4px 12px rgba(0,0,0,0.15);border:none;border-radius:12px';
-else if(style==='flat')cardStyle='background:var(--sf);box-shadow:none;border:none;border-radius:12px';
-else if(style==='outlined')cardStyle='background:var(--bg);box-shadow:none;border:2px solid var(--sf);border-radius:12px';
-d.innerHTML=`<div style="display:flex;gap:12px">
-<div style="flex:1;padding:16px;${cardStyle}">
-<div style="font-weight:600;margin-bottom:4px">Card Title</div>
-<div style="font-size:12px;color:var(--ts)">Elevated Style</div>
-</div>
-<div style="flex:1;padding:16px;${cardStyle}">
-<div style="font-weight:600;margin-bottom:4px">Another Card</div>
-<div style="font-size:12px;color:var(--ts)">Preview</div>
-</div>
-</div>`;
-}
-
-function updateListStylePreview(){
-const d=document.getElementById('listStylePreview');
-if(!d)return;
-const style=data.app.list;
-let html='';
-if(style==='simple'){
-html=`<div style="background:var(--sf);border-radius:8px;overflow:hidden">
-<div style="padding:12px;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:12px">
-<div style="width:32px;height:32px;background:var(--p);border-radius:50%"></div>
-<div><div style="font-weight:500">Item 1</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
-</div>
-<div style="padding:12px;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:12px">
-<div style="width:32px;height:32px;background:var(--s);border-radius:50%"></div>
-<div><div style="font-weight:500">Item 2</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
-</div>
-<div style="padding:12px;display:flex;align-items:center;gap:12px">
-<div style="width:32px;height:32px;background:var(--a);border-radius:50%"></div>
-<div><div style="font-weight:500">Item 3</div><div style="font-size:11px;color:var(--ts)">Beschreibung</div></div>
-</div>
-</div>`;
-}else if(style==='cards'){
-html=`<div style="display:flex;flex-direction:column;gap:8px">
-<div style="background:var(--sf);padding:12px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);display:flex;align-items:center;gap:12px">
-<div style="width:40px;height:40px;background:var(--p);border-radius:8px"></div>
-<div><div style="font-weight:600">Card Item 1</div><div style="font-size:11px;color:var(--ts)">Mit mehr Platz</div></div>
-</div>
-<div style="background:var(--sf);padding:12px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);display:flex;align-items:center;gap:12px">
-<div style="width:40px;height:40px;background:var(--s);border-radius:8px"></div>
-<div><div style="font-weight:600">Card Item 2</div><div style="font-size:11px;color:var(--ts)">Als Karten</div></div>
-</div>
-</div>`;
-}else if(style==='compact'){
-html=`<div style="background:var(--sf);border-radius:8px;overflow:hidden">
-<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 1</div>
-<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 2</div>
-<div style="padding:8px 12px;border-bottom:1px solid var(--bg);font-size:13px">📄 Item 3</div>
-<div style="padding:8px 12px;font-size:13px">📄 Item 4</div>
-</div>`;
-}
-d.innerHTML=html;
-}
-
-function goToSection(n){
-document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById('section'+n).classList.add('active');
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelector(`.tab[data-section="${n}"]`).classList.add('active');
-if(n===7)renderSummary();
-updateProgress();
-window.scrollTo(0,0);
-}
-
-function updateProgress(){
-let filled=0;
-for(let i=1;i<=6;i++)filled++;
-document.getElementById('progress').style.width=(filled/7*100)+'%';
-document.getElementById('progressText').textContent=filled+'/7';
-}
-
-function renderSummary(){
-const s=document.getElementById('summary');
-const navLabels={bottom:'Bottom Bar',top:'Top Bar',sidebar:'Sidebar',tabs:'Tab Bar'};
-const styleLabels={minimal:'Minimalistisch',modern:'Modern',corporate:'Corporate',premium:'Premium',luxury:'Luxus',dark:'Dark Mode'};
-const cardLabels={elevated:'Elevated',flat:'Flat',outlined:'Outlined'};
-const listLabels={simple:'Simple',cards:'Cards',compact:'Compact'};
-s.innerHTML=`
-<div class="summary-item"><div class="summary-label">Primärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.p};vertical-align:middle;margin-right:8px"></span>${data.colors.p}</div></div>
-<div class="summary-item"><div class="summary-label">Sekundärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.s};vertical-align:middle;margin-right:8px"></span>${data.colors.s}</div></div>
-<div class="summary-item"><div class="summary-label">Akzentfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.a};vertical-align:middle;margin-right:8px"></span>${data.colors.a}</div></div>
-<div class="summary-item"><div class="summary-label">Hintergrund</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.bg};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.bg}</div></div>
-<div class="summary-item"><div class="summary-label">Surface</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sf};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.sf}</div></div>
-<div class="summary-item"><div class="summary-label">Text (Primär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.tp};vertical-align:middle;margin-right:8px"></span>${data.colors.tp}</div></div>
-<div class="summary-item"><div class="summary-label">Text (Sekundär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.ts};vertical-align:middle;margin-right:8px"></span>${data.colors.ts}</div></div>
-<div class="summary-item"><div class="summary-label">Erfolg</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.se};vertical-align:middle;margin-right:8px"></span>${data.colors.se}</div></div>
-<div class="summary-item"><div class="summary-label">Warnung</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sw};vertical-align:middle;margin-right:8px"></span>${data.colors.sw}</div></div>
-<div class="summary-item"><div class="summary-label">Fehler</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.er};vertical-align:middle;margin-right:8px"></span>${data.colors.er}</div></div>
-<div class="summary-item"><div class="summary-label">Schriftart</div><div class="summary-value">${data.typo.font}</div></div>
-<div class="summary-item"><div class="summary-label">H1-Größe</div><div class="summary-value">${data.typo.h1}px</div></div>
-<div class="summary-item"><div class="summary-label">H2-Größe</div><div class="summary-value">${data.typo.h2}px</div></div>
-<div class="summary-item"><div class="summary-label">Body-Größe</div><div class="summary-value">${data.typo.body}px</div></div>
-<div class="summary-item"><div class="summary-label">Caption-Größe</div><div class="summary-value">${data.typo.caption}px</div></div>
-<div class="summary-item"><div class="summary-label">H1-Stärke</div><div class="summary-value">${data.typo.h1w}</div></div>
-<div class="summary-item"><div class="summary-label">H2-Stärke</div><div class="summary-value">${data.typo.h2w}</div></div>
-<div class="summary-item"><div class="summary-label">Body-Stärke</div><div class="summary-value">${data.typo.bodyw}</div></div>
-<div class="summary-item"><div class="summary-label">Spacing</div><div class="summary-value">${data.layout.spacing}px</div></div>
-<div class="summary-item"><div class="summary-label">Container</div><div class="summary-value">${data.layout.width}px</div></div>
-<div class="summary-item"><div class="summary-label">Raster</div><div class="summary-value">${data.layout.grid}</div></div>
-<div class="summary-item"><div class="summary-label">Button-Radius</div><div class="summary-value">${data.comp.btnRadius}px</div></div>
-<div class="summary-item"><div class="summary-label">Card-Radius</div><div class="summary-value">${data.comp.cardRadius}px</div></div>
-<div class="summary-item"><div class="summary-label">Card-Shadow</div><div class="summary-value">${data.comp.cardShadow==='none'?'Kein':'Vorhanden'}</div></div>
-<div class="summary-item"><div class="summary-label">Input-Border</div><div class="summary-value">${data.comp.inputBorder}</div></div>
-<div class="summary-item"><div class="summary-label">Design-Stil</div><div class="summary-value">${styleLabels[data.mood.style]||data.mood.style}</div></div>
-<div class="summary-item"><div class="summary-label">Bild-Stil</div><div class="summary-value">${data.mood.imageStyle}</div></div>
-<div class="summary-item"><div class="summary-label">Navigation</div><div class="summary-value">${navLabels[data.app.nav]||data.app.nav}</div></div>
-<div class="summary-item"><div class="summary-label">Card-Style</div><div class="summary-value">${cardLabels[data.app.card]||data.app.card}</div></div>
-<div class="summary-item"><div class="summary-label">List-Style</div><div class="summary-value">${listLabels[data.app.list]||data.app.list}</div></div>
-`;
-}
-
-function downloadJSON(){
-const now=new Date();
-const dateStr=now.toISOString().split('T')[0];
-const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a');
-a.href=url;
-a.download=`design-auswahl-mitarbeiter-app-${dateStr}.json`;
-a.click();
-URL.revokeObjectURL(url);
-}
-
-function copyJSON(){
-navigator.clipboard.writeText(JSON.stringify(data,null,2));
-alert('JSON kopiert!');
-}
-
-document.querySelectorAll('.tab').forEach(t=>{
-t.onclick=()=>goToSection(parseInt(t.dataset.section));
+// ── Color Selection ──
+document.querySelectorAll('.color-row').forEach(row => {
+  const target = row.dataset.target;
+  row.querySelectorAll('.color-circle[data-color]').forEach(circle => {
+    circle.addEventListener('click', () => {
+      row.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+      circle.classList.add('selected');
+      const color = circle.dataset.color;
+      state[target + 'Color'] = color;
+      if (target === 'primary') document.getElementById('previewPrimary').style.background = color;
+      if (target === 'secondary') document.getElementById('previewSecondary').style.background = color;
+      if (target === 'accent') document.getElementById('previewAccent').style.background = color;
+      updatePreview();
+    });
+  });
+  row.querySelectorAll('input[type=color]').forEach(input => {
+    input.addEventListener('input', () => {
+      const color = input.value;
+      state[input.dataset.target + 'Color'] = color;
+      row.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+      input.parentElement.classList.add('selected');
+      if (input.dataset.target === 'primary') document.getElementById('previewPrimary').style.background = color;
+      if (input.dataset.target === 'secondary') document.getElementById('previewSecondary').style.background = color;
+      if (input.dataset.target === 'accent') document.getElementById('previewAccent').style.background = color;
+      updatePreview();
+    });
+  });
 });
 
-init();
+// ── Font Selection ──
+function selectFont(el) {
+  document.querySelectorAll('.font-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.fontFamily = el.dataset.font;
+  updatePreview();
+}
+
+// ── Radius Selection ──
+function selectRadius(el) {
+  document.querySelectorAll('.radius-option').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.borderRadius = parseInt(el.dataset.radius);
+  updatePreview();
+}
+
+// ── Mood Selection ──
+function selectMood(el) {
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.style = el.dataset.mood;
+  updatePreview();
+}
+
+// ── Step Navigation ──
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  state.currentStep = n;
+  document.getElementById('progressFill').style.width = ((n / 6) * 100) + '%';
+  document.getElementById('progressStep').textContent = n + ' / 6';
+  if (n === 6) buildSummary();
+}
+
+// ── Phone Preview ──
+function updatePreview() {
+  const s = state;
+  const r = s.borderRadius;
+  const dark = s.style === 'dunkel';
+  const playful = s.style === 'spielerisch';
+  const minimal = s.style === 'minimalistisch';
+  const klassisch = s.style === 'klassisch';
+  const modern = s.style === 'modern';
+
+  let bg, headerBg, cardBg, textCol, textLight, listBorder, navBg, navBorder;
+
+  if (dark) {
+    bg = '#121212'; headerBg = '#1E1E1E'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; listBorder = 'rgba(255,255,255,0.06)'; navBg = '#1A1A1A'; navBorder = 'rgba(255,255,255,0.08)';
+  } else if (minimal) {
+    bg = '#FFFFFF'; headerBg = '#FFFFFF'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; listBorder = '#F0F0F0'; navBg = '#fff'; navBorder = '#eee';
+  } else if (klassisch) {
+    bg = '#F5F5F0'; headerBg = '#FAFAF5'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; listBorder = '#E8E8E0'; navBg = '#FAFAF5'; navBorder = '#DDD';
+  } else if (playful) {
+    bg = '#FFFDE7'; headerBg = '#FFF9C4'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; listBorder = '#F0E8C0'; navBg = '#FFFDE7'; navBorder = '#F0E8C0';
+  } else {
+    bg = '#F5F7FA'; headerBg = s.primaryColor; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; listBorder = '#ECEFF4'; navBg = '#fff'; navBorder = '#E0E0E0';
+  }
+
+  const headerText = (dark || modern) ? '#fff' : textCol;
+  const headerSubText = (dark || modern) ? 'rgba(255,255,255,0.7)' : textLight;
+
+  const navIconCol = dark ? s.primaryColor : textLight;
+  const navActiveCol = dark ? s.primaryColor : s.primaryColor;
+
+  const screen = document.getElementById('phoneScreen');
+  screen.innerHTML = `
+    <div style="background:${bg};min-height:100%;padding-bottom:70px;font-family:${s.fontFamily}">
+      <!-- Status Bar -->
+      <div class="phone-statusbar ${(dark || modern) ? 'light-text' : 'dark-text'}" style="background:${modern ? s.primaryColor : (dark ? '#121212' : bg)}">
+        <span>9:41</span>
+        <span>📶 🔋</span>
+      </div>
+      <!-- Header -->
+      <div class="phone-header" style="background:${headerBg}">
+        <h2 style="color:${headerText}">Mitarbeiter Portal</h2>
+        <p style="color:${headerSubText}">Willkommen zurück, Max 👋</p>
+      </div>
+      ${modern ? `<div style="height:3px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor})"></div>` : ''}
+
+      <!-- Cards -->
+      <div style="padding-top:12px">
+        <div class="phone-card" style="background:${cardBg};border-radius:${r}px;border-left:4px solid ${s.primaryColor}">
+          <div class="phone-card-title" style="color:${textCol}">📦 Schichten diese Woche</div>
+          <div class="phone-card-text" style="color:${textLight}">3 von 5 eingeplant · Nächste: Mo 08:00</div>
+        </div>
+        <div class="phone-card" style="background:${cardBg};border-radius:${r}px;border-left:4px solid ${s.secondaryColor}">
+          <div class="phone-card-title" style="color:${textCol}">📋 Offene Aufgaben</div>
+          <div class="phone-card-text" style="color:${textLight}">2 Aufgaben warten auf dich</div>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div style="margin-top:8px">
+        <div class="phone-list-item" style="border-color:${listBorder}">
+          <div class="phone-list-icon" style="background:${s.primaryColor}20;color:${s.primaryColor};border-radius:${r}px">📊</div>
+          <div><div class="phone-list-label" style="color:${textCol}">Auswertung</div><div class="phone-list-sub" style="color:${textLight}">Monatsübersicht</div></div>
+        </div>
+        <div class="phone-list-item" style="border-color:${listBorder}">
+          <div class="phone-list-icon" style="background:${s.secondaryColor}20;color:${s.secondaryColor};border-radius:${r}px">💬</div>
+          <div><div class="phone-list-label" style="color:${textCol}">Nachrichten</div><div class="phone-list-sub" style="color:${textLight}">3 ungelesen</div></div>
+        </div>
+        <div class="phone-list-item" style="border-color:${listBorder}">
+          <div class="phone-list-icon" style="background:${s.accentColor}20;color:${s.accentColor};border-radius:${r}px">⚙️</div>
+          <div><div class="phone-list-label" style="color:${textCol}">Einstellungen</div><div class="phone-list-sub" style="color:${textLight}">Profil & mehr</div></div>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="phone-btn" style="background:${s.primaryColor};color:#fff;border-radius:${r}px">Neue Schicht anlegen</div>
+
+      <!-- FAB -->
+      <div class="phone-fab" style="background:${s.accentColor};border-radius:50%">+</div>
+
+      <!-- Bottom Nav -->
+      <div class="phone-nav" style="background:${navBg};border-color:${navBorder}">
+        <div class="phone-nav-item active" style="color:${navActiveCol}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span>Home</span>
+        </div>
+        <div class="phone-nav-item" style="color:${navIconCol}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <span>Plan</span>
+        </div>
+        <div class="phone-nav-item" style="color:${navIconCol}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+          <span>Chat</span>
+        </div>
+        <div class="phone-nav-item" style="color:${navIconCol}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span>Profil</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Summary ──
+function buildSummary() {
+  const s = state;
+  const moodLabels = {minimalistisch:'Minimalistisch',modern:'Modern',spielerisch:'Spielerisch',klassisch:'Klassisch',dunkel:'Dunkel'};
+  const radiusLabels = {0:'Eckig (0px)',8:'Leicht (8px)',16:'Stark (16px)',999:'Pills'};
+  const fontNames = {
+    "'Inter',sans-serif":'Inter',
+    "'Poppins',sans-serif":'Poppins',
+    "'Montserrat',sans-serif":'Montserrat',
+    "'Roboto',sans-serif":'Roboto',
+    "'Playfair Display',serif":'Playfair Display',
+    "'Space Grotesk',sans-serif":'Space Grotesk'
+  };
+
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="summary-item">
+      <div class="summary-label">Hauptfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.primaryColor}"></span>${s.primaryColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Sekundärfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.secondaryColor}"></span>${s.secondaryColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Akzentfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.accentColor}"></span>${s.accentColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Schriftart</div>
+      <div class="summary-value">${fontNames[s.fontFamily] || s.fontFamily}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Eckrundung</div>
+      <div class="summary-value">${radiusLabels[s.borderRadius] || s.borderRadius + 'px'}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Stil</div>
+      <div class="summary-value">${moodLabels[s.style] || s.style}</div>
+    </div>
+    ${s.wishes ? `<div class="summary-item summary-full"><div class="summary-label">Wünsche</div><div class="summary-value" style="font-weight:400;font-size:14px">${escapeHTML(s.wishes)}</div></div>` : ''}
+  `;
+}
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── JSON Download ──
+function downloadJSON() {
+  const s = state;
+  const fontNames = {
+    "'Inter',sans-serif":'Inter',
+    "'Poppins',sans-serif":'Poppins',
+    "'Montserrat',sans-serif":'Montserrat',
+    "'Roboto',sans-serif":'Roboto',
+    "'Playfair Display',serif":'Playfair Display',
+    "'Space Grotesk',sans-serif":'Space Grotesk'
+  };
+  const data = {
+    primaryColor: s.primaryColor,
+    secondaryColor: s.secondaryColor,
+    accentColor: s.accentColor,
+    fontFamily: fontNames[s.fontFamily] || s.fontFamily,
+    borderRadius: s.borderRadius + 'px',
+    style: s.style,
+    wishes: s.wishes
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fv-design-fragebogen-mitarbeiter-app.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Init ──
+updatePreview();
 </script>
 </body>
 </html>

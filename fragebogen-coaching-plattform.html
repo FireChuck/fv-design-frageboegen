@@ -3,1059 +3,735 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design-Fragebogen: Coaching-Plattform</title>
+<title>Design-Fragebogen — Coaching-Plattform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--p:#2196F3;--s:#4CAF50;--a:#FF9800;--bg:#FFFFFF;--sf:#F5F5F5;--tp:#212121;--ts:#757575;--se:#4CAF50;--sw:#FF9800;--er:#F44336;--ff:'Inter',sans-serif}
-body{font-family:var(--ff);background:var(--bg);color:var(--tp);padding:0;min-height:100vh}
-header{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--sf);z-index:100;padding:16px}
-.header-content{display:flex;align-items:center;justify-content:space-between;gap:16px}
-h1{font-size:20px;font-weight:600;flex-shrink:0}
-.progress-bar{flex:1;height:8px;background:var(--sf);border-radius:4px;overflow:hidden;max-width:400px}
-.progress-fill{height:100%;background:var(--p);transition:width .3s;width:0%}
-.progress-text{font-size:12px;color:var(--ts);white-space:nowrap}
-.tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:var(--sf)}
-.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;white-space:nowrap;transition:.2s;border:2px solid transparent;background:var(--bg)}
-.tab.active{background:var(--p);color:#fff}
-.tab:hover:not(.active){border-color:var(--p)}
-main{padding:16px;max-width:1200px;margin:0 auto}
-section{display:none;animation:fadeIn .3s}
-section.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--sf);border-radius:12px;padding:20px;margin-bottom:16px}
-.card h2{font-size:18px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.card p{color:var(--ts);font-size:14px;margin-bottom:16px}
-label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
-.desc{font-size:12px;color:var(--ts);margin-bottom:8px}
-.option-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.option{padding:16px;border:2px solid var(--sf);border-radius:8px;cursor:pointer;transition:.2s;text-align:center;background:var(--bg)}
-.option:hover{border-color:var(--p)}
-.option.selected{border-color:var(--p);background:rgba(33,150,243,0.1)}
-.option-title{font-weight:500;margin-bottom:4px}
-.option-desc{font-size:11px;color:var(--ts)}
-.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
-.color-circle{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.2s;position:relative}
-.color-circle:hover{transform:scale(1.1)}
-.color-circle.selected{border-color:var(--tp)}
-.color-circle.recent::after{content:'⏱';position:absolute;top:-4px;right:-4px;font-size:10px}
-.color-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.color-preview{width:48px;height:48px;border-radius:8px;border:2px solid var(--sf)}
-.hsv-picker{display:flex;gap:16px;flex-wrap:wrap}
-.hsv-main{flex:1;min-width:250px}
-.hsv-canvas{width:280px;height:200px;border-radius:8px;cursor:crosshair;max-width:100%;border:1px solid var(--sf)}
-.hue-slider{width:280px;height:24px;border-radius:12px;margin-top:8px;cursor:pointer;max-width:100%;border:1px solid var(--sf)}
-.hsv-info{min-width:120px}
-.hsv-preview{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:2px solid var(--sf)}
-.hsv-values{text-align:center;font-size:12px;font-family:monospace}
-.slider-container{margin-bottom:16px}
-.slider{width:100%;height:6px;-webkit-appearance:none;background:var(--sf);border-radius:3px;outline:none}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--p);cursor:pointer}
-.slider-value{float:right;font-weight:600}
-.live-preview{background:var(--bg);border:2px dashed var(--sf);border-radius:12px;padding:20px;margin-top:16px}
-.live-preview h3{font-size:14px;color:var(--ts);margin-bottom:12px}
-.preview-colors{display:flex;gap:12px;margin-bottom:12px}
-.preview-tile{flex:1;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
-.preview-surface{background:var(--sf);padding:16px;border-radius:8px;margin-bottom:12px}
-.status-badges{display:flex;gap:8px}
-.badge{padding:6px 12px;border-radius:16px;font-size:12px;font-weight:500}
-.toggle-chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:10px 16px;border:2px solid var(--sf);border-radius:20px;cursor:pointer;transition:.2s;font-size:14px}
-.chip:hover{border-color:var(--p)}
-.chip.selected{background:var(--p);color:#fff;border-color:var(--p)}
-.btn{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:.2s}
-.btn-primary{background:var(--p);color:#fff}
-.btn-primary:hover{filter:brightness(1.1)}
-.btn-secondary{background:var(--sf);color:var(--tp)}
-.btn-next{margin-top:16px;float:right}
-.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.summary-item{background:var(--bg);padding:12px;border-radius:8px}
-.summary-label{font-size:12px;color:var(--ts);margin-bottom:4px}
-.summary-value{font-weight:600}
-.download-btn{background:#4CAF50;color:#fff;padding:16px 32px;font-size:16px;width:100%;margin-top:16px}
-.copy-btn{background:var(--sf);color:var(--tp);padding:12px 24px;margin-top:8px;width:100%}
-@media(max-width:600px){.tabs{padding:8px}.tab{padding:8px 12px;font-size:12px}.card{padding:16px}.option-grid{grid-template-columns:repeat(2,1fr)}.color-grid{grid-template-columns:repeat(5,1fr);gap:6px}}
-@media(max-width:400px){.header-content{flex-wrap:wrap}h1{font-size:16px}.progress-bar{max-width:100%;order:3;margin-top:8px}.tabs{padding:4px}.tab{padding:6px 10px;font-size:11px}.card{padding:12px}.option-grid{grid-template-columns:1fr 1fr;gap:8px}.color-grid{grid-template-columns:repeat(4,1fr);gap:4px}.hsv-picker{flex-direction:column}.hsv-canvas,.hue-slider{width:100%!important}.color-row{flex-direction:column;align-items:stretch;gap:8px}.color-row input[type="color"]{width:100%!important}}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --primary:#1E88E5;--secondary:#43A047;--accent:#FB8C00;
+  --font:'Inter',sans-serif;--radius:8px;
+  --style-modern;
+  --bg:#FAFAFA;--card-bg:#fff;--text:#212121;--text-light:#757575;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* Progress Bar */
+.progress-bar{position:fixed;top:0;left:0;width:100%;height:4px;background:#E0E0E0;z-index:1000}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .4s ease;border-radius:0 4px 4px 0}
+.progress-text{position:fixed;top:12px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--text-light);z-index:1000;background:var(--bg);padding:2px 16px;border-radius:12px;font-weight:500}
+
+/* Layout */
+.app{display:flex;min-height:100vh;padding-top:44px}
+.selection-panel{width:50%;padding:40px 32px;overflow-y:auto;max-height:calc(100vh - 44px)}
+.preview-panel{width:50%;padding:40px 32px;overflow-y:auto;max-height:calc(100vh - 44px);background:#F0F0F0;display:flex;align-items:flex-start;justify-content:center}
+
+/* Step */
+.step{display:none;animation:fadeSlide .4s ease}
+.step.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.step-title{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+.step-subtitle{color:var(--text-light);margin-bottom:28px;font-size:.95rem}
+
+/* Color Picker */
+.color-row{margin-bottom:24px}
+.color-row-label{font-weight:600;margin-bottom:10px;font-size:.95rem}
+.color-swatches{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.color-swatch{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s ease;position:relative}
+.color-swatch:hover{transform:scale(1.15);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.color-swatch.selected{border-color:var(--text);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--text)}
+.color-custom{width:40px;height:40px;border-radius:50%;border:2px dashed #BDBDBD;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#9E9E9E;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;overflow:hidden}
+.color-custom input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* Font Cards */
+.font-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.font-card{padding:20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease}
+.font-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.font-card.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
+.font-card-name{font-size:.85rem;font-weight:600;color:var(--text-light);margin-bottom:8px}
+.font-card-preview{font-size:1.3rem;line-height:1.4}
+
+/* Radius Options */
+.radius-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.radius-option{padding:24px 20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease;text-align:center}
+.radius-option:hover{border-color:var(--primary)}
+.radius-option.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
+.radius-option-label{font-weight:600;margin-bottom:14px;font-size:.9rem}
+.radius-demo-box{width:80px;height:40px;margin:0 auto 10px;background:var(--primary);transition:all .3s ease}
+.radius-demo-btn{display:inline-block;padding:6px 18px;background:var(--secondary);color:#fff;font-size:.8rem;font-weight:500;transition:all .3s ease}
+
+/* Style Options */
+.style-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.style-card{padding:20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease}
+.style-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.style-card.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
+.style-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.style-card-name{font-weight:700;font-size:1rem}
+.style-card-desc{color:var(--text-light);font-size:.85rem;margin-bottom:14px}
+.style-mini-preview{border-radius:4px;overflow:hidden;padding:16px;font-size:.75rem;line-height:1.5}
+
+.style-mini-preview.minimalist{background:#fff;border:1px solid #E0E0E0;color:#333}
+.style-mini-preview.minimalist .mini-nav{border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:8px;font-weight:600}
+.style-mini-preview.minimalist .mini-hero{font-size:1rem;font-weight:300;margin-bottom:6px}
+.style-mini-preview.minimalist .mini-cards{display:flex;gap:6px;margin-top:6px}
+.style-mini-preview.minimalist .mini-card{flex:1;padding:6px;border:1px solid #eee;text-align:center}
+
+.style-mini-preview.modern{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.style-mini-preview.modern .mini-nav{opacity:.8;margin-bottom:8px}
+.style-mini-preview.modern .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
+.style-mini-preview.modern .mini-cards{display:flex;gap:6px;margin-top:6px}
+.style-mini-preview.modern .mini-card{flex:1;padding:6px;background:rgba(255,255,255,.2);border-radius:8px;text-align:center}
+
+.style-mini-preview.playful{background:#FFF3E0;color:#E65100}
+.style-mini-preview.playful .mini-nav{margin-bottom:8px;font-weight:700}
+.style-mini-preview.playful .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
+.style-mini-preview.playful .mini-cards{display:flex;gap:6px;margin-top:6px}
+.style-mini-preview.playful .mini-card{flex:1;padding:6px;background:#fff;border-radius:12px;text-align:center;font-weight:600}
+
+.style-mini-preview.classic{background:#FAF7F2;color:#3E2723}
+.style-mini-preview.classic .mini-nav{border-bottom:2px solid #3E2723;padding-bottom:8px;margin-bottom:8px;font-family:'Playfair Display',serif;font-weight:700}
+.style-mini-preview.classic .mini-hero{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:6px}
+.style-mini-preview.classic .mini-cards{display:flex;gap:6px;margin-top:6px}
+.style-mini-preview.classic .mini-card{flex:1;padding:6px;border:1px solid #3E2723;text-align:center;font-family:'Playfair Display',serif}
+
+.style-mini-preview.dark{background:#1a1a2e;color:#e0e0e0}
+.style-mini-preview.dark .mini-nav{margin-bottom:8px;opacity:.7}
+.style-mini-preview.dark .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
+.style-mini-preview.dark .mini-cards{display:flex;gap:6px;margin-top:6px}
+.style-mini-preview.dark .mini-card{flex:1;padding:6px;background:rgba(255,255,255,.08);border-radius:8px;text-align:center}
+
+/* Textarea */
+.wishes-textarea{width:100%;min-height:160px;padding:16px;border:2px solid #E0E0E0;border-radius:var(--radius);font-family:var(--font);font-size:.95rem;resize:vertical;transition:border-color .2s ease;background:var(--card-bg);color:var(--text)}
+.wishes-textarea:focus{outline:none;border-color:var(--primary)}
+.wishes-textarea::placeholder{color:#BDBDBD}
+
+/* Nav Buttons */
+.nav-buttons{display:flex;justify-content:space-between;margin-top:32px;padding-top:20px}
+.btn{padding:12px 28px;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:var(--font)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.btn-secondary{background:#E0E0E0;color:var(--text)}
+.btn-secondary:hover{background:#D0D0D0}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Summary */
+.summary-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #EEEEEE}
+.summary-label{font-weight:600;min-width:130px;color:var(--text-light);font-size:.9rem}
+.summary-value{font-weight:500;display:flex;align-items:center;gap:8px}
+.summary-color{width:24px;height:24px;border-radius:50%;border:2px solid #E0E0E0}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;margin-top:20px;font-family:var(--font)}
+.btn-download:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+
+/* ===== LIVE PREVIEW ===== */
+.browser-frame{width:100%;max-width:800px;background:#fff;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
+.browser-chrome{background:#E8E8E8;padding:8px 14px;display:flex;align-items:center;gap:6px}
+.browser-dot{width:10px;height:10px;border-radius:50%}
+.browser-dot.red{background:#FF5F57}
+.browser-dot.yellow{background:#FEBC2E}
+.browser-dot.green{background:#28C840}
+.browser-url{flex:1;margin-left:8px;background:#fff;padding:4px 12px;border-radius:4px;font-size:.75rem;color:#999;text-align:center}
+.browser-content{min-height:460px;overflow:hidden;transition:all .3s ease}
+
+/* Preview styles */
+.preview-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;transition:all .3s ease}
+.preview-logo{font-weight:700;font-size:1.05rem;transition:all .3s ease}
+.preview-nav-links{display:flex;gap:18px;font-size:.78rem;transition:all .3s ease}
+.preview-hero{padding:36px 24px;text-align:center;transition:all .3s ease}
+.preview-hero h1{font-size:1.3rem;font-weight:700;margin-bottom:6px;transition:all .3s ease}
+.preview-hero p{font-size:.8rem;opacity:.8;margin-bottom:16px;transition:all .3s ease}
+.preview-hero-btn{display:inline-block;padding:8px 22px;color:#fff;font-weight:600;font-size:.8rem;transition:all .3s ease}
+.preview-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:0 24px 24px;transition:all .3s ease}
+.preview-card{padding:16px;text-align:center;transition:all .3s ease}
+.preview-card h3{font-size:.8rem;font-weight:600;margin-bottom:4px;transition:all .3s ease}
+.preview-card p{font-size:.7rem;opacity:.7;transition:all .3s ease}
+.preview-footer{padding:14px 24px;text-align:center;font-size:.7rem;opacity:.6;border-top:1px solid rgba(0,0,0,.06);transition:all .3s ease}
+
+/* Preview style variations */
+.preview-content.minimalist .preview-nav{background:#fff;border-bottom:1px solid #eee}
+.preview-content.minimalist .preview-hero{background:#fff}
+.preview-content.minimalist .preview-hero h1{font-weight:300;letter-spacing:.5px}
+.preview-content.minimalist .preview-hero-btn{background:var(--primary)}
+.preview-content.minimalist .preview-card{background:#fff;border:1px solid #eee}
+.preview-content.minimalist .preview-footer{background:#fff}
+
+.preview-content.modern .preview-nav{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.preview-content.modern .preview-logo{color:#fff}
+.preview-content.modern .preview-nav-links{color:rgba(255,255,255,.85)}
+.preview-content.modern .preview-hero{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.preview-content.modern .preview-hero h1{color:#fff}
+.preview-content.modern .preview-hero p{color:rgba(255,255,255,.85)}
+.preview-content.modern .preview-hero-btn{background:#fff;color:var(--primary)}
+.preview-content.modern .preview-card{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.preview-content.modern .preview-footer{background:#f8f8f8}
+
+.preview-content.playful .preview-nav{background:#FFF3E0}
+.preview-content.playful .preview-hero{background:linear-gradient(135deg,#FF6B6B,#FFE66D);color:#333}
+.preview-content.playful .preview-hero h1{color:#333}
+.preview-content.playful .preview-hero-btn{background:var(--secondary);border-radius:999px}
+.preview-content.playful .preview-card{background:#FFF8E1;border-radius:16px}
+.preview-content.playful .preview-footer{background:#FFF3E0}
+
+.preview-content.classic .preview-nav{background:#FAF7F2;border-bottom:2px solid #3E2723}
+.preview-content.classic .preview-logo{font-family:'Playfair Display',serif}
+.preview-content.classic .preview-hero{background:#FAF7F2}
+.preview-content.classic .preview-hero h1{font-family:'Playfair Display',serif;font-weight:700}
+.preview-content.classic .preview-hero p{font-family:'Playfair Display',serif}
+.preview-content.classic .preview-hero-btn{background:#3E2723;color:#FAF7F2}
+.preview-content.classic .preview-card{background:#FAF7F2;border:1px solid #D7CCC8}
+.preview-content.classic .preview-card h3{font-family:'Playfair Display',serif}
+.preview-content.classic .preview-footer{background:#FAF7F2;font-family:'Playfair Display',serif}
+
+.preview-content.dark .preview-nav{background:#1a1a2e;color:#e0e0e0;border-bottom:1px solid rgba(255,255,255,.08)}
+.preview-content.dark .preview-logo{color:#fff}
+.preview-content.dark .preview-nav-links{color:rgba(255,255,255,.6)}
+.preview-content.dark .preview-hero{background:#16213e;color:#e0e0e0}
+.preview-content.dark .preview-hero h1{color:#fff}
+.preview-content.dark .preview-hero p{color:rgba(255,255,255,.7)}
+.preview-content.dark .preview-hero-btn{background:var(--accent)}
+.preview-content.dark .preview-card{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);color:#e0e0e0}
+.preview-content.dark .preview-card h3{color:#fff}
+.preview-content.dark .preview-card p{color:rgba(255,255,255,.6)}
+.preview-content.dark .preview-footer{background:#0f0f23;color:rgba(255,255,255,.4);border-top-color:rgba(255,255,255,.06)}
+
+/* Responsive */
+@media(max-width:900px){
+  .app{flex-direction:column}
+  .selection-panel,.preview-panel{width:100%;max-height:none}
+  .preview-panel{padding:24px 16px;background:#E8E8E8}
+  .font-grid{grid-template-columns:1fr}
+  .radius-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:500px){
+  .selection-panel{padding:24px 16px}
+  .step-title{font-size:1.3rem}
+  .radius-grid{grid-template-columns:1fr}
+  .preview-cards{grid-template-columns:1fr;gap:8px}
+}
 </style>
 </head>
 <body>
-<header>
-<div class="header-content">
-<h1>🌐 Coaching-Plattform Design</h1>
-<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-<span class="progress-text" id="progressText">0/7</span>
-</div>
-</header>
-<nav class="tabs">
-<div class="tab active" data-section="1">🎨 Farben</div>
-<div class="tab" data-section="2">📝 Typografie</div>
-<div class="tab" data-section="3">📐 Layout</div>
-<div class="tab" data-section="4">🔧 Komponenten</div>
-<div class="tab" data-section="5">🎭 Stimmung</div>
-<div class="tab" data-section="6">🌐 Web-Style</div>
-<div class="tab" data-section="7">📋 Download</div>
-</nav>
-<main>
-<!-- SEKTION 1: Farben -->
-<section class="active" id="section1">
-<div class="card">
-<h2>🎨 Primärfarbe</h2>
-<p class="desc">Wird für Hauptbuttons und wichtige Elemente verwendet</p>
-<div id="recentColors1" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette1"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas1"></canvas>
-<canvas class="hue-slider" id="hueSlider1"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview1"></div>
-<div class="hsv-values"><div id="hex1">#2196F3</div><div id="hsl1">HSL(207, 90%, 54%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Sekundärfarbe</h2>
-<p class="desc">Wird für unterstützende Elemente und Akzente verwendet</p>
-<div id="recentColors2" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette2"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas2"></canvas>
-<canvas class="hue-slider" id="hueSlider2"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview2"></div>
-<div class="hsv-values"><div id="hex2">#4CAF50</div><div id="hsl2">HSL(122, 39%, 49%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Akzentfarbe</h2>
-<p class="desc">Wird für Highlights und Call-to-Action Elemente verwendet</p>
-<div id="recentColors3" class="color-grid" style="display:none;margin-bottom:12px"></div>
-<div class="color-grid" id="palette3"></div>
-<div class="hsv-picker">
-<div class="hsv-main">
-<canvas class="hsv-canvas" id="hsvCanvas3"></canvas>
-<canvas class="hue-slider" id="hueSlider3"></canvas>
-</div>
-<div class="hsv-info">
-<div class="color-preview hsv-preview" id="hsvPreview3"></div>
-<div class="hsv-values"><div id="hex3">#FF9800</div><div id="hsl3">HSL(36, 100%, 50%)</div></div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎨 Weitere Farben</h2>
-<div class="color-row">
-<div>
-<label>Hintergrundfarbe</label>
-<p class="desc">Haupthintergrund der Plattform</p>
-</div>
-<input type="color" id="bgColor" value="#FFFFFF" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Surface-Farbe</label>
-<p class="desc">Hintergrund für Karten und Container</p>
-</div>
-<input type="color" id="sfColor" value="#F5F5F5" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Textfarbe (Primär)</label>
-<p class="desc">Haupttextfarbe</p>
-</div>
-<input type="color" id="tpColor" value="#212121" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Textfarbe (Sekundär)</label>
-<p class="desc">Für weniger wichtige Texte</p>
-</div>
-<input type="color" id="tsColor" value="#757575" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Erfolg</label>
-<p class="desc">Für Erfolgsmeldungen</p>
-</div>
-<input type="color" id="seColor" value="#4CAF50" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Warnung</label>
-<p class="desc">Für Warnungen</p>
-</div>
-<input type="color" id="swColor" value="#FF9800" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-<div class="color-row">
-<div>
-<label>Fehler</label>
-<p class="desc">Für Fehlermeldungen</p>
-</div>
-<input type="color" id="erColor" value="#F44336" style="width:60px;height:36px;border:2px solid var(--sf);border-radius:8px">
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div class="preview-colors">
-<div class="preview-tile" id="previewP" style="background:var(--p);color:#fff">Primär</div>
-<div class="preview-tile" id="previewS" style="background:var(--s);color:#fff">Sekundär</div>
-<div class="preview-tile" id="previewA" style="background:var(--a);color:#fff">Akzent</div>
-</div>
-<div class="preview-surface">
-<div style="color:var(--tp);font-weight:600;margin-bottom:8px">Primärer Text</div>
-<div style="color:var(--ts);font-size:14px">Sekundärer Text für Beschreibungen</div>
-</div>
-<div class="status-badges">
-<div class="badge" style="background:var(--se);color:#fff">✓ Erfolg</div>
-<div class="badge" style="background:var(--sw);color:#fff">⚠ Warnung</div>
-<div class="badge" style="background:var(--er);color:#fff">✗ Fehler</div>
-</div>
-</div>
-<button class="btn btn-primary btn-next" onclick="goToSection(2)">Weiter →</button>
-</section>
 
-<!-- SEKTION 2: Typografie -->
-<section id="section2">
-<div class="card">
-<h2>📝 Schriftart</h2>
-<p class="desc">Die Hauptschrift bestimmt Lesbarkeit und Charakter deiner Plattform</p>
-<div class="option-grid" id="fontGrid"></div>
-</div>
-<div class="card">
-<h2>📝 Schriftgrößen</h2>
-<div class="slider-container">
-<label>H1-Größe <span class="slider-value" id="h1Val">32px</span></label>
-<p class="desc">Die Größe der großen Überschriften</p>
-<input type="range" class="slider" id="h1Size" min="24" max="48" value="32">
-</div>
-<div class="slider-container">
-<label>H2-Größe <span class="slider-value" id="h2Val">24px</span></label>
-<p class="desc">Die Größe der mittleren Überschriften</p>
-<input type="range" class="slider" id="h2Size" min="18" max="36" value="24">
-</div>
-<div class="slider-container">
-<label>Body-Größe <span class="slider-value" id="bodyVal">16px</span></label>
-<p class="desc">Die Größe des Fließtextes</p>
-<input type="range" class="slider" id="bodySize" min="12" max="20" value="16">
-</div>
-<div class="slider-container">
-<label>Caption-Größe <span class="slider-value" id="captionVal">12px</span></label>
-<p class="desc">Die Größe für kleine Beschriftungen</p>
-<input type="range" class="slider" id="captionSize" min="10" max="14" value="12">
-</div>
-</div>
-<div class="card">
-<h2>📝 Schriftstärken</h2>
-<div class="slider-container">
-<label>H1-Stärke <span class="slider-value" id="h1wVal">700</span></label>
-<p class="desc">Dicke der großen Überschriften</p>
-<input type="range" class="slider" id="h1Weight" min="400" max="900" step="100" value="700">
-</div>
-<div class="slider-container">
-<label>H2-Stärke <span class="slider-value" id="h2wVal">600</span></label>
-<p class="desc">Dicke der mittleren Überschriften</p>
-<input type="range" class="slider" id="h2Weight" min="400" max="900" step="100" value="600">
-</div>
-<div class="slider-container">
-<label>Body-Stärke <span class="slider-value" id="bodywVal">400</span></label>
-<p class="desc">Dicke des Fließtextes</p>
-<input type="range" class="slider" id="bodyWeight" min="300" max="700" step="100" value="400">
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div id="typoPreview"></div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(1)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(3)">Weiter →</button>
-</section>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16.66%"></div></div>
+<div class="progress-text" id="progressText">Schritt 1 von 6</div>
 
-<!-- SEKTION 3: Spacing & Layout -->
-<section id="section3">
-<div class="card">
-<h2>📐 Basis-Spacing</h2>
-<div class="slider-container">
-<label>Spacing <span class="slider-value" id="spacingVal">8px</span></label>
-<p class="desc">Bestimmt den Standard-Abstand zwischen Elementen</p>
-<input type="range" class="slider" id="spacing" min="4" max="16" value="8">
-</div>
-<div class="live-preview" id="spacingPreview"></div>
-</div>
-<div class="card">
-<h2>📐 Container-Breite</h2>
-<div class="slider-container">
-<label>Breite <span class="slider-value" id="widthVal">1200px</span></label>
-<p class="desc">Die maximale Breite des Inhaltsbereichs</p>
-<input type="range" class="slider" id="containerWidth" min="960" max="1400" value="1200">
-</div>
-<div class="live-preview" id="widthPreview"></div>
-</div>
-<div class="card">
-<h2>📐 Raster-System</h2>
-<p>Wähle das Spalten-System für das Layout</p>
-<div class="option-grid">
-<div class="option" data-value="12" onclick="selectOption(this,'grid')">
-<div class="option-title">12 Spalten</div>
-<div class="option-desc">Standard für die meisten Websites</div>
-</div>
-<div class="option" data-value="16" onclick="selectOption(this,'grid')">
-<div class="option-title">16 Spalten</div>
-<div class="option-desc">Für komplexere Layouts</div>
-</div>
-<div class="option selected" data-value="flex" onclick="selectOption(this,'grid')">
-<div class="option-title">Flexibel</div>
-<div class="option-desc">Passt sich automatisch an</div>
-</div>
-</div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(2)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(4)">Weiter →</button>
-</section>
+<div class="app">
+  <!-- LEFT: Selection -->
+  <div class="selection-panel">
 
-<!-- SEKTION 4: Komponenten -->
-<section id="section4">
-<div class="card">
-<h2>🔧 Button-Radius</h2>
-<div class="option-grid">
-<div class="option" data-value="0" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Eckige Buttons</div>
-</div>
-<div class="option selected" data-value="8" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Leicht</div>
-<div class="option-desc">Sanft abgerundet</div>
-</div>
-<div class="option" data-value="16" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittelstark abgerundet</div>
-</div>
-<div class="option" data-value="24" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Stark abgerundet</div>
-</div>
-<div class="option" data-value="50" onclick="selectOption(this,'btnRadius')">
-<div class="option-title">Rounded</div>
-<div class="option-desc">Komplett rund</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Card-Radius</h2>
-<div class="option-grid">
-<div class="option" data-value="0" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Eckige Karten</div>
-</div>
-<div class="option selected" data-value="12" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Leicht</div>
-<div class="option-desc">Sanft abgerundet</div>
-</div>
-<div class="option" data-value="20" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittelstark abgerundet</div>
-</div>
-<div class="option" data-value="28" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Stark abgerundet</div>
-</div>
-<div class="option" data-value="50" onclick="selectOption(this,'cardRadius')">
-<div class="option-title">Rounded</div>
-<div class="option-desc">Komplett rund</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Card-Shadow</h2>
-<div class="option-grid">
-<div class="option" data-value="none" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Ohne Schatten</div>
-</div>
-<div class="option selected" data-value="0 2px 8px rgba(0,0,0,0.1)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Subtil</div>
-<div class="option-desc">Leichter Schatten</div>
-</div>
-<div class="option" data-value="0 4px 16px rgba(0,0,0,0.15)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Medium</div>
-<div class="option-desc">Mittlerer Schatten</div>
-</div>
-<div class="option" data-value="0 8px 32px rgba(0,0,0,0.2)" onclick="selectOption(this,'cardShadow')">
-<div class="option-title">Stark</div>
-<div class="option-desc">Ausgeprägter Schatten</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🔧 Input-Border</h2>
-<div class="option-grid">
-<div class="option selected" data-value="solid" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Solid</div>
-<div class="option-desc">Durchgehende Linie</div>
-</div>
-<div class="option" data-value="dashed" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Dashed</div>
-<div class="option-desc">Gestrichelte Linie</div>
-</div>
-<div class="option" data-value="bottom" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Nur unten</div>
-<div class="option-desc">Unterstrichener Stil</div>
-</div>
-<div class="option" data-value="none" onclick="selectOption(this,'inputBorder')">
-<div class="option-title">Kein</div>
-<div class="option-desc">Ohne Rahmen</div>
-</div>
-</div>
-</div>
-<div class="card live-preview">
-<h3>LIVE-VORSCHAU</h3>
-<div id="compPreview"></div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(3)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(5)">Weiter →</button>
-</section>
+    <!-- STEP 1: Colors -->
+    <div class="step active" id="step1">
+      <h2 class="step-title">🎨 Farben wählen</h2>
+      <p class="step-subtitle">Wählen Sie die Farbpalette für Ihre Coaching-Plattform.</p>
 
-<!-- SEKTION 5: Design-Stimmung -->
-<section id="section5">
-<div class="card">
-<h2>🎭 Overall Style</h2>
-<p>Wähle den grundlegenden Design-Stil</p>
-<div class="option-grid">
-<div class="option" data-value="minimal" onclick="selectOption(this,'style')">
-<div class="option-title">Minimalistisch</div>
-<div class="option-desc">Wenig Schnickschnack, Fokus auf Inhalt</div>
-</div>
-<div class="option selected" data-value="modern" onclick="selectOption(this,'style')">
-<div class="option-title">Modern</div>
-<div class="option-desc">Aktuell, frisch, zeitgemäß</div>
-</div>
-<div class="option" data-value="corporate" onclick="selectOption(this,'style')">
-<div class="option-title">Corporate</div>
-<div class="option-desc">Professionell, seriös</div>
-</div>
-<div class="option" data-value="premium" onclick="selectOption(this,'style')">
-<div class="option-title">Premium</div>
-<div class="option-desc">Hochwertig, exklusiv</div>
-</div>
-<div class="option" data-value="luxury" onclick="selectOption(this,'style')">
-<div class="option-title">Luxus</div>
-<div class="option-desc">Opulent, edel</div>
-</div>
-<div class="option" data-value="dark" onclick="selectOption(this,'style')">
-<div class="option-title">Dark Mode</div>
-<div class="option-desc">Dunkles Farbschema</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🎭 Bild-Stil</h2>
-<p>Welche Art von Bildern soll verwendet werden?</p>
-<div class="option-grid">
-<div class="option selected" data-value="photo" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Fotografie</div>
-<div class="option-desc">Echte Fotos von Menschen/Orten</div>
-</div>
-<div class="option" data-value="illustration" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Illustrationen</div>
-<div class="option-desc">Gezeichnete Grafiken</div>
-</div>
-<div class="option" data-value="icons" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Icons</div>
-<div class="option-desc">Symbolische Darstellungen</div>
-</div>
-<div class="option" data-value="mixed" onclick="selectOption(this,'imageStyle')">
-<div class="option-title">Gemischt</div>
-<div class="option-desc">Kombination verschiedener Stile</div>
-</div>
-</div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(4)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(6)">Weiter →</button>
-</section>
+      <div class="color-row">
+        <div class="color-row-label">Hauptfarbe</div>
+        <div class="color-swatches" id="primaryColors">
+          <div class="color-swatch selected" style="background:#1E88E5" data-color="#1E88E5" data-target="primary"></div>
+          <div class="color-swatch" style="background:#1565C0" data-color="#1565C0" data-target="primary"></div>
+          <div class="color-swatch" style="background:#42A5F5" data-color="#42A5F5" data-target="primary"></div>
+          <div class="color-swatch" style="background:#0D47A1" data-color="#0D47A1" data-target="primary"></div>
+          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="primary"></div>
+          <div class="color-swatch" style="background:#2E7D32" data-color="#2E7D32" data-target="primary"></div>
+          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="primary"></div>
+          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="primary"></div>
+          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="primary"></div>
+          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="primary"></div>
+          <div class="color-swatch" style="background:#EC407A" data-color="#EC407A" data-target="primary"></div>
+          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="primary"></div>
+          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="primary"></div>
+          <div class="color-swatch" style="background:#212121" data-color="#212121" data-target="primary"></div>
+          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="primary" value="#1E88E5"></div>
+        </div>
+      </div>
 
-<!-- SEKTION 6: Web-spezifisch (UNTERSCHIED ZUR MITARBEITER-APP) -->
-<section id="section6">
-<div class="card">
-<h2>🌐 Hero Section</h2>
-<p>Wie soll der erste Blick auf der Startseite aussehen?</p>
-<div class="option-grid">
-<div class="option selected" data-value="fullwidth" onclick="selectOption(this,'hero')">
-<div class="option-title">Full-Width</div>
-<div class="option-desc">Bild über die gesamte Breite</div>
-</div>
-<div class="option" data-value="split" onclick="selectOption(this,'hero')">
-<div class="option-title">Split</div>
-<div class="option-desc">50/50 Aufteilung mit Text/Bild</div>
-</div>
-<div class="option" data-value="video" onclick="selectOption(this,'hero')">
-<div class="option-title">Video</div>
-<div class="option-desc">Video-Hintergrund im Header</div>
-</div>
-<div class="option" data-value="gradient" onclick="selectOption(this,'hero')">
-<div class="option-title">Gradient</div>
-<div class="option-desc">Farbverlauf ohne Bild</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🌐 Preis-Tabelle</h2>
-<p>Wie sollen Preise dargestellt werden?</p>
-<div class="option-grid">
-<div class="option selected" data-value="cards" onclick="selectOption(this,'priceTable')">
-<div class="option-title">Cards</div>
-<div class="option-desc">Preiskarten nebeneinander</div>
-</div>
-<div class="option" data-value="table" onclick="selectOption(this,'priceTable')">
-<div class="option-title">Tabelle</div>
-<div class="option-desc">Klassische Tabelle</div>
-</div>
-<div class="option" data-value="toggle" onclick="selectOption(this,'priceTable')">
-<div class="option-title">Toggle</div>
-<div class="option-desc">Monatlich/Jährlich Umschalter</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🌐 Navigation</h2>
-<p>Wähle die Navigationsart für die Website</p>
-<div class="option-grid">
-<div class="option selected" data-value="topbar" onclick="selectOption(this,'webNav')">
-<div class="option-title">Top Bar</div>
-<div class="option-desc">Klassische Navigation oben</div>
-</div>
-<div class="option" data-value="sidebar" onclick="selectOption(this,'webNav')">
-<div class="option-title">Sidebar</div>
-<div class="option-desc">Seitliches Menü</div>
-</div>
-<div class="option" data-value="mega" onclick="selectOption(this,'webNav')">
-<div class="option-title">Mega Menu</div>
-<div class="option-desc">Erweitertes Dropdown-Menü</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🌐 CTA Button</h2>
-<p>Wie sollen Call-to-Action Buttons aussehen?</p>
-<div class="option-grid">
-<div class="option selected" data-value="solid" onclick="selectOption(this,'cta')">
-<div class="option-title">Solid</div>
-<div class="option-desc">Gefüllter Button</div>
-</div>
-<div class="option" data-value="outline" onclick="selectOption(this,'cta')">
-<div class="option-title">Outline</div>
-<div class="option-desc">Nur Rahmen</div>
-</div>
-<div class="option" data-value="gradient" onclick="selectOption(this,'cta')">
-<div class="option-title">Gradient</div>
-<div class="option-desc">Farbverlauf</div>
-</div>
-<div class="option" data-value="ghost" onclick="selectOption(this,'cta')">
-<div class="option-title">Ghost</div>
-<div class="option-desc">Transparenter Button</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2>🌐 Trust Elements</h2>
-<p>Welche Vertrauenselemente sollen angezeigt werden?</p>
-<p class="desc">Wähle alle gewünschten Elemente</p>
-<div class="toggle-chips" id="trustChips">
-<div class="chip selected" data-value="testimonials" onclick="toggleChip(this)">💬 Testimonials</div>
-<div class="chip" data-value="logos" onclick="toggleChip(this)">🏢 Partner-Logos</div>
-<div class="chip selected" data-value="stats" onclick="toggleChip(this)">📊 Statistiken</div>
-</div>
-</div>
-<button class="btn btn-secondary" onclick="goToSection(5)">← Zurück</button>
-<button class="btn btn-primary btn-next" onclick="goToSection(7)">Weiter →</button>
-</section>
+      <div class="color-row">
+        <div class="color-row-label">Sekundärfarbe</div>
+        <div class="color-swatches" id="secondaryColors">
+          <div class="color-swatch" style="background:#1E88E5" data-color="#1E88E5" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="secondary"></div>
+          <div class="color-swatch selected" style="background:#2E7D32" data-color="#2E7D32" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#66BB6A" data-color="#66BB6A" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#1B5E20" data-color="#1B5E20" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#1565C0" data-color="#1565C0" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#42A5F5" data-color="#42A5F5" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#F57C00" data-color="#F57C00" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="secondary"></div>
+          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="secondary"></div>
+          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="secondary" value="#43A047"></div>
+        </div>
+      </div>
 
-<!-- SEKTION 7: Zusammenfassung -->
-<section id="section7">
-<div class="card">
-<h2>📋 Zusammenfassung</h2>
-<p>Überprüfe deine Auswahl und lade die Konfiguration herunter</p>
-<div class="summary-grid" id="summary"></div>
-<button class="btn download-btn" onclick="downloadJSON()">📥 Antworten als JSON herunterladen</button>
-<button class="btn copy-btn" onclick="copyJSON()">📋 JSON kopieren</button>
+      <div class="color-row">
+        <div class="color-row-label">Akzentfarbe</div>
+        <div class="color-swatches" id="accentColors">
+          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="accent"></div>
+          <div class="color-swatch" style="background:#F57C00" data-color="#F57C00" data-target="accent"></div>
+          <div class="color-swatch selected" style="background:#FFA726" data-color="#FFA726" data-target="accent"></div>
+          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="accent"></div>
+          <div class="color-swatch" style="background:#FF8F00" data-color="#FF8F00" data-target="accent"></div>
+          <div class="color-swatch" style="background:#EC407A" data-color="#EC407A" data-target="accent"></div>
+          <div class="color-swatch" style="background:#D81B60" data-color="#D81B60" data-target="accent"></div>
+          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="accent"></div>
+          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="accent"></div>
+          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="accent"></div>
+          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="accent"></div>
+          <div class="color-swatch" style="background:#1E88E5" data-color="#1E88E5" data-target="accent"></div>
+          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="accent"></div>
+          <div class="color-swatch" style="background:#212121" data-color="#212121" data-target="accent"></div>
+          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="accent" value="#FFA726"></div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Font -->
+    <div class="step" id="step2">
+      <h2 class="step-title">✏️ Schriftart wählen</h2>
+      <p class="step-subtitle">Welche Schrift passt am besten zu Ihrer Plattform?</p>
+      <div class="font-grid" id="fontGrid">
+        <div class="font-card selected" data-font="Inter" onclick="selectFont(this)">
+          <div class="font-card-name">Inter</div>
+          <div class="font-card-preview" style="font-family:'Inter',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Modern, clean, neutral</span></div>
+        </div>
+        <div class="font-card" data-font="Poppins" onclick="selectFont(this)">
+          <div class="font-card-name">Poppins</div>
+          <div class="font-card-preview" style="font-family:'Poppins',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Freundlich, rund, warm</span></div>
+        </div>
+        <div class="font-card" data-font="Montserrat" onclick="selectFont(this)">
+          <div class="font-card-name">Montserrat</div>
+          <div class="font-card-preview" style="font-family:'Montserrat',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Stark, professionell</span></div>
+        </div>
+        <div class="font-card" data-font="Roboto" onclick="selectFont(this)">
+          <div class="font-card-name">Roboto</div>
+          <div class="font-card-preview" style="font-family:'Roboto',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Neutral, lesbar, klar</span></div>
+        </div>
+        <div class="font-card" data-font="Playfair Display" onclick="selectFont(this)">
+          <div class="font-card-name">Playfair Display</div>
+          <div class="font-card-preview" style="font-family:'Playfair Display',serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Elegant, klassisch, edel</span></div>
+        </div>
+        <div class="font-card" data-font="Space Grotesk" onclick="selectFont(this)">
+          <div class="font-card-name">Space Grotesk</div>
+          <div class="font-card-preview" style="font-family:'Space Grotesk',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Technisch, modern, cool</span></div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Border Radius -->
+    <div class="step" id="step3">
+      <h2 class="step-title">📐 Eckrundung wählen</h2>
+      <p class="step-subtitle">Wie rund sollen Buttons und Karten sein?</p>
+      <div class="radius-grid" id="radiusGrid">
+        <div class="radius-option" data-radius="0px" onclick="selectRadius(this)">
+          <div class="radius-option-label">Eckig</div>
+          <div class="radius-demo-box" style="border-radius:0px"></div>
+          <div class="radius-demo-btn" style="border-radius:0px">Button</div>
+        </div>
+        <div class="radius-option selected" data-radius="8px" onclick="selectRadius(this)">
+          <div class="radius-option-label">Leicht abgerundet</div>
+          <div class="radius-demo-box" style="border-radius:8px"></div>
+          <div class="radius-demo-btn" style="border-radius:8px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="16px" onclick="selectRadius(this)">
+          <div class="radius-option-label">Stark abgerundet</div>
+          <div class="radius-demo-box" style="border-radius:16px"></div>
+          <div class="radius-demo-btn" style="border-radius:16px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="999px" onclick="selectRadius(this)">
+          <div class="radius-option-label">Runde Pills</div>
+          <div class="radius-demo-box" style="border-radius:999px"></div>
+          <div class="radius-demo-btn" style="border-radius:999px">Button</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Style -->
+    <div class="step" id="step4">
+      <h2 class="step-title">🎭 Stil & Stimmung</h2>
+      <p class="step-subtitle">Welche Atmosphäre soll Ihre Plattform ausstrahlen?</p>
+      <div class="style-grid" id="styleGrid">
+        <div class="style-card" data-style="minimalist" onclick="selectStyle(this)">
+          <div class="style-card-header">🤍 <span class="style-card-name">Minimalistisch</span></div>
+          <div class="style-card-desc">Weiß, viel Weißraum, dünne Linien — Fokus auf Inhalte.</div>
+          <div class="style-mini-preview minimalist">
+            <div class="mini-nav">ProCoach</div>
+            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
+            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
+          </div>
+        </div>
+        <div class="style-card selected" data-style="modern" onclick="selectStyle(this)">
+          <div class="style-card-header">💎 <span class="style-card-name">Modern</span></div>
+          <div class="style-card-desc">Farbverläufe, Karten, Schatten — dynamisch und professionell.</div>
+          <div class="style-mini-preview modern">
+            <div class="mini-nav">ProCoach</div>
+            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
+            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
+          </div>
+        </div>
+        <div class="style-card" data-style="playful" onclick="selectStyle(this)">
+          <div class="style-card-header">🎨 <span class="style-card-name">Spielerisch</span></div>
+          <div class="style-card-desc">Bunt, abgerundet, lebendig — motivierend und einladend.</div>
+          <div class="style-mini-preview playful">
+            <div class="mini-nav">ProCoach</div>
+            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
+            <div class="mini-cards"><div class="mini-card">💪 Training</div><div class="mini-card">🥗 Ernährung</div><div class="mini-card">🧠 Mindset</div></div>
+          </div>
+        </div>
+        <div class="style-card" data-style="classic" onclick="selectStyle(this)">
+          <div class="style-card-header">🏛️ <span class="style-card-name">Klassisch</span></div>
+          <div class="style-card-desc">Serifen, dunkle Farben, elegant — seriös und vertrauensvoll.</div>
+          <div class="style-mini-preview classic">
+            <div class="mini-nav">ProCoach</div>
+            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
+            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
+          </div>
+        </div>
+        <div class="style-card" data-style="dark" onclick="selectStyle(this)">
+          <div class="style-card-header">🌙 <span class="style-card-name">Dunkel</span></div>
+          <div class="style-card-desc">Dunkler Hintergrund, heller Text — modern und markant.</div>
+          <div class="style-mini-preview dark">
+            <div class="mini-nav">ProCoach</div>
+            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
+            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Wishes -->
+    <div class="step" id="step5">
+      <h2 class="step-title">💭 Weitere Wünsche</h2>
+      <p class="step-subtitle">Haben Sie noch weitere Ideen für das Design Ihrer Plattform?</p>
+      <textarea class="wishes-textarea" id="wishesText" placeholder="z. B. &quot;Ich möchte ein dunkles Logo auf hellem Hintergrund&quot;, &quot;Viele Fotos von echten Trainingseinheiten einbinden&quot;, &quot;Kalender-Funktion für Buchungen sichtbar machen&quot;…"></textarea>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
+        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Summary -->
+    <div class="step" id="step6">
+      <h2 class="step-title">✅ Zusammenfassung</h2>
+      <p class="step-subtitle">Überprüfen Sie Ihre Auswahl und laden Sie die Ergebnisse herunter.</p>
+      <div id="summaryContent">
+        <div class="summary-item">
+          <span class="summary-label">Hauptfarbe</span>
+          <span class="summary-value"><span class="summary-color" id="sumPrimary" style="background:#1E88E5"></span><span id="sumPrimaryHex">#1E88E5</span></span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Sekundärfarbe</span>
+          <span class="summary-value"><span class="summary-color" id="sumSecondary" style="background:#2E7D32"></span><span id="sumSecondaryHex">#2E7D32</span></span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Akzentfarbe</span>
+          <span class="summary-value"><span class="summary-color" id="sumAccent" style="background:#FFA726"></span><span id="sumAccentHex">#FFA726</span></span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Schriftart</span>
+          <span class="summary-value" id="sumFont">Inter</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Eckrundung</span>
+          <span class="summary-value" id="sumRadius">8px — Leicht abgerundet</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Stil</span>
+          <span class="summary-value" id="sumStyle">Modern</span>
+        </div>
+        <div class="summary-item" id="sumWishesRow" style="display:none">
+          <span class="summary-label">Weitere Wünsche</span>
+          <span class="summary-value" id="sumWishes" style="max-width:300px"></span>
+        </div>
+      </div>
+      <button class="btn-download" onclick="downloadJSON()">📋 Antworten als JSON herunterladen</button>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
+        <div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Live Preview -->
+  <div class="preview-panel">
+    <div class="browser-frame">
+      <div class="browser-chrome">
+        <div class="browser-dot red"></div>
+        <div class="browser-dot yellow"></div>
+        <div class="browser-dot green"></div>
+        <div class="browser-url">www.procoach-plattform.de</div>
+      </div>
+      <div class="browser-content preview-content modern" id="previewContent">
+        <nav class="preview-nav">
+          <div class="preview-logo">ProCoach</div>
+          <div class="preview-nav-links">
+            <span>Start</span><span>Leistungen</span><span>Über uns</span><span>Kontakt</span>
+          </div>
+        </nav>
+        <div class="preview-hero">
+          <h1>Erreichen Sie Ihre Ziele — mit persönlichem Coaching</h1>
+          <p>Individuelle Trainingspläne, Ernährungsberatung und mentale Stärke für Ihren Erfolg.</p>
+          <span class="preview-hero-btn">Jetzt kostenlos beraten lassen</span>
+        </div>
+        <div class="preview-cards">
+          <div class="preview-card">
+            <h3>💪 Personal Training</h3>
+            <p>Maßgeschneidertes Training für maximale Ergebnisse.</p>
+          </div>
+          <div class="preview-card">
+            <h3>🥗 Ernährungsplan</h3>
+            <p>Auf Ihre Ziele abgestimmte Ernährungsstrategien.</p>
+          </div>
+          <div class="preview-card">
+            <h3>🧠 Mindset Coaching</h3>
+            <p>Die richtige Einstellung für langfristigen Erfolg.</p>
+          </div>
+        </div>
+        <div class="preview-footer">© 2026 ProCoach — Ihr Partner für Fitness & Wohlbefinden</div>
+      </div>
+    </div>
+  </div>
 </div>
-<button class="btn btn-secondary" onclick="goToSection(6)">← Zurück</button>
-</section>
-</main>
 
 <script>
-const data={
-colors:{p:'#2196F3',s:'#4CAF50',a:'#FF9800',bg:'#FFFFFF',sf:'#F5F5F5',tp:'#212121',ts:'#757575',se:'#4CAF50',sw:'#FF9800',er:'#F44336'},
-typo:{font:'Inter',h1:32,h2:24,body:16,caption:12,h1w:700,h2w:600,bodyw:400},
-layout:{spacing:8,width:1200,grid:'flex'},
-comp:{btnRadius:8,cardRadius:12,cardShadow:'0 2px 8px rgba(0,0,0,0.1)',inputBorder:'solid'},
-mood:{style:'modern',imageStyle:'photo'},
-web:{hero:'fullwidth',priceTable:'cards',nav:'topbar',cta:'solid',trust:['testimonials','stats']}
+// State
+const state = {
+  primary: '#1E88E5',
+  secondary: '#2E7D32',
+  accent: '#FFA726',
+  font: 'Inter',
+  radius: '8px',
+  radiusLabel: 'Leicht abgerundet',
+  style: 'modern',
+  styleLabel: 'Modern',
+  wishes: ''
 };
 
-// HSV Picker State für jeden Picker
-const pickerState={
-1:{h:207,s:0.5,v:0.5},
-2:{h:122,s:0.5,v:0.5},
-3:{h:36,s:0.5,v:0.5}
-};
+let currentStep = 1;
+const totalSteps = 6;
 
-const palette=[
-'#E53935','#C62828','#E91E63','#9C27B0','#673AB7',
-'#2196F3','#1565C0','#009688','#4CAF50','#2E7D32',
-'#FDD835','#FF9800','#795548','#9E9E9E','#424242',
-'#212121','#FFFFFF','#81D4FA','#A5D6A7','#FFF9C4',
-'#F8BBD0','#D1C4E9','#B2DFDB','#FFCCBC','#D7CCC8'
-];
-
-const fonts=[
-{n:'Inter',d:'Moderne, saubere Schrift. Gut lesbar auf allen Geräten.'},
-{n:'Roboto',d:'Google-Standardschrift. Vertraut und professionell.'},
-{n:'Open Sans',d:'Freundlich und offen. Perfekt für Websites.'},
-{n:'Lato',d:'Rund und einladend. Gute Lesbarkeit.'},
-{n:'Montserrat',d:'Geometrisch und modern. Für Headlines.'},
-{n:'Poppins',d:'Rund und modern. Beliebt für Websites.'}
-];
-
-let recentColors=[];
-const MAX_RECENT=10;
-
-function addRecentColor(hex){
-// Entfernen falls schon vorhanden
-recentColors=recentColors.filter(c=>c!==hex);
-// Am Anfang hinzufügen
-recentColors.unshift(hex);
-// Max 10 behalten
-if(recentColors.length>MAX_RECENT)recentColors=recentColors.slice(0,MAX_RECENT);
-// Alle Picker aktualisieren
-renderRecentColors();
+// Step Navigation
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const step = document.getElementById('step' + n);
+  if (step) step.classList.add('active');
+  currentStep = n;
+  document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
+  document.getElementById('progressText').textContent = 'Schritt ' + n + ' von ' + totalSteps;
+  if (n === 6) buildSummary();
 }
 
-function renderRecentColors(){
-for(let n=1;n<=3;n++){
-const container=document.getElementById('recentColors'+n);
-if(!container)return;
-if(recentColors.length===0){
-container.style.display='none';
-continue;
-}
-container.style.display='grid';
-container.innerHTML='';
-recentColors.forEach(color=>{
-const div=document.createElement('div');
-div.className='color-circle recent';
-div.style.background=color;
-div.title='Zuletzt verwendet: '+color;
-div.onclick=()=>selectPreset(n,color);
-container.appendChild(div);
-});
-}
-}
+function nextStep() { if (currentStep < totalSteps) showStep(currentStep + 1); }
+function prevStep() { if (currentStep > 1) showStep(currentStep - 1); }
 
-function init(){
-palette.forEach((c,i)=>{
-for(let n=1;n<=3;n++){
-const div=document.createElement('div');
-div.className='color-circle';
-div.style.background=c;
-div.onclick=()=>selectPreset(n,c);
-document.getElementById('palette'+n).appendChild(div);
-}
-});
-fonts.forEach((f,i)=>{
-const div=document.createElement('div');
-div.className='option'+(i===0?' selected':'');
-div.dataset.value=f.n;
-div.innerHTML=`<div class="option-title" style="font-family:'${f.n}',sans-serif">${f.n}</div><div class="option-desc">${f.d}</div>`;
-div.onclick=()=>selectOption(div,'font');
-document.getElementById('fontGrid').appendChild(div);
-});
-[1,2,3].forEach(n=>initHSV(n));
-updateProgress();
-updateTypoPreview();
-updateSpacingPreview();
-updateWidthPreview();
-updateCompPreview();
-bindSliders();
-}
-
-function initHSV(n){
-const canvas=document.getElementById('hsvCanvas'+n);
-const hueCanvas=document.getElementById('hueSlider'+n);
-const ctx=canvas.getContext('2d');
-const hctx=hueCanvas.getContext('2d');
-
-// Fix: Canvas-Größe zuverlässig setzen
-const canvasWidth=280;
-const canvasHeight=200;
-canvas.width=canvasWidth;
-canvas.height=canvasHeight;
-hueCanvas.width=canvasWidth;
-hueCanvas.height=24;
-
-// State aus pickerState laden
-let h=pickerState[n].h;
-let s=pickerState[n].s;
-let v=pickerState[n].v;
-let isDragging=false;
-
-function drawHueSlider(){
-const grad=hctx.createLinearGradient(0,0,hueCanvas.width,0);
-grad.addColorStop(0,'red');grad.addColorStop(0.17,'yellow');grad.addColorStop(0.33,'lime');
-grad.addColorStop(0.5,'cyan');grad.addColorStop(0.67,'blue');grad.addColorStop(0.83,'magenta');grad.addColorStop(1,'red');
-hctx.fillStyle=grad;
-hctx.fillRect(0,0,hueCanvas.width,hueCanvas.height);
-// Hue-Indikator zeichnen
-const hueX=(h/360)*hueCanvas.width;
-hctx.strokeStyle='#fff';
-hctx.lineWidth=3;
-hctx.beginPath();
-hctx.moveTo(hueX,0);
-hctx.lineTo(hueX,hueCanvas.height);
-hctx.stroke();
-hctx.strokeStyle='#000';
-hctx.lineWidth=1;
-hctx.stroke();
-}
-
-function drawSV(){
-// Sättigungs-Gradient (links weiß, rechts voll gesättigt)
-const grad=ctx.createLinearGradient(0,0,canvas.width,0);
-grad.addColorStop(0,'#fff');
-grad.addColorStop(1,`hsl(${h},100%,50%)`);
-ctx.fillStyle=grad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-// Helligkeits-Gradient (oben transparent, unten schwarz)
-const vGrad=ctx.createLinearGradient(0,0,0,canvas.height);
-vGrad.addColorStop(0,'transparent');
-vGrad.addColorStop(1,'#000');
-ctx.fillStyle=vGrad;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-// Indikator-Kreis zeichnen
-const x=s*canvas.width;
-const y=(1-v)*canvas.height;
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.strokeStyle='#fff';
-ctx.lineWidth=3;
-ctx.stroke();
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.strokeStyle='#000';
-ctx.lineWidth=1;
-ctx.stroke();
-ctx.beginPath();
-ctx.arc(x,y,8,0,Math.PI*2);
-ctx.fillStyle='#fff';
-ctx.fill();
-}
-
-function updateAll(){
-drawSV();
-drawHueSlider();
-updateColor();
-}
-
-function updateColor(){
-const rgb=hsvToRgb(h,s*100,v*100);
-const hex=rgbToHex(rgb.r,rgb.g,rgb.b);
-const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
-document.getElementById('hsvPreview'+n).style.background=hex;
-document.getElementById('hex'+n).textContent=hex;
-document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-setColor(n,hex);
-// State speichern
-pickerState[n]={h,s,v};
-// Zu recentColors hinzufügen
-addRecentColor(hex);
-}
-
-// Canvas Events
-canvas.addEventListener('mousedown',e=>{isDragging=true;handleSV(e)});
-canvas.addEventListener('mousemove',e=>{if(isDragging)handleSV(e)});
-canvas.addEventListener('mouseup',()=>isDragging=false);
-canvas.addEventListener('mouseleave',()=>isDragging=false);
-canvas.addEventListener('touchstart',e=>{isDragging=true;handleSV(e.touches[0])},{passive:true});
-canvas.addEventListener('touchmove',e=>{if(isDragging){e.preventDefault();handleSV(e.touches[0])}},{passive:false});
-canvas.addEventListener('touchend',()=>isDragging=false);
-
-// Hue-Slider Events
-hueCanvas.addEventListener('mousedown',e=>{isDragging=true;handleH(e)});
-hueCanvas.addEventListener('mousemove',e=>{if(isDragging)handleH(e)});
-hueCanvas.addEventListener('mouseup',()=>isDragging=false);
-hueCanvas.addEventListener('mouseleave',()=>isDragging=false);
-hueCanvas.addEventListener('click',handleH);
-hueCanvas.addEventListener('touchstart',e=>{isDragging=true;handleH(e.touches[0])},{passive:true});
-hueCanvas.addEventListener('touchmove',e=>{if(isDragging){e.preventDefault();handleH(e.touches[0])}},{passive:false});
-hueCanvas.addEventListener('touchend',()=>isDragging=false);
-
-function handleSV(e){
-const rect=canvas.getBoundingClientRect();
-s=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
-v=Math.max(0,Math.min(1,1-(e.clientY-rect.top)/rect.height));
-updateAll();
-}
-
-function handleH(e){
-const rect=hueCanvas.getBoundingClientRect();
-h=Math.round(Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width))*360);
-updateAll();
-}
-
-// Initial zeichnen
-updateAll();
-}
-
-function hsvToRgb(h,s,v){
-s/=100;v/=100;
-const i=Math.floor(h/60),f=h/60-i,p=v*(1-s),q=v*(1-f*s),t=v*(1-(1-f)*s);
-let r,g,b;
-switch(i%6){case 0:r=v;g=t;b=p;break;case 1:r=q;g=v;b=p;break;case 2:r=p;g=v;b=t;break;case 3:r=p;g=q;b=v;break;case 4:r=t;g=p;b=v;break;case 5:r=v;g=p;b=q}
-return{r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255)};
-}
-
-function rgbToHex(r,g,b){return'#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('')}
-function rgbToHsl(r,g,b){
-r/=255;g/=255;b/=255;
-const max=Math.max(r,g,b),min=Math.min(r,g,b);
-let h,s,l=(max+min)/2;
-if(max===min){h=s=0}else{
-const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
-switch(max){case r:h=((g-b)/d+(g<b?6:0))*60;break;case g:h=((b-r)/d+2)*60;break;case b:h=((r-g)/d+4)*60}
-}
-return{h:Math.round(h),s:Math.round(s*100),l:Math.round(l*100)};
-}
-
-function selectPreset(n,color){
-setColor(n,color);
-document.getElementById('hsvPreview'+n).style.background=color;
-// HEX und HSL aktualisieren
-const rgb=hexToRgb(color);
-const hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);
-document.getElementById('hex'+n).textContent=color;
-document.getElementById('hsl'+n).textContent=`HSL(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
-// Zu recentColors hinzufügen
-addRecentColor(color);
-// Vordefinierte Palette deselektieren
-document.querySelectorAll('#palette'+n+' .color-circle').forEach(c=>c.classList.remove('selected'));
-}
-
-function hexToRgb(hex){
-const result=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-return result?{
-r:parseInt(result[1],16),
-g:parseInt(result[2],16),
-b:parseInt(result[3],16)
-}:null;
-}
-
-function setColor(n,color){
-const key=n===1?'p':n===2?'s':'a';
-data.colors[key]=color;
-document.documentElement.style.setProperty('--'+key,color);
-updateColorPreviews();
-}
-
-function updateColorPreviews(){
-['p','s','a'].forEach(k=>{
-const el=document.getElementById('preview'+k.toUpperCase());
-if(el)el.style.background='var(--'+k+')';
-});
-// Live-Preview Container aktualisieren
-const previewSurface=document.querySelector('.preview-surface');
-if(previewSurface){
-previewSurface.style.background='var(--sf)';
-previewSurface.querySelector('[style*="color:var(--tp)"]').style.color='var(--tp)';
-previewSurface.querySelector('[style*="color:var(--ts)"]').style.color='var(--ts)';
-}
-}
-
-function selectOption(el,group){
-const parent=el.parentElement;
-parent.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
-el.classList.add('selected');
-const val=el.dataset.value;
-if(group==='font'){data.typo.font=val;updateTypoPreview()}
-else if(group==='grid')data.layout.grid=val;
-else if(group==='btnRadius')data.comp.btnRadius=parseInt(val);
-else if(group==='cardRadius')data.comp.cardRadius=parseInt(val);
-else if(group==='cardShadow')data.comp.cardShadow=val;
-else if(group==='inputBorder')data.comp.inputBorder=val;
-else if(group==='style')data.mood.style=val;
-else if(group==='imageStyle')data.mood.imageStyle=val;
-else if(group==='hero')data.web.hero=val;
-else if(group==='priceTable')data.web.priceTable=val;
-else if(group==='webNav')data.web.nav=val;
-else if(group==='cta')data.web.cta=val;
-if(group==='btnRadius'||group==='cardRadius'||group==='cardShadow'||group==='inputBorder')updateCompPreview();
-}
-
-function toggleChip(el){
-el.classList.toggle('selected');
-const val=el.dataset.value;
-if(el.classList.contains('selected')){
-if(!data.web.trust.includes(val))data.web.trust.push(val);
-}else{
-data.web.trust=data.web.trust.filter(t=>t!==val);
-}
-}
-
-function bindSliders(){
-const binds=[
-['h1Size','h1Val','px',v=>{data.typo.h1=v;updateTypoPreview()}],
-['h2Size','h2Val','px',v=>{data.typo.h2=v;updateTypoPreview()}],
-['bodySize','bodyVal','px',v=>{data.typo.body=v;updateTypoPreview()}],
-['captionSize','captionVal','px',v=>{data.typo.caption=v;updateTypoPreview()}],
-['h1Weight','h1wVal','',v=>{data.typo.h1w=v;updateTypoPreview()}],
-['h2Weight','h2wVal','',v=>{data.typo.h2w=v;updateTypoPreview()}],
-['bodyWeight','bodywVal','',v=>{data.typo.bodyw=v;updateTypoPreview()}],
-['spacing','spacingVal','px',v=>{data.layout.spacing=v;updateSpacingPreview()}],
-['containerWidth','widthVal','px',v=>{data.layout.width=v;updateWidthPreview()}]
-];
-binds.forEach(([id,valId,unit,cb])=>{
-const el=document.getElementById(id);
-if(el)el.oninput=()=>{document.getElementById(valId).textContent=el.value+unit;cb(parseInt(el.value))};
-});
-['bgColor','sfColor','tpColor','tsColor','seColor','swColor','erColor'].forEach(id=>{
-const el=document.getElementById(id);
-if(el)el.oninput=()=>{
-const keyMap={bgColor:'bg',sfColor:'sf',tpColor:'tp',tsColor:'ts',seColor:'se',swColor:'sw',erColor:'er'};
-const k=keyMap[id];
-data.colors[k]=el.value;
-document.documentElement.style.setProperty('--'+k,el.value);
-updateColorPreviews();
-};
-});
-}
-
-function updateTypoPreview(){
-const d=document.getElementById('typoPreview');
-if(!d)return;
-d.innerHTML=`
-<h1 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h1}px;font-weight:${data.typo.h1w}">H1 Überschrift</h1>
-<h2 style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.h2}px;font-weight:${data.typo.h2w};margin-top:12px">H2 Überschrift</h2>
-<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.body}px;font-weight:${data.typo.bodyw};margin-top:12px">Body Text für normale Inhalte</p>
-<p style="font-family:'${data.typo.font}',sans-serif;font-size:${data.typo.caption}px;color:var(--ts);margin-top:12px">Caption Text für kleine Beschriftungen</p>
-`;
-}
-
-function updateSpacingPreview(){
-const d=document.getElementById('spacingPreview');
-if(!d)return;
-const s=data.layout.spacing;
-d.innerHTML=`<div style="display:flex;gap:${s}px">
-<div style="flex:1;height:40px;background:var(--p);opacity:0.3;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);opacity:0.5;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);opacity:0.7;border-radius:4px"></div>
-<div style="flex:1;height:40px;background:var(--p);border-radius:4px"></div>
-</div>`;
-}
-
-function updateWidthPreview(){
-const d=document.getElementById('widthPreview');
-if(!d)return;
-const w=data.layout.width;
-d.innerHTML=`<div style="background:var(--sf);border:2px dashed var(--p);border-radius:8px;max-width:100%;padding:12px;text-align:center">
-<div style="background:var(--p);color:#fff;padding:8px;border-radius:4px;display:inline-block">${w}px Container</div>
-</div>`;
-}
-
-function updateCompPreview(){
-const d=document.getElementById('compPreview');
-if(!d)return;
-const br=data.comp.btnRadius;
-const cr=data.comp.cardRadius;
-const cs=data.comp.cardShadow;
-const ib=data.comp.inputBorder;
-let borderStyle='2px solid var(--ts)';
-if(ib==='dashed')borderStyle='2px dashed var(--ts)';
-else if(ib==='bottom')borderStyle='none;border-bottom:2px solid var(--ts)';
-else if(ib==='none')borderStyle='none';
-d.innerHTML=`
-<button style="background:var(--p);color:#fff;border:none;padding:12px 24px;border-radius:${br}px;cursor:pointer;font-size:14px">Button</button>
-<div style="background:var(--bg);padding:16px;border-radius:${cr}px;box-shadow:${cs};margin:16px 0">
-<div style="font-weight:600">Karte</div>
-<div style="font-size:12px;color:var(--ts)">Beispielinhalt</div>
-</div>
-<input type="text" placeholder="Input-Feld" style="width:100%;padding:12px;border:${borderStyle};border-radius:${br}px;font-size:14px;background:var(--bg)">
-`;
-}
-
-function goToSection(n){
-document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById('section'+n).classList.add('active');
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.querySelector(`.tab[data-section="${n}"]`).classList.add('active');
-if(n===7)renderSummary();
-updateProgress();
-window.scrollTo(0,0);
-}
-
-function updateProgress(){
-let filled=0;
-for(let i=1;i<=6;i++)filled++;
-document.getElementById('progress').style.width=(filled/7*100)+'%';
-document.getElementById('progressText').textContent=filled+'/7';
-}
-
-function renderSummary(){
-const s=document.getElementById('summary');
-const trustLabels={testimonials:'Testimonials',logos:'Partner-Logos',stats:'Statistiken'};
-s.innerHTML=`
-<div class="summary-item"><div class="summary-label">Primärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.p};vertical-align:middle;margin-right:8px"></span>${data.colors.p}</div></div>
-<div class="summary-item"><div class="summary-label">Sekundärfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.s};vertical-align:middle;margin-right:8px"></span>${data.colors.s}</div></div>
-<div class="summary-item"><div class="summary-label">Akzentfarbe</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.a};vertical-align:middle;margin-right:8px"></span>${data.colors.a}</div></div>
-<div class="summary-item"><div class="summary-label">Hintergrund</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.bg};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.bg}</div></div>
-<div class="summary-item"><div class="summary-label">Surface</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sf};vertical-align:middle;margin-right:8px;border:1px solid #ddd"></span>${data.colors.sf}</div></div>
-<div class="summary-item"><div class="summary-label">Text (Primär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.tp};vertical-align:middle;margin-right:8px"></span>${data.colors.tp}</div></div>
-<div class="summary-item"><div class="summary-label">Text (Sekundär)</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.ts};vertical-align:middle;margin-right:8px"></span>${data.colors.ts}</div></div>
-<div class="summary-item"><div class="summary-label">Erfolg</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.se};vertical-align:middle;margin-right:8px"></span>${data.colors.se}</div></div>
-<div class="summary-item"><div class="summary-label">Warnung</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.sw};vertical-align:middle;margin-right:8px"></span>${data.colors.sw}</div></div>
-<div class="summary-item"><div class="summary-label">Fehler</div><div class="summary-value"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${data.colors.er};vertical-align:middle;margin-right:8px"></span>${data.colors.er}</div></div>
-<div class="summary-item"><div class="summary-label">Schriftart</div><div class="summary-value">${data.typo.font}</div></div>
-<div class="summary-item"><div class="summary-label">H1-Größe</div><div class="summary-value">${data.typo.h1}px</div></div>
-<div class="summary-item"><div class="summary-label">H2-Größe</div><div class="summary-value">${data.typo.h2}px</div></div>
-<div class="summary-item"><div class="summary-label">Body-Größe</div><div class="summary-value">${data.typo.body}px</div></div>
-<div class="summary-item"><div class="summary-label">Spacing</div><div class="summary-value">${data.layout.spacing}px</div></div>
-<div class="summary-item"><div class="summary-label">Container</div><div class="summary-value">${data.layout.width}px</div></div>
-<div class="summary-item"><div class="summary-label">Raster</div><div class="summary-value">${data.layout.grid}</div></div>
-<div class="summary-item"><div class="summary-label">Button-Radius</div><div class="summary-value">${data.comp.btnRadius}px</div></div>
-<div class="summary-item"><div class="summary-label">Card-Radius</div><div class="summary-value">${data.comp.cardRadius}px</div></div>
-<div class="summary-item"><div class="summary-label">Card-Shadow</div><div class="summary-value">${data.comp.cardShadow}</div></div>
-<div class="summary-item"><div class="summary-label">Input-Border</div><div class="summary-value">${data.comp.inputBorder}</div></div>
-<div class="summary-item"><div class="summary-label">Style</div><div class="summary-value">${data.mood.style}</div></div>
-<div class="summary-item"><div class="summary-label">Bild-Stil</div><div class="summary-value">${data.mood.imageStyle}</div></div>
-<div class="summary-item"><div class="summary-label">Hero</div><div class="summary-value">${data.web.hero}</div></div>
-<div class="summary-item"><div class="summary-label">Preis-Tabelle</div><div class="summary-value">${data.web.priceTable}</div></div>
-<div class="summary-item"><div class="summary-label">Navigation</div><div class="summary-value">${data.web.nav}</div></div>
-<div class="summary-item"><div class="summary-label">CTA</div><div class="summary-value">${data.web.cta}</div></div>
-<div class="summary-item"><div class="summary-label">Trust</div><div class="summary-value">${data.web.trust.map(t=>trustLabels[t]||t).join(', ')}</div></div>
-`;
-}
-
-function downloadJSON(){
-const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-const url=URL.createObjectURL(blob);
-const a=document.createElement('a');
-a.href=url;
-a.download='design-auswahl-coaching-plattform-2026-04-07.json';
-a.click();
-URL.revokeObjectURL(url);
-}
-
-function copyJSON(){
-navigator.clipboard.writeText(JSON.stringify(data,null,2));
-alert('JSON kopiert!');
-}
-
-document.querySelectorAll('.tab').forEach(t=>{
-t.onclick=()=>goToSection(parseInt(t.dataset.section));
+// Color Selection
+document.querySelectorAll('.color-swatch').forEach(sw => {
+  sw.addEventListener('click', function() {
+    const target = this.dataset.target;
+    const color = this.dataset.color;
+    const container = this.parentElement;
+    container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    this.classList.add('selected');
+    state[target] = color;
+    updatePreview();
+  });
 });
 
-init();
+document.querySelectorAll('.color-custom input').forEach(input => {
+  input.addEventListener('input', function() {
+    const target = this.dataset.target;
+    const color = this.value;
+    const container = this.parentElement.parentElement;
+    container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    state[target] = color;
+    updatePreview();
+  });
+});
+
+// Font Selection
+function selectFont(el) {
+  document.querySelectorAll('#fontGrid .font-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.font = el.dataset.font;
+  updatePreview();
+}
+
+// Radius Selection
+function selectRadius(el) {
+  document.querySelectorAll('#radiusGrid .radius-option').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.radius = el.dataset.radius;
+  state.radiusLabel = el.querySelector('.radius-option-label').textContent;
+  updatePreview();
+}
+
+// Style Selection
+function selectStyle(el) {
+  document.querySelectorAll('#styleGrid .style-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.style = el.dataset.style;
+  state.styleLabel = el.querySelector('.style-card-name').textContent;
+  updatePreview();
+}
+
+// Update Live Preview
+function updatePreview() {
+  const root = document.documentElement;
+  root.style.setProperty('--primary', state.primary);
+  root.style.setProperty('--secondary', state.secondary);
+  root.style.setProperty('--accent', state.accent);
+  root.style.setProperty('--font', "'" + state.font + "', sans-serif");
+  root.style.setProperty('--radius', state.radius);
+
+  const pc = document.getElementById('previewContent');
+  pc.className = 'browser-content preview-content ' + state.style;
+
+  const isDark = state.style === 'dark';
+  const isModern = state.style === 'modern';
+
+  // Nav
+  const nav = pc.querySelector('.preview-nav');
+  if (state.style === 'modern') {
+    nav.style.background = 'linear-gradient(135deg,' + state.primary + ',' + state.accent + ')';
+  } else if (state.style === 'dark') {
+    nav.style.background = '#1a1a2e';
+  } else if (state.style === 'playful') {
+    nav.style.background = '#FFF3E0';
+  } else if (state.style === 'classic') {
+    nav.style.background = '#FAF7F2';
+  } else {
+    nav.style.background = '#fff';
+  }
+
+  // Hero
+  const hero = pc.querySelector('.preview-hero');
+  if (state.style === 'modern') {
+    hero.style.background = 'linear-gradient(135deg,' + state.primary + ',' + state.accent + ')';
+  } else if (state.style === 'dark') {
+    hero.style.background = '#16213e';
+  } else if (state.style === 'playful') {
+    hero.style.background = 'linear-gradient(135deg,#FF6B6B,#FFE66D)';
+  } else if (state.style === 'classic') {
+    hero.style.background = '#FAF7F2';
+  } else {
+    hero.style.background = '#fff';
+  }
+
+  // CTA Button
+  const cta = pc.querySelector('.preview-hero-btn');
+  if (state.style === 'modern') {
+    cta.style.background = '#fff';
+    cta.style.color = state.primary;
+  } else if (state.style === 'dark') {
+    cta.style.background = state.accent;
+    cta.style.color = '#fff';
+  } else if (state.style === 'classic') {
+    cta.style.background = '#3E2723';
+    cta.style.color = '#FAF7F2';
+  } else {
+    cta.style.background = state.primary;
+    cta.style.color = '#fff';
+  }
+  cta.style.borderRadius = state.radius;
+
+  // Cards
+  pc.querySelectorAll('.preview-card').forEach(card => {
+    card.style.borderRadius = state.radius;
+    if (state.style === 'modern') {
+      card.style.background = '#fff';
+      card.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
+    } else if (state.style === 'dark') {
+      card.style.background = '#1a1a2e';
+      card.style.border = '1px solid rgba(255,255,255,.1)';
+    } else if (state.style === 'playful') {
+      card.style.background = '#FFF8E1';
+      card.style.borderRadius = '16px';
+    } else if (state.style === 'classic') {
+      card.style.background = '#FAF7F2';
+      card.style.border = '1px solid #D7CCC8';
+    } else {
+      card.style.background = '#fff';
+      card.style.border = '1px solid #eee';
+    }
+  });
+
+  // Fonts in preview
+  const ff = "'" + state.font + "', sans-serif";
+  pc.style.fontFamily = ff;
+  pc.querySelector('.preview-logo').style.fontFamily = ff;
+  pc.querySelector('.preview-hero h1').style.fontFamily = ff;
+  pc.querySelector('.preview-hero p').style.fontFamily = ff;
+  pc.querySelector('.preview-hero-btn').style.fontFamily = ff;
+}
+
+// Summary
+function buildSummary() {
+  document.getElementById('sumPrimary').style.background = state.primary;
+  document.getElementById('sumPrimaryHex').textContent = state.primary;
+  document.getElementById('sumSecondary').style.background = state.secondary;
+  document.getElementById('sumSecondaryHex').textContent = state.secondary;
+  document.getElementById('sumAccent').style.background = state.accent;
+  document.getElementById('sumAccentHex').textContent = state.accent;
+  document.getElementById('sumFont').textContent = state.font;
+  document.getElementById('sumRadius').textContent = state.radius + ' — ' + state.radiusLabel;
+  document.getElementById('sumStyle').textContent = state.styleLabel;
+  state.wishes = document.getElementById('wishesText').value.trim();
+  const wRow = document.getElementById('sumWishesRow');
+  if (state.wishes) {
+    wRow.style.display = 'flex';
+    document.getElementById('sumWishes').textContent = state.wishes;
+  } else {
+    wRow.style.display = 'none';
+  }
+}
+
+// Download JSON
+function downloadJSON() {
+  const data = {
+    primaryColor: state.primary,
+    secondaryColor: state.secondary,
+    accentColor: state.accent,
+    fontFamily: state.font,
+    borderRadius: state.radius,
+    style: state.style,
+    wishes: state.wishes || ''
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'design-antworten-coaching.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Init
+updatePreview();
 </script>
 </body>
 </html>
