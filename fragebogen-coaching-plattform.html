@@ -1,737 +1,1832 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Design-Fragebogen — Coaching-Plattform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design-Auswahl: ViCo Trainingsplattform</title>
+    <style>
+        /* ===== GOOGLE FONTS ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --q-primary: #6366f1; --q-primary-dark: #4f46e5;
+            --q-bg: #f1f5f9; --q-surface: #ffffff; --q-text: #0f172a;
+            --q-text-sec: #64748b; --q-border: #e2e8f0;
+            --q-accent: #f59e0b;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--q-bg);
+            color: var(--q-text);
+            line-height: 1.6;
+        }
 
-:root{
-  --primary:#1E88E5;--secondary:#43A047;--accent:#FB8C00;
-  --font:'Inter',sans-serif;--radius:8px;
-  --style-modern;
-  --bg:#FAFAFA;--card-bg:#fff;--text:#212121;--text-light:#757575;
-  --shadow:0 2px 12px rgba(0,0,0,.08);
-}
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            color: white;
+            padding: 18px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 30px rgba(99, 102, 241, 0.3);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, #818cf8, #a78bfa);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 800;
+            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.4);
+        }
+        .brand h1 { font-size: 18px; font-weight: 700; }
+        .brand small { font-size: 11px; opacity: 0.6; display: block; }
+        .progress-wrap { display: flex; align-items: center; gap: 12px; }
+        .progress-bar-outer {
+            width: 180px; height: 7px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 99px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #818cf8, #c084fc);
+            border-radius: 99px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+        .progress-text { font-size: 11px; opacity: 0.7; font-weight: 500; }
 
-body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+        /* ===== TABS ===== */
+        .tabs {
+            background: var(--q-surface);
+            border-bottom: 1px solid var(--q-border);
+            position: sticky;
+            top: 78px;
+            z-index: 99;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+        }
+        .tabs-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            padding: 0 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab {
+            padding: 14px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--q-text-sec);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            user-select: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .tab:hover { color: var(--q-text); background: #f8fafc; }
+        .tab.active {
+            color: var(--q-primary);
+            border-bottom-color: var(--q-primary);
+            font-weight: 600;
+        }
+        .tab-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--q-border);
+            font-size: 11px; font-weight: 700;
+            color: var(--q-text-sec);
+            transition: all 0.2s;
+        }
+        .tab.active .tab-num { background: var(--q-primary); color: white; }
+        .tab.done .tab-num { background: #10b981; color: white; }
+        .tab .checkmark { display: none; font-size: 12px; color: #10b981; }
+        .tab.done .checkmark { display: inline; }
 
-/* Progress Bar */
-.progress-bar{position:fixed;top:0;left:0;width:100%;height:4px;background:#E0E0E0;z-index:1000}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .4s ease;border-radius:0 4px 4px 0}
-.progress-text{position:fixed;top:12px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--text-light);z-index:1000;background:var(--bg);padding:2px 16px;border-radius:12px;font-weight:500}
+        /* ===== MAIN ===== */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px 100px;
+        }
 
-/* Layout */
-.app{display:flex;min-height:100vh;padding-top:44px}
-.selection-panel{width:50%;padding:40px 32px;overflow-y:auto;max-height:calc(100vh - 44px)}
-.preview-panel{width:50%;padding:40px 32px;overflow-y:auto;max-height:calc(100vh - 44px);background:#F0F0F0;display:flex;align-items:flex-start;justify-content:center}
+        /* ===== SECTIONS ===== */
+        .section { display: none; animation: fadeIn 0.35s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-title {
+            font-size: 24px; font-weight: 800;
+            margin-bottom: 4px; letter-spacing: -0.5px;
+        }
+        .section-desc {
+            color: var(--q-text-sec); font-size: 14px;
+            margin-bottom: 24px; max-width: 650px;
+        }
 
-/* Step */
-.step{display:none;animation:fadeSlide .4s ease}
-.step.active{display:block}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        /* ===== CARD ===== */
+        .card {
+            background: var(--q-surface);
+            border-radius: 16px;
+            border: 1px solid var(--q-border);
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s;
+        }
+        .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .card-title {
+            font-size: 15px; font-weight: 700;
+            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
 
-.step-title{font-size:1.6rem;font-weight:700;margin-bottom:6px}
-.step-subtitle{color:var(--text-light);margin-bottom:28px;font-size:.95rem}
+        /* ===== COLOR ROW ===== */
+        .color-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .color-row:last-child { border-bottom: none; }
+        .color-row label {
+            width: 150px; font-size: 13px; font-weight: 600;
+            flex-shrink: 0; color: #334155;
+        }
+        .color-well {
+            position: relative; width: 40px; height: 40px;
+            border-radius: 10px; overflow: hidden;
+            border: 2px solid var(--q-border);
+            cursor: pointer; flex-shrink: 0;
+            transition: all 0.15s;
+        }
+        .color-well:hover { border-color: var(--q-primary); transform: scale(1.08); }
+        .color-well input[type="color"] {
+            position: absolute; top: -6px; left: -6px;
+            width: 54px; height: 54px; border: none; cursor: pointer;
+        }
+        .color-hex {
+            font-size: 12px; font-family: 'Courier New', monospace;
+            background: #f8fafc; padding: 5px 8px;
+            border-radius: 6px; border: 1px solid var(--q-border);
+            width: 82px; text-align: center;
+        }
+        .color-bar {
+            flex: 1; height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--q-border);
+            transition: background 0.2s;
+        }
 
-/* Color Picker */
-.color-row{margin-bottom:24px}
-.color-row-label{font-weight:600;margin-bottom:10px;font-size:.95rem}
-.color-swatches{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.color-swatch{width:40px;height:40px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s ease;position:relative}
-.color-swatch:hover{transform:scale(1.15);box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.color-swatch.selected{border-color:var(--text);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--text)}
-.color-custom{width:40px;height:40px;border-radius:50%;border:2px dashed #BDBDBD;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#9E9E9E;background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;overflow:hidden}
-.color-custom input{position:absolute;inset:0;opacity:0;cursor:pointer}
+        /* ===== FONT OPTION ===== */
+        .font-opt {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 16px;
+            border: 2px solid var(--q-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+        .font-opt:hover { border-color: #94a3b8; background: #fafbfc; }
+        .font-opt.selected {
+            border-color: var(--q-primary);
+            background: #eef2ff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .font-radio {
+            width: 20px; height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .font-opt.selected .font-radio {
+            border-color: var(--q-primary);
+            background: var(--q-primary);
+        }
+        .font-opt.selected .font-radio::after {
+            content: ''; width: 8px; height: 8px;
+            background: white; border-radius: 50%;
+        }
+        .font-label { font-size: 11.5px; color: var(--q-text-sec); font-weight: 600; }
+        .font-sample { font-size: 20px; color: var(--q-text); line-height: 1.3; }
 
-/* Font Cards */
-.font-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.font-card{padding:20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease}
-.font-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
-.font-card.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
-.font-card-name{font-size:.85rem;font-weight:600;color:var(--text-light);margin-bottom:8px}
-.font-card-preview{font-size:1.3rem;line-height:1.4}
+        /* ===== SLIDER GROUP ===== */
+        .slider-group {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px;
+        }
+        .slider-group label {
+            width: 150px; font-size: 13px; font-weight: 600;
+            flex-shrink: 0; color: #334155;
+        }
+        .slider-group input[type="range"] {
+            flex: 1; height: 6px;
+            -webkit-appearance: none;
+            background: #e2e8f0; border-radius: 99px; outline: none;
+        }
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+        }
+        .slider-val {
+            min-width: 52px; text-align: center;
+            font-size: 12.5px; font-weight: 700;
+            color: var(--q-primary);
+            background: #eef2ff;
+            padding: 4px 8px; border-radius: 6px;
+        }
 
-/* Radius Options */
-.radius-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.radius-option{padding:24px 20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease;text-align:center}
-.radius-option:hover{border-color:var(--primary)}
-.radius-option.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
-.radius-option-label{font-weight:600;margin-bottom:14px;font-size:.9rem}
-.radius-demo-box{width:80px;height:40px;margin:0 auto 10px;background:var(--primary);transition:all .3s ease}
-.radius-demo-btn{display:inline-block;padding:6px 18px;background:var(--secondary);color:#fff;font-size:.8rem;font-weight:500;transition:all .3s ease}
+        /* ===== OPTION GRID ===== */
+        .opt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .opt-card {
+            padding: 14px 10px;
+            border: 2px solid var(--q-border);
+            border-radius: 12px;
+            cursor: pointer; text-align: center;
+            transition: all 0.2s; user-select: none;
+        }
+        .opt-card:hover {
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .opt-card.selected {
+            border-color: var(--q-primary);
+            background: #eef2ff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        .opt-icon { font-size: 26px; margin-bottom: 6px; display: block; }
+        .opt-label { font-size: 12.5px; font-weight: 700; color: var(--q-text); }
+        .opt-desc { font-size: 10.5px; color: var(--q-text-sec); margin-top: 2px; }
 
-/* Style Options */
-.style-grid{display:grid;grid-template-columns:1fr;gap:14px}
-.style-card{padding:20px;background:var(--card-bg);border:2px solid #E0E0E0;border-radius:var(--radius);cursor:pointer;transition:all .2s ease}
-.style-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
-.style-card.selected{border-color:var(--primary);background:rgba(30,136,229,.05)}
-.style-card-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.style-card-name{font-weight:700;font-size:1rem}
-.style-card-desc{color:var(--text-light);font-size:.85rem;margin-bottom:14px}
-.style-mini-preview{border-radius:4px;overflow:hidden;padding:16px;font-size:.75rem;line-height:1.5}
+        /* ===== TAG CHIPS ===== */
+        .tag-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag-chip {
+            padding: 8px 16px;
+            border: 2px solid var(--q-border);
+            border-radius: 99px;
+            font-size: 12.5px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; user-select: none;
+        }
+        .tag-chip:hover { border-color: #94a3b8; }
+        .tag-chip.selected {
+            border-color: var(--q-primary);
+            background: var(--q-primary); color: white;
+        }
 
-.style-mini-preview.minimalist{background:#fff;border:1px solid #E0E0E0;color:#333}
-.style-mini-preview.minimalist .mini-nav{border-bottom:1px solid #eee;padding-bottom:8px;margin-bottom:8px;font-weight:600}
-.style-mini-preview.minimalist .mini-hero{font-size:1rem;font-weight:300;margin-bottom:6px}
-.style-mini-preview.minimalist .mini-cards{display:flex;gap:6px;margin-top:6px}
-.style-mini-preview.minimalist .mini-card{flex:1;padding:6px;border:1px solid #eee;text-align:center}
+        /* ===== PREVIEW BOX ===== */
+        .preview-box {
+            background: #f8fafc; border-radius: 14px;
+            padding: 20px; margin-top: 16px;
+            border: 1px solid var(--q-border);
+        }
+        .preview-label {
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            color: var(--q-text-sec); margin-bottom: 10px;
+        }
 
-.style-mini-preview.modern{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
-.style-mini-preview.modern .mini-nav{opacity:.8;margin-bottom:8px}
-.style-mini-preview.modern .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
-.style-mini-preview.modern .mini-cards{display:flex;gap:6px;margin-top:6px}
-.style-mini-preview.modern .mini-card{flex:1;padding:6px;background:rgba(255,255,255,.2);border-radius:8px;text-align:center}
+        /* ===== MONITOR FRAME ===== */
+        .monitor-frame {
+            max-width: 100%;
+            margin: 30px auto 0;
+            perspective: 1000px;
+        }
+        .monitor-body {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 16px 16px 28px;
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.25),
+                0 0 0 2px #2a2a4a,
+                inset 0 1px 0 rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .monitor-screen {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .monitor-chin {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px; margin-top: 0;
+        }
+        .monitor-dot {
+            width: 6px; height: 6px;
+            background: #3a3a5c; border-radius: 50%;
+        }
+        .monitor-stand {
+            width: 80px; height: 30px;
+            background: linear-gradient(145deg, #1a1a2e, #2a2a4a);
+            margin: 0 auto;
+            border-radius: 0 0 8px 8px;
+        }
+        .monitor-base {
+            width: 140px; height: 8px;
+            background: linear-gradient(145deg, #1a1a2e, #2a2a4a);
+            margin: 0 auto;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-.style-mini-preview.playful{background:#FFF3E0;color:#E65100}
-.style-mini-preview.playful .mini-nav{margin-bottom:8px;font-weight:700}
-.style-mini-preview.playful .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
-.style-mini-preview.playful .mini-cards{display:flex;gap:6px;margin-top:6px}
-.style-mini-preview.playful .mini-card{flex:1;padding:6px;background:#fff;border-radius:12px;text-align:center;font-weight:600}
+        /* ===== DEMO STYLES (inside monitor) ===== */
+        .demo {
+            --dp: #2563eb; --ds: #64748b; --da: #f59e0b;
+            --dbg: #f8fafc; --dsf: #ffffff; --dt: #0f172a; --dts: #475569;
+            --dok: #10b981; --dwn: #f59e0b; --der: #ef4444;
+            --dr: 12px; --dbr: 8px; --dcr: 12px; --dir: 8px;
+            --dsh: 0 4px 12px rgba(0,0,0,0.1);
+            --df: 'Inter', system-ui, sans-serif;
+            font-family: var(--df);
+            color: var(--dt);
+            background: var(--dbg);
+            min-height: 420px;
+        }
 
-.style-mini-preview.classic{background:#FAF7F2;color:#3E2723}
-.style-mini-preview.classic .mini-nav{border-bottom:2px solid #3E2723;padding-bottom:8px;margin-bottom:8px;font-family:'Playfair Display',serif;font-weight:700}
-.style-mini-preview.classic .mini-hero{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:6px}
-.style-mini-preview.classic .mini-cards{display:flex;gap:6px;margin-top:6px}
-.style-mini-preview.classic .mini-card{flex:1;padding:6px;border:1px solid #3E2723;text-align:center;font-family:'Playfair Display',serif}
+        /* Demo Nav */
+        .demo-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 20px;
+            background: var(--dsf);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .demo-logo {
+            font-weight: 800; font-size: 16px; color: var(--dp);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .demo-logo-icon {
+            width: 26px; height: 26px;
+            background: var(--dp);
+            border-radius: var(--dbr);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 12px; font-weight: 800;
+        }
+        .demo-nav-links { display: flex; gap: 16px; }
+        .demo-nav-link {
+            font-size: 11.5px; font-weight: 600; color: var(--dts);
+            cursor: default;
+        }
+        .demo-nav-cta {
+            padding: 6px 14px; border-radius: var(--dbr);
+            background: var(--dp); color: white;
+            font-size: 11px; font-weight: 700;
+        }
 
-.style-mini-preview.dark{background:#1a1a2e;color:#e0e0e0}
-.style-mini-preview.dark .mini-nav{margin-bottom:8px;opacity:.7}
-.style-mini-preview.dark .mini-hero{font-size:1rem;font-weight:700;margin-bottom:6px}
-.style-mini-preview.dark .mini-cards{display:flex;gap:6px;margin-top:6px}
-.style-mini-preview.dark .mini-card{flex:1;padding:6px;background:rgba(255,255,255,.08);border-radius:8px;text-align:center}
+        /* Demo Hero */
+        .demo-hero {
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .demo-hero h2 {
+            font-size: 22px; font-weight: 800;
+            margin-bottom: 6px; color: var(--dt);
+        }
+        .demo-hero p {
+            font-size: 12px; color: var(--dts);
+            margin-bottom: 14px; max-width: 380px; margin-left: auto; margin-right: auto;
+        }
+        .demo-hero-btn {
+            display: inline-block; padding: 8px 24px;
+            border-radius: var(--dbr); background: var(--dp);
+            color: white; font-size: 12px; font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
 
-/* Textarea */
-.wishes-textarea{width:100%;min-height:160px;padding:16px;border:2px solid #E0E0E0;border-radius:var(--radius);font-family:var(--font);font-size:.95rem;resize:vertical;transition:border-color .2s ease;background:var(--card-bg);color:var(--text)}
-.wishes-textarea:focus{outline:none;border-color:var(--primary)}
-.wishes-textarea::placeholder{color:#BDBDBD}
+        /* Demo Features */
+        .demo-features {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 12px; padding: 0 20px 20px;
+        }
+        .demo-feat-card {
+            background: var(--dsf);
+            border-radius: var(--dcr);
+            padding: 16px 12px;
+            text-align: center;
+            box-shadow: var(--dsh);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        .demo-feat-icon {
+            font-size: 24px; margin-bottom: 6px;
+        }
+        .demo-feat-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+        .demo-feat-desc { font-size: 10px; color: var(--dts); }
 
-/* Nav Buttons */
-.nav-buttons{display:flex;justify-content:space-between;margin-top:32px;padding-top:20px}
-.btn{padding:12px 28px;border:none;border-radius:var(--radius);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:var(--font)}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.btn-secondary{background:#E0E0E0;color:var(--text)}
-.btn-secondary:hover{background:#D0D0D0}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+        /* Demo Pricing */
+        .demo-pricing {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; padding: 0 20px 20px;
+        }
+        .demo-price-card {
+            background: var(--dsf);
+            border-radius: var(--dcr);
+            padding: 16px 10px;
+            text-align: center;
+            box-shadow: var(--dsh);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        .demo-price-card.featured {
+            border: 2px solid var(--dp);
+            position: relative;
+        }
+        .demo-price-badge {
+            position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+            background: var(--dp); color: white;
+            font-size: 9px; font-weight: 700; padding: 2px 10px;
+            border-radius: 99px;
+        }
+        .demo-price-name { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+        .demo-price-amt { font-size: 20px; font-weight: 800; color: var(--dp); }
+        .demo-price-amt span { font-size: 11px; font-weight: 500; color: var(--dts); }
+        .demo-price-btn {
+            display: block; margin: 10px auto 0; padding: 5px 14px;
+            border-radius: var(--dbr); font-size: 10px; font-weight: 700;
+            border: 2px solid var(--dp); color: var(--dp);
+            background: transparent;
+        }
+        .demo-price-card.featured .demo-price-btn {
+            background: var(--dp); color: white;
+        }
 
-/* Summary */
-.summary-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #EEEEEE}
-.summary-label{font-weight:600;min-width:130px;color:var(--text-light);font-size:.9rem}
-.summary-value{font-weight:500;display:flex;align-items:center;gap:8px}
-.summary-color{width:24px;height:24px;border-radius:50%;border:2px solid #E0E0E0}
-.btn-download{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s ease;margin-top:20px;font-family:var(--font)}
-.btn-download:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+        /* Demo Trust */
+        .demo-trust {
+            display: flex; justify-content: center; gap: 24px;
+            padding: 16px 20px;
+            background: var(--dsf);
+            border-top: 1px solid #e2e8f0;
+        }
+        .demo-trust-item { text-align: center; }
+        .demo-trust-num { font-size: 18px; font-weight: 800; color: var(--dp); }
+        .demo-trust-lbl { font-size: 9px; color: var(--dts); font-weight: 600; }
 
-/* ===== LIVE PREVIEW ===== */
-.browser-frame{width:100%;max-width:800px;background:#fff;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.12);overflow:hidden}
-.browser-chrome{background:#E8E8E8;padding:8px 14px;display:flex;align-items:center;gap:6px}
-.browser-dot{width:10px;height:10px;border-radius:50%}
-.browser-dot.red{background:#FF5F57}
-.browser-dot.yellow{background:#FEBC2E}
-.browser-dot.green{background:#28C840}
-.browser-url{flex:1;margin-left:8px;background:#fff;padding:4px 12px;border-radius:4px;font-size:.75rem;color:#999;text-align:center}
-.browser-content{min-height:460px;overflow:hidden;transition:all .3s ease}
+        /* Demo Input (in hero variant) */
+        .demo-input {
+            padding: 6px 12px; border-radius: var(--dir);
+            border: 2px solid #cbd5e1; font-size: 11px;
+            background: var(--dsf); color: var(--dts);
+            display: inline-block; margin-right: 8px;
+            transition: all 0.3s;
+        }
 
-/* Preview styles */
-.preview-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;transition:all .3s ease}
-.preview-logo{font-weight:700;font-size:1.05rem;transition:all .3s ease}
-.preview-nav-links{display:flex;gap:18px;font-size:.78rem;transition:all .3s ease}
-.preview-hero{padding:36px 24px;text-align:center;transition:all .3s ease}
-.preview-hero h1{font-size:1.3rem;font-weight:700;margin-bottom:6px;transition:all .3s ease}
-.preview-hero p{font-size:.8rem;opacity:.8;margin-bottom:16px;transition:all .3s ease}
-.preview-hero-btn{display:inline-block;padding:8px 22px;color:#fff;font-weight:600;font-size:.8rem;transition:all .3s ease}
-.preview-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:0 24px 24px;transition:all .3s ease}
-.preview-card{padding:16px;text-align:center;transition:all .3s ease}
-.preview-card h3{font-size:.8rem;font-weight:600;margin-bottom:4px;transition:all .3s ease}
-.preview-card p{font-size:.7rem;opacity:.7;transition:all .3s ease}
-.preview-footer{padding:14px 24px;text-align:center;font-size:.7rem;opacity:.6;border-top:1px solid rgba(0,0,0,.06);transition:all .3s ease}
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 11px 22px; border-radius: 10px;
+            font-size: 13.5px; font-weight: 700;
+            border: none; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+        }
+        .btn-outline {
+            background: transparent; color: var(--q-primary);
+            border: 2px solid var(--q-primary);
+        }
+        .btn-outline:hover { background: #eef2ff; }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+        .nav-buttons {
+            display: flex; justify-content: space-between;
+            margin-top: 24px; padding-top: 18px;
+            border-top: 1px solid var(--q-border);
+            flex-wrap: wrap; gap: 8px;
+        }
 
-/* Preview style variations */
-.preview-content.minimalist .preview-nav{background:#fff;border-bottom:1px solid #eee}
-.preview-content.minimalist .preview-hero{background:#fff}
-.preview-content.minimalist .preview-hero h1{font-weight:300;letter-spacing:.5px}
-.preview-content.minimalist .preview-hero-btn{background:var(--primary)}
-.preview-content.minimalist .preview-card{background:#fff;border:1px solid #eee}
-.preview-content.minimalist .preview-footer{background:#fff}
+        /* ===== SUMMARY ===== */
+        .summary-wrap {
+            background: linear-gradient(135deg, #1e1b4b, #312e81, #4338ca);
+            color: white; border-radius: 18px;
+            padding: 28px; margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.2);
+        }
+        .summary-wrap h3 {
+            font-size: 20px; font-weight: 800; margin-bottom: 20px;
+            text-align: center;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 14px;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .summary-item-label {
+            font-size: 10px; text-transform: uppercase;
+            letter-spacing: 0.5px; opacity: 0.5;
+            margin-bottom: 3px; font-weight: 600;
+        }
+        .summary-item-value {
+            font-size: 13px; font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .swatch {
+            width: 16px; height: 16px; border-radius: 4px;
+            border: 2px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
 
-.preview-content.modern .preview-nav{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
-.preview-content.modern .preview-logo{color:#fff}
-.preview-content.modern .preview-nav-links{color:rgba(255,255,255,.85)}
-.preview-content.modern .preview-hero{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
-.preview-content.modern .preview-hero h1{color:#fff}
-.preview-content.modern .preview-hero p{color:rgba(255,255,255,.85)}
-.preview-content.modern .preview-hero-btn{background:#fff;color:var(--primary)}
-.preview-content.modern .preview-card{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.preview-content.modern .preview-footer{background:#f8f8f8}
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed; top: 90px; right: 20px;
+            background: #10b981; color: white;
+            padding: 14px 24px; border-radius: 12px;
+            font-size: 14px; font-weight: 700; z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
-.preview-content.playful .preview-nav{background:#FFF3E0}
-.preview-content.playful .preview-hero{background:linear-gradient(135deg,#FF6B6B,#FFE66D);color:#333}
-.preview-content.playful .preview-hero h1{color:#333}
-.preview-content.playful .preview-hero-btn{background:var(--secondary);border-radius:999px}
-.preview-content.playful .preview-card{background:#FFF8E1;border-radius:16px}
-.preview-content.playful .preview-footer{background:#FFF3E0}
-
-.preview-content.classic .preview-nav{background:#FAF7F2;border-bottom:2px solid #3E2723}
-.preview-content.classic .preview-logo{font-family:'Playfair Display',serif}
-.preview-content.classic .preview-hero{background:#FAF7F2}
-.preview-content.classic .preview-hero h1{font-family:'Playfair Display',serif;font-weight:700}
-.preview-content.classic .preview-hero p{font-family:'Playfair Display',serif}
-.preview-content.classic .preview-hero-btn{background:#3E2723;color:#FAF7F2}
-.preview-content.classic .preview-card{background:#FAF7F2;border:1px solid #D7CCC8}
-.preview-content.classic .preview-card h3{font-family:'Playfair Display',serif}
-.preview-content.classic .preview-footer{background:#FAF7F2;font-family:'Playfair Display',serif}
-
-.preview-content.dark .preview-nav{background:#1a1a2e;color:#e0e0e0;border-bottom:1px solid rgba(255,255,255,.08)}
-.preview-content.dark .preview-logo{color:#fff}
-.preview-content.dark .preview-nav-links{color:rgba(255,255,255,.6)}
-.preview-content.dark .preview-hero{background:#16213e;color:#e0e0e0}
-.preview-content.dark .preview-hero h1{color:#fff}
-.preview-content.dark .preview-hero p{color:rgba(255,255,255,.7)}
-.preview-content.dark .preview-hero-btn{background:var(--accent)}
-.preview-content.dark .preview-card{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);color:#e0e0e0}
-.preview-content.dark .preview-card h3{color:#fff}
-.preview-content.dark .preview-card p{color:rgba(255,255,255,.6)}
-.preview-content.dark .preview-footer{background:#0f0f23;color:rgba(255,255,255,.4);border-top-color:rgba(255,255,255,.06)}
-
-/* Responsive */
-@media(max-width:900px){
-  .app{flex-direction:column}
-  .selection-panel,.preview-panel{width:100%;max-height:none}
-  .preview-panel{padding:24px 16px;background:#E8E8E8}
-  .font-grid{grid-template-columns:1fr}
-  .radius-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:500px){
-  .selection-panel{padding:24px 16px}
-  .step-title{font-size:1.3rem}
-  .radius-grid{grid-template-columns:1fr}
-  .preview-cards{grid-template-columns:1fr;gap:8px}
-}
-</style>
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header { padding: 14px 16px; }
+            .brand h1 { font-size: 15px; }
+            .progress-bar-outer { width: 100px; }
+            .tabs-inner { padding: 0 8px; }
+            .tab { padding: 10px 12px; font-size: 12px; }
+            .main { padding: 16px 12px 60px; }
+            .section-title { font-size: 20px; }
+            .color-row { flex-wrap: wrap; }
+            .color-row label { width: 100%; }
+            .slider-group { flex-wrap: wrap; }
+            .slider-group label { width: 100%; }
+            .opt-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .summary-grid { grid-template-columns: 1fr; }
+            .demo-features, .demo-pricing { grid-template-columns: 1fr; }
+            .demo-nav-links { display: none; }
+            .demo-trust { flex-wrap: wrap; gap: 12px; }
+        }
+        @media print {
+            .header, .tabs, .nav-buttons { display: none; }
+            .main { padding: 0; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16.66%"></div></div>
-<div class="progress-text" id="progressText">Schritt 1 von 6</div>
-
-<div class="app">
-  <!-- LEFT: Selection -->
-  <div class="selection-panel">
-
-    <!-- STEP 1: Colors -->
-    <div class="step active" id="step1">
-      <h2 class="step-title">🎨 Farben wählen</h2>
-      <p class="step-subtitle">Wählen Sie die Farbpalette für Ihre Coaching-Plattform.</p>
-
-      <div class="color-row">
-        <div class="color-row-label">Hauptfarbe</div>
-        <div class="color-swatches" id="primaryColors">
-          <div class="color-swatch selected" style="background:#1E88E5" data-color="#1E88E5" data-target="primary"></div>
-          <div class="color-swatch" style="background:#1565C0" data-color="#1565C0" data-target="primary"></div>
-          <div class="color-swatch" style="background:#42A5F5" data-color="#42A5F5" data-target="primary"></div>
-          <div class="color-swatch" style="background:#0D47A1" data-color="#0D47A1" data-target="primary"></div>
-          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="primary"></div>
-          <div class="color-swatch" style="background:#2E7D32" data-color="#2E7D32" data-target="primary"></div>
-          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="primary"></div>
-          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="primary"></div>
-          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="primary"></div>
-          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="primary"></div>
-          <div class="color-swatch" style="background:#EC407A" data-color="#EC407A" data-target="primary"></div>
-          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="primary"></div>
-          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="primary"></div>
-          <div class="color-swatch" style="background:#212121" data-color="#212121" data-target="primary"></div>
-          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="primary" value="#1E88E5"></div>
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="header-inner">
+        <div class="brand">
+            <div class="brand-icon">VC</div>
+            <div>
+                <h1>Design-Auswahl: ViCo Trainingsplattform</h1>
+                <small>Professioneller Design-Fragebogen</small>
+            </div>
         </div>
-      </div>
-
-      <div class="color-row">
-        <div class="color-row-label">Sekundärfarbe</div>
-        <div class="color-swatches" id="secondaryColors">
-          <div class="color-swatch" style="background:#1E88E5" data-color="#1E88E5" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="secondary"></div>
-          <div class="color-swatch selected" style="background:#2E7D32" data-color="#2E7D32" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#66BB6A" data-color="#66BB6A" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#1B5E20" data-color="#1B5E20" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#1565C0" data-color="#1565C0" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#42A5F5" data-color="#42A5F5" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#F57C00" data-color="#F57C00" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="secondary"></div>
-          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="secondary"></div>
-          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="secondary" value="#43A047"></div>
+        <div class="progress-wrap">
+            <div class="progress-bar-outer">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0 / 6</div>
         </div>
-      </div>
-
-      <div class="color-row">
-        <div class="color-row-label">Akzentfarbe</div>
-        <div class="color-swatches" id="accentColors">
-          <div class="color-swatch" style="background:#FB8C00" data-color="#FB8C00" data-target="accent"></div>
-          <div class="color-swatch" style="background:#F57C00" data-color="#F57C00" data-target="accent"></div>
-          <div class="color-swatch selected" style="background:#FFA726" data-color="#FFA726" data-target="accent"></div>
-          <div class="color-swatch" style="background:#FFB300" data-color="#FFB300" data-target="accent"></div>
-          <div class="color-swatch" style="background:#FF8F00" data-color="#FF8F00" data-target="accent"></div>
-          <div class="color-swatch" style="background:#EC407A" data-color="#EC407A" data-target="accent"></div>
-          <div class="color-swatch" style="background:#D81B60" data-color="#D81B60" data-target="accent"></div>
-          <div class="color-swatch" style="background:#E53935" data-color="#E53935" data-target="accent"></div>
-          <div class="color-swatch" style="background:#00ACC1" data-color="#00ACC1" data-target="accent"></div>
-          <div class="color-swatch" style="background:#8E24AA" data-color="#8E24AA" data-target="accent"></div>
-          <div class="color-swatch" style="background:#43A047" data-color="#43A047" data-target="accent"></div>
-          <div class="color-swatch" style="background:#1E88E5" data-color="#1E88E5" data-target="accent"></div>
-          <div class="color-swatch" style="background:#37474F" data-color="#37474F" data-target="accent"></div>
-          <div class="color-swatch" style="background:#212121" data-color="#212121" data-target="accent"></div>
-          <div class="color-custom" title="Eigene Farbe">+<input type="color" data-target="accent" value="#FFA726"></div>
-        </div>
-      </div>
-
-      <div class="nav-buttons">
-        <div></div>
-        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
-      </div>
     </div>
-
-    <!-- STEP 2: Font -->
-    <div class="step" id="step2">
-      <h2 class="step-title">✏️ Schriftart wählen</h2>
-      <p class="step-subtitle">Welche Schrift passt am besten zu Ihrer Plattform?</p>
-      <div class="font-grid" id="fontGrid">
-        <div class="font-card selected" data-font="Inter" onclick="selectFont(this)">
-          <div class="font-card-name">Inter</div>
-          <div class="font-card-preview" style="font-family:'Inter',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Modern, clean, neutral</span></div>
-        </div>
-        <div class="font-card" data-font="Poppins" onclick="selectFont(this)">
-          <div class="font-card-name">Poppins</div>
-          <div class="font-card-preview" style="font-family:'Poppins',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Freundlich, rund, warm</span></div>
-        </div>
-        <div class="font-card" data-font="Montserrat" onclick="selectFont(this)">
-          <div class="font-card-name">Montserrat</div>
-          <div class="font-card-preview" style="font-family:'Montserrat',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Stark, professionell</span></div>
-        </div>
-        <div class="font-card" data-font="Roboto" onclick="selectFont(this)">
-          <div class="font-card-name">Roboto</div>
-          <div class="font-card-preview" style="font-family:'Roboto',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Neutral, lesbar, klar</span></div>
-        </div>
-        <div class="font-card" data-font="Playfair Display" onclick="selectFont(this)">
-          <div class="font-card-name">Playfair Display</div>
-          <div class="font-card-preview" style="font-family:'Playfair Display',serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Elegant, klassisch, edel</span></div>
-        </div>
-        <div class="font-card" data-font="Space Grotesk" onclick="selectFont(this)">
-          <div class="font-card-name">Space Grotesk</div>
-          <div class="font-card-preview" style="font-family:'Space Grotesk',sans-serif">ABC abc 123<br><span style="font-size:.8em;opacity:.6">Technisch, modern, cool</span></div>
-        </div>
-      </div>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
-        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
-      </div>
-    </div>
-
-    <!-- STEP 3: Border Radius -->
-    <div class="step" id="step3">
-      <h2 class="step-title">📐 Eckrundung wählen</h2>
-      <p class="step-subtitle">Wie rund sollen Buttons und Karten sein?</p>
-      <div class="radius-grid" id="radiusGrid">
-        <div class="radius-option" data-radius="0px" onclick="selectRadius(this)">
-          <div class="radius-option-label">Eckig</div>
-          <div class="radius-demo-box" style="border-radius:0px"></div>
-          <div class="radius-demo-btn" style="border-radius:0px">Button</div>
-        </div>
-        <div class="radius-option selected" data-radius="8px" onclick="selectRadius(this)">
-          <div class="radius-option-label">Leicht abgerundet</div>
-          <div class="radius-demo-box" style="border-radius:8px"></div>
-          <div class="radius-demo-btn" style="border-radius:8px">Button</div>
-        </div>
-        <div class="radius-option" data-radius="16px" onclick="selectRadius(this)">
-          <div class="radius-option-label">Stark abgerundet</div>
-          <div class="radius-demo-box" style="border-radius:16px"></div>
-          <div class="radius-demo-btn" style="border-radius:16px">Button</div>
-        </div>
-        <div class="radius-option" data-radius="999px" onclick="selectRadius(this)">
-          <div class="radius-option-label">Runde Pills</div>
-          <div class="radius-demo-box" style="border-radius:999px"></div>
-          <div class="radius-demo-btn" style="border-radius:999px">Button</div>
-        </div>
-      </div>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
-        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
-      </div>
-    </div>
-
-    <!-- STEP 4: Style -->
-    <div class="step" id="step4">
-      <h2 class="step-title">🎭 Stil & Stimmung</h2>
-      <p class="step-subtitle">Welche Atmosphäre soll Ihre Plattform ausstrahlen?</p>
-      <div class="style-grid" id="styleGrid">
-        <div class="style-card" data-style="minimalist" onclick="selectStyle(this)">
-          <div class="style-card-header">🤍 <span class="style-card-name">Minimalistisch</span></div>
-          <div class="style-card-desc">Weiß, viel Weißraum, dünne Linien — Fokus auf Inhalte.</div>
-          <div class="style-mini-preview minimalist">
-            <div class="mini-nav">ProCoach</div>
-            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
-            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
-          </div>
-        </div>
-        <div class="style-card selected" data-style="modern" onclick="selectStyle(this)">
-          <div class="style-card-header">💎 <span class="style-card-name">Modern</span></div>
-          <div class="style-card-desc">Farbverläufe, Karten, Schatten — dynamisch und professionell.</div>
-          <div class="style-mini-preview modern">
-            <div class="mini-nav">ProCoach</div>
-            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
-            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
-          </div>
-        </div>
-        <div class="style-card" data-style="playful" onclick="selectStyle(this)">
-          <div class="style-card-header">🎨 <span class="style-card-name">Spielerisch</span></div>
-          <div class="style-card-desc">Bunt, abgerundet, lebendig — motivierend und einladend.</div>
-          <div class="style-mini-preview playful">
-            <div class="mini-nav">ProCoach</div>
-            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
-            <div class="mini-cards"><div class="mini-card">💪 Training</div><div class="mini-card">🥗 Ernährung</div><div class="mini-card">🧠 Mindset</div></div>
-          </div>
-        </div>
-        <div class="style-card" data-style="classic" onclick="selectStyle(this)">
-          <div class="style-card-header">🏛️ <span class="style-card-name">Klassisch</span></div>
-          <div class="style-card-desc">Serifen, dunkle Farben, elegant — seriös und vertrauensvoll.</div>
-          <div class="style-mini-preview classic">
-            <div class="mini-nav">ProCoach</div>
-            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
-            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
-          </div>
-        </div>
-        <div class="style-card" data-style="dark" onclick="selectStyle(this)">
-          <div class="style-card-header">🌙 <span class="style-card-name">Dunkel</span></div>
-          <div class="style-card-desc">Dunkler Hintergrund, heller Text — modern und markant.</div>
-          <div class="style-mini-preview dark">
-            <div class="mini-nav">ProCoach</div>
-            <div class="mini-hero">Ihr Weg zu mehr Leistung</div>
-            <div class="mini-cards"><div class="mini-card">Training</div><div class="mini-card">Ernährung</div><div class="mini-card">Mindset</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
-        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
-      </div>
-    </div>
-
-    <!-- STEP 5: Wishes -->
-    <div class="step" id="step5">
-      <h2 class="step-title">💭 Weitere Wünsche</h2>
-      <p class="step-subtitle">Haben Sie noch weitere Ideen für das Design Ihrer Plattform?</p>
-      <textarea class="wishes-textarea" id="wishesText" placeholder="z. B. &quot;Ich möchte ein dunkles Logo auf hellem Hintergrund&quot;, &quot;Viele Fotos von echten Trainingseinheiten einbinden&quot;, &quot;Kalender-Funktion für Buchungen sichtbar machen&quot;…"></textarea>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
-        <button class="btn btn-primary" onclick="nextStep()">Weiter →</button>
-      </div>
-    </div>
-
-    <!-- STEP 6: Summary -->
-    <div class="step" id="step6">
-      <h2 class="step-title">✅ Zusammenfassung</h2>
-      <p class="step-subtitle">Überprüfen Sie Ihre Auswahl und laden Sie die Ergebnisse herunter.</p>
-      <div id="summaryContent">
-        <div class="summary-item">
-          <span class="summary-label">Hauptfarbe</span>
-          <span class="summary-value"><span class="summary-color" id="sumPrimary" style="background:#1E88E5"></span><span id="sumPrimaryHex">#1E88E5</span></span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Sekundärfarbe</span>
-          <span class="summary-value"><span class="summary-color" id="sumSecondary" style="background:#2E7D32"></span><span id="sumSecondaryHex">#2E7D32</span></span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Akzentfarbe</span>
-          <span class="summary-value"><span class="summary-color" id="sumAccent" style="background:#FFA726"></span><span id="sumAccentHex">#FFA726</span></span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Schriftart</span>
-          <span class="summary-value" id="sumFont">Inter</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Eckrundung</span>
-          <span class="summary-value" id="sumRadius">8px — Leicht abgerundet</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Stil</span>
-          <span class="summary-value" id="sumStyle">Modern</span>
-        </div>
-        <div class="summary-item" id="sumWishesRow" style="display:none">
-          <span class="summary-label">Weitere Wünsche</span>
-          <span class="summary-value" id="sumWishes" style="max-width:300px"></span>
-        </div>
-      </div>
-      <button class="btn-download" onclick="downloadJSON()">📋 Antworten als JSON herunterladen</button>
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="prevStep()">← Zurück</button>
-        <div></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- RIGHT: Live Preview -->
-  <div class="preview-panel">
-    <div class="browser-frame">
-      <div class="browser-chrome">
-        <div class="browser-dot red"></div>
-        <div class="browser-dot yellow"></div>
-        <div class="browser-dot green"></div>
-        <div class="browser-url">www.procoach-plattform.de</div>
-      </div>
-      <div class="browser-content preview-content modern" id="previewContent">
-        <nav class="preview-nav">
-          <div class="preview-logo">ProCoach</div>
-          <div class="preview-nav-links">
-            <span>Start</span><span>Leistungen</span><span>Über uns</span><span>Kontakt</span>
-          </div>
-        </nav>
-        <div class="preview-hero">
-          <h1>Erreichen Sie Ihre Ziele — mit persönlichem Coaching</h1>
-          <p>Individuelle Trainingspläne, Ernährungsberatung und mentale Stärke für Ihren Erfolg.</p>
-          <span class="preview-hero-btn">Jetzt kostenlos beraten lassen</span>
-        </div>
-        <div class="preview-cards">
-          <div class="preview-card">
-            <h3>💪 Personal Training</h3>
-            <p>Maßgeschneidertes Training für maximale Ergebnisse.</p>
-          </div>
-          <div class="preview-card">
-            <h3>🥗 Ernährungsplan</h3>
-            <p>Auf Ihre Ziele abgestimmte Ernährungsstrategien.</p>
-          </div>
-          <div class="preview-card">
-            <h3>🧠 Mindset Coaching</h3>
-            <p>Die richtige Einstellung für langfristigen Erfolg.</p>
-          </div>
-        </div>
-        <div class="preview-footer">© 2026 ProCoach — Ihr Partner für Fitness & Wohlbefinden</div>
-      </div>
-    </div>
-  </div>
 </div>
 
+<!-- ===== TABS ===== -->
+<div class="tabs">
+    <div class="tabs-inner" id="tabsInner">
+        <div class="tab active" onclick="goSection(0)">
+            <span class="tab-num">1</span> Farben
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="tab" onclick="goSection(1)">
+            <span class="tab-num">2</span> Typografie
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="tab" onclick="goSection(2)">
+            <span class="tab-num">3</span> Spacing
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="tab" onclick="goSection(3)">
+            <span class="tab-num">4</span> Komponenten
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="tab" onclick="goSection(4)">
+            <span class="tab-num">5</span> Stimmung
+            <span class="checkmark">✓</span>
+        </div>
+        <div class="tab" onclick="goSection(5)">
+            <span class="tab-num">6</span> Plattform
+            <span class="checkmark">✓</span>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main">
+
+<!-- ============================== -->
+<!-- SECTION 1: FARBEN              -->
+<!-- ============================== -->
+<div class="section active" id="sec0">
+    <h2 class="section-title">🎨 Farben</h2>
+    <p class="section-desc">Farbschema für Ihre Coaching-Plattform. Alle Änderungen werden sofort im Live-Preview angezeigt.</p>
+
+    <div class="card">
+        <div class="card-title">🎯 Hauptfarben</div>
+        <div class="color-row">
+            <label>Primärfarbe</label>
+            <div class="color-well"><input type="color" value="#2563eb" data-key="primary" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#2563eb" data-key="primary" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_primary" style="background:#2563eb"></div>
+        </div>
+        <div class="color-row">
+            <label>Sekundärfarbe</label>
+            <div class="color-well"><input type="color" value="#64748b" data-key="secondary" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#64748b" data-key="secondary" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_secondary" style="background:#64748b"></div>
+        </div>
+        <div class="color-row">
+            <label>Akzentfarbe</label>
+            <div class="color-well"><input type="color" value="#f59e0b" data-key="accent" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#f59e0b" data-key="accent" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_accent" style="background:#f59e0b"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🖼️ Hintergrund & Surface</div>
+        <div class="color-row">
+            <label>Hintergrund</label>
+            <div class="color-well"><input type="color" value="#f8fafc" data-key="bg" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#f8fafc" data-key="bg" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_bg" style="background:#f8fafc"></div>
+        </div>
+        <div class="color-row">
+            <label>Surface / Karten</label>
+            <div class="color-well"><input type="color" value="#ffffff" data-key="surface" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#ffffff" data-key="surface" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_surface" style="background:#ffffff"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">✏️ Textfarben</div>
+        <div class="color-row">
+            <label>Text (primär)</label>
+            <div class="color-well"><input type="color" value="#0f172a" data-key="text" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#0f172a" data-key="text" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_text" style="background:#0f172a"></div>
+        </div>
+        <div class="color-row">
+            <label>Text (sekundär)</label>
+            <div class="color-well"><input type="color" value="#475569" data-key="textSec" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#475569" data-key="textSec" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_textSec" style="background:#475569"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">⚡ Statusfarben</div>
+        <div class="color-row">
+            <label>Erfolg</label>
+            <div class="color-well"><input type="color" value="#10b981" data-key="success" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#10b981" data-key="success" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_success" style="background:#10b981"></div>
+        </div>
+        <div class="color-row">
+            <label>Warnung</label>
+            <div class="color-well"><input type="color" value="#f59e0b" data-key="warning" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#f59e0b" data-key="warning" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_warning" style="background:#f59e0b"></div>
+        </div>
+        <div class="color-row">
+            <label>Fehler</label>
+            <div class="color-well"><input type="color" value="#ef4444" data-key="error" oninput="onColorPick(this)"></div>
+            <input class="color-hex" value="#ef4444" data-key="error" oninput="onColorHex(this)">
+            <div class="color-bar" id="bar_error" style="background:#ef4444"></div>
+        </div>
+    </div>
+
+    <!-- Live Preview Monitor -->
+    <div class="monitor-frame">
+        <div class="monitor-body">
+            <div class="monitor-screen">
+                <div class="demo" id="demoPreview">
+                    <div class="demo-nav">
+                        <div class="demo-logo"><div class="demo-logo-icon">VC</div> ViCo</div>
+                        <div class="demo-nav-links">
+                            <span class="demo-nav-link">Trainingspläne</span>
+                            <span class="demo-nav-link">Preise</span>
+                            <span class="demo-nav-link">Über uns</span>
+                        </div>
+                        <div class="demo-nav-cta">Jetzt starten</div>
+                    </div>
+                    <div class="demo-hero" id="demoHero">
+                        <h2>Trainiere dein Sehen.<br>Stärke dein Gehirn.</h2>
+                        <p>Visuelles Coaching für bessere Leistung — personalisierte Trainingspläne für Augen und Gehirn.</p>
+                        <div class="demo-input">E-Mail eingeben...</div>
+                        <div class="demo-hero-btn">Kostenlos testen</div>
+                    </div>
+                    <div class="demo-features" id="demoFeatures">
+                        <div class="demo-feat-card">
+                            <div class="demo-feat-icon">👁️</div>
+                            <div class="demo-feat-title">Augen-Training</div>
+                            <div class="demo-feat-desc">Gezielte Übungen für visuelle Schärfe</div>
+                        </div>
+                        <div class="demo-feat-card">
+                            <div class="demo-feat-icon">🧠</div>
+                            <div class="demo-feat-title">Gehirn-Training</div>
+                            <div class="demo-feat-desc">Kognitive Leistung gezielt verbessern</div>
+                        </div>
+                        <div class="demo-feat-card">
+                            <div class="demo-feat-icon">🎯</div>
+                            <div class="demo-feat-title">Visuelle Wahrnehmung</div>
+                            <div class="demo-feat-desc">Reaktionszeit und Koordination</div>
+                        </div>
+                    </div>
+                    <div class="demo-pricing" id="demoPricing">
+                        <div class="demo-price-card">
+                            <div class="demo-price-name">Kostenlos</div>
+                            <div class="demo-price-amt">0<span>€</span></div>
+                            <div class="demo-price-btn">Anmelden</div>
+                        </div>
+                        <div class="demo-price-card featured" id="demoPriceFeatured">
+                            <div class="demo-price-badge">Beliebt</div>
+                            <div class="demo-price-name">Premium</div>
+                            <div class="demo-price-amt">19<span>€/Monat</span></div>
+                            <div class="demo-price-btn">Auswählen</div>
+                        </div>
+                        <div class="demo-price-card">
+                            <div class="demo-price-name">Pro</div>
+                            <div class="demo-price-amt">39<span>€/Monat</span></div>
+                            <div class="demo-price-btn">Auswählen</div>
+                        </div>
+                    </div>
+                    <div class="demo-trust" id="demoTrust">
+                        <div class="demo-trust-item">
+                            <div class="demo-trust-num">2.500+</div>
+                            <div class="demo-trust-lbl">Aktive Nutzer</div>
+                        </div>
+                        <div class="demo-trust-item">
+                            <div class="demo-trust-num">98%</div>
+                            <div class="demo-trust-lbl">Zufriedenheit</div>
+                        </div>
+                        <div class="demo-trust-item">
+                            <div class="demo-trust-num">50+</div>
+                            <div class="demo-trust-lbl">Übungen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="monitor-chin">
+                <div class="monitor-dot"></div>
+            </div>
+        </div>
+        <div class="monitor-stand"></div>
+        <div class="monitor-base"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="goSection(1)">Weiter zu Typografie →</button>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 2: TYPOGRAFIE          -->
+<!-- ============================== -->
+<div class="section" id="sec1">
+    <h2 class="section-title">📝 Typografie</h2>
+    <p class="section-desc">Wählen Sie Schriftart, Größen und Gewichte. Die Vorschau aktualisiert sich sofort.</p>
+
+    <div class="card">
+        <div class="card-title">🔤 Schriftart</div>
+        <div id="fontList"></div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📏 Größen & Gewichte</div>
+        <div class="slider-group">
+            <label>H1 Größe</label>
+            <input type="range" min="24" max="56" value="36" data-key="h1Size" oninput="onSlider(this)">
+            <div class="slider-val"><span>36</span>px</div>
+        </div>
+        <div class="slider-group">
+            <label>H1 Stärke</label>
+            <input type="range" min="300" max="900" step="100" value="800" data-key="h1Weight" oninput="onSlider(this)">
+            <div class="slider-val"><span>800</span></div>
+        </div>
+        <div class="slider-group">
+            <label>H2 Größe</label>
+            <input type="range" min="18" max="42" value="22" data-key="h2Size" oninput="onSlider(this)">
+            <div class="slider-val"><span>22</span>px</div>
+        </div>
+        <div class="slider-group">
+            <label>H2 Stärke</label>
+            <input type="range" min="300" max="900" step="100" value="700" data-key="h2Weight" oninput="onSlider(this)">
+            <div class="slider-val"><span>700</span></div>
+        </div>
+        <div class="slider-group">
+            <label>Body Größe</label>
+            <input type="range" min="12" max="22" value="14" data-key="bodySize" oninput="onSlider(this)">
+            <div class="slider-val"><span>14</span>px</div>
+        </div>
+        <div class="slider-group">
+            <label>Body Stärke</label>
+            <input type="range" min="300" max="700" step="100" value="400" data-key="bodyWeight" oninput="onSlider(this)">
+            <div class="slider-val"><span>400</span></div>
+        </div>
+        <div class="slider-group">
+            <label>Caption Größe</label>
+            <input type="range" min="10" max="16" value="11" data-key="captionSize" oninput="onSlider(this)">
+            <div class="slider-val"><span>11</span>px</div>
+        </div>
+        <div class="slider-group">
+            <label>Caption Stärke</label>
+            <input type="range" min="300" max="700" step="100" value="500" data-key="captionWeight" oninput="onSlider(this)">
+            <div class="slider-val"><span>500</span></div>
+        </div>
+    </div>
+
+    <!-- Monitor Preview (typography) -->
+    <div class="monitor-frame">
+        <div class="monitor-body">
+            <div class="monitor-screen">
+                <div class="demo" id="demoPreview2">
+                    <div class="demo-nav">
+                        <div class="demo-logo"><div class="demo-logo-icon">VC</div> ViCo</div>
+                        <div class="demo-nav-links">
+                            <span class="demo-nav-link">Trainingspläne</span>
+                            <span class="demo-nav-link">Preise</span>
+                        </div>
+                        <div class="demo-nav-cta">Jetzt starten</div>
+                    </div>
+                    <div class="demo-hero">
+                        <h2 id="typoH1">Trainiere dein Sehen.</h2>
+                        <p id="typoBody">Visuelles Coaching für bessere Leistung mit personalisierten Trainingsplänen.</p>
+                        <div class="demo-hero-btn" id="typoCaption">Kostenlos testen</div>
+                    </div>
+                </div>
+            </div>
+            <div class="monitor-chin"><div class="monitor-dot"></div></div>
+        </div>
+        <div class="monitor-stand"></div>
+        <div class="monitor-base"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="goSection(0)">← Farben</button>
+        <button class="btn btn-primary" onclick="goSection(2)">Weiter zu Spacing →</button>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 3: SPACING & LAYOUT    -->
+<!-- ============================== -->
+<div class="section" id="sec2">
+    <h2 class="section-title">📐 Spacing & Layout</h2>
+    <p class="section-desc">Raster, Abstände und Container-Breite definieren.</p>
+
+    <div class="card">
+        <div class="card-title">📏 Basis-Spacing</div>
+        <div class="slider-group">
+            <label>Spacing-Unit</label>
+            <input type="range" min="2" max="16" value="8" data-key="spacingBase" oninput="onSlider(this)">
+            <div class="slider-val"><span>8</span>px</div>
+        </div>
+        <div class="preview-box">
+            <div class="preview-label">Visuelle Darstellung</div>
+            <div id="spacingVis" style="display:flex;gap:8px;flex-wrap:wrap;align-items:end"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🖥️ Container & Raster</div>
+        <div class="slider-group">
+            <label>Container-Breite</label>
+            <input type="range" min="960" max="1400" step="20" value="1200" data-key="containerWidth" oninput="onSlider(this)">
+            <div class="slider-val"><span>1200</span>px</div>
+        </div>
+        <div class="preview-box">
+            <div class="preview-label">Vorschau</div>
+            <div style="background:#e2e8f0;padding:12px;border-radius:8px">
+                <div id="containerVis" style="background:var(--q-primary);margin:0 auto;height:32px;border-radius:6px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700"></div>
+            </div>
+        </div>
+        <div style="margin-top:18px">
+            <div class="card-title" style="font-size:13px;color:var(--q-text-sec)">Raster-System</div>
+            <div class="opt-grid">
+                <div class="opt-card selected" data-key="grid" data-val="12" onclick="selectOpt(this)">
+                    <div class="opt-icon">▦</div>
+                    <div class="opt-label">12 Spalten</div>
+                    <div class="opt-desc">Klassisch</div>
+                </div>
+                <div class="opt-card" data-key="grid" data-val="16" onclick="selectOpt(this)">
+                    <div class="opt-icon">▦</div>
+                    <div class="opt-label">16 Spalten</div>
+                    <div class="opt-desc">Feiner</div>
+                </div>
+                <div class="opt-card" data-key="grid" data-val="flexible" onclick="selectOpt(this)">
+                    <div class="opt-icon">〰</div>
+                    <div class="opt-label">Flexibel</div>
+                    <div class="opt-desc">CSS Grid</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="goSection(1)">← Typografie</button>
+        <button class="btn btn-primary" onclick="goSection(3)">Weiter zu Komponenten →</button>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 4: KOMPONENTEN         -->
+<!-- ============================== -->
+<div class="section" id="sec3">
+    <h2 class="section-title">🧩 Komponenten</h2>
+    <p class="section-desc">Buttons, Karten und Inputs gestalten. Alles sofort sichtbar im Preview.</p>
+
+    <div class="card">
+        <div class="card-title">🔘 Button Radius</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="btnRadius" data-val="0" onclick="selectOpt(this)">
+                <div style="width:40px;height:24px;background:var(--q-primary);margin:0 auto;border-radius:0"></div>
+                <div class="opt-label" style="margin-top:8px">Kein (0px)</div>
+            </div>
+            <div class="opt-card" data-key="btnRadius" data-val="6" onclick="selectOpt(this)">
+                <div style="width:40px;height:24px;background:var(--q-primary);margin:0 auto;border-radius:6px"></div>
+                <div class="opt-label" style="margin-top:8px">Leicht (6px)</div>
+            </div>
+            <div class="opt-card selected" data-key="btnRadius" data-val="12" onclick="selectOpt(this)">
+                <div style="width:40px;height:24px;background:var(--q-primary);margin:0 auto;border-radius:12px"></div>
+                <div class="opt-label" style="margin-top:8px">Medium (12px)</div>
+            </div>
+            <div class="opt-card" data-key="btnRadius" data-val="20" onclick="selectOpt(this)">
+                <div style="width:40px;height:24px;background:var(--q-primary);margin:0 auto;border-radius:20px"></div>
+                <div class="opt-label" style="margin-top:8px">Stark (20px)</div>
+            </div>
+            <div class="opt-card" data-key="btnRadius" data-val="99" onclick="selectOpt(this)">
+                <div style="width:40px;height:24px;background:var(--q-primary);margin:0 auto;border-radius:99px"></div>
+                <div class="opt-label" style="margin-top:8px">Pill (99px)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🃏 Card Radius</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="cardRadius" data-val="0" onclick="selectOpt(this)">
+                <div style="width:50px;height:30px;background:#e2e8f0;margin:0 auto;border-radius:0"></div>
+                <div class="opt-label" style="margin-top:8px">Kein (0px)</div>
+            </div>
+            <div class="opt-card" data-key="cardRadius" data-val="8" onclick="selectOpt(this)">
+                <div style="width:50px;height:30px;background:#e2e8f0;margin:0 auto;border-radius:8px"></div>
+                <div class="opt-label" style="margin-top:8px">Leicht (8px)</div>
+            </div>
+            <div class="opt-card selected" data-key="cardRadius" data-val="16" onclick="selectOpt(this)">
+                <div style="width:50px;height:30px;background:#e2e8f0;margin:0 auto;border-radius:16px"></div>
+                <div class="opt-label" style="margin-top:8px">Medium (16px)</div>
+            </div>
+            <div class="opt-card" data-key="cardRadius" data-val="24" onclick="selectOpt(this)">
+                <div style="width:50px;height:30px;background:#e2e8f0;margin:0 auto;border-radius:24px"></div>
+                <div class="opt-label" style="margin-top:8px">Stark (24px)</div>
+            </div>
+            <div class="opt-card" data-key="cardRadius" data-val="32" onclick="selectOpt(this)">
+                <div style="width:50px;height:30px;background:#e2e8f0;margin:0 auto;border-radius:32px"></div>
+                <div class="opt-label" style="margin-top:8px">Extra (32px)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">📝 Input Radius</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="inputRadius" data-val="0" onclick="selectOpt(this)">
+                <div style="width:50px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:0"></div>
+                <div class="opt-label" style="margin-top:8px">Kein (0px)</div>
+            </div>
+            <div class="opt-card" data-key="inputRadius" data-val="6" onclick="selectOpt(this)">
+                <div style="width:50px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:6px"></div>
+                <div class="opt-label" style="margin-top:8px">Leicht (6px)</div>
+            </div>
+            <div class="opt-card selected" data-key="inputRadius" data-val="12" onclick="selectOpt(this)">
+                <div style="width:50px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:12px"></div>
+                <div class="opt-label" style="margin-top:8px">Medium (12px)</div>
+            </div>
+            <div class="opt-card" data-key="inputRadius" data-val="99" onclick="selectOpt(this)">
+                <div style="width:50px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:99px"></div>
+                <div class="opt-label" style="margin-top:8px">Pill (99px)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🌫️ Card Shadow</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="cardShadow" data-val="none" onclick="selectOpt(this)">
+                <div style="width:54px;height:30px;background:#fff;border:1px solid #e2e8f0;margin:0 auto"></div>
+                <div class="opt-label" style="margin-top:8px">Kein</div>
+            </div>
+            <div class="opt-card" data-key="cardShadow" data-val="subtle" onclick="selectOpt(this)">
+                <div style="width:54px;height:30px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 1px 3px rgba(0,0,0,0.08)"></div>
+                <div class="opt-label" style="margin-top:8px">Subtil</div>
+            </div>
+            <div class="opt-card selected" data-key="cardShadow" data-val="medium" onclick="selectOpt(this)">
+                <div style="width:54px;height:30px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 4px 12px rgba(0,0,0,0.1)"></div>
+                <div class="opt-label" style="margin-top:8px">Medium</div>
+            </div>
+            <div class="opt-card" data-key="cardShadow" data-val="strong" onclick="selectOpt(this)">
+                <div style="width:54px;height:30px;background:#fff;border:1px solid #e2e8f0;margin:0 auto;box-shadow:0 8px 24px rgba(0,0,0,0.16)"></div>
+                <div class="opt-label" style="margin-top:8px">Stark</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">✏️ Input Border</div>
+        <div class="opt-grid">
+            <div class="opt-card selected" data-key="inputBorder" data-val="solid" onclick="selectOpt(this)">
+                <div style="width:54px;height:26px;background:#fff;border:2px solid #cbd5e1;margin:0 auto;border-radius:6px"></div>
+                <div class="opt-label" style="margin-top:8px">Solid</div>
+            </div>
+            <div class="opt-card" data-key="inputBorder" data-val="dashed" onclick="selectOpt(this)">
+                <div style="width:54px;height:26px;background:#fff;border:2px dashed #cbd5e1;margin:0 auto;border-radius:6px"></div>
+                <div class="opt-label" style="margin-top:8px">Dashed</div>
+            </div>
+            <div class="opt-card" data-key="inputBorder" data-val="bottom" onclick="selectOpt(this)">
+                <div style="width:54px;height:26px;background:#fff;border:none;border-bottom:2px solid #cbd5e1;margin:0 auto"></div>
+                <div class="opt-label" style="margin-top:8px">Nur unten</div>
+            </div>
+            <div class="opt-card" data-key="inputBorder" data-val="none" onclick="selectOpt(this)">
+                <div style="width:54px;height:26px;background:#f1f5f9;border:none;margin:0 auto;border-radius:6px"></div>
+                <div class="opt-label" style="margin-top:8px">Kein</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Preview -->
+    <div class="preview-box">
+        <div class="preview-label">Komponenten-Vorschau</div>
+        <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <div id="pvBtnSolid" style="padding:9px 22px;background:#2563eb;color:white;font-size:12.5px;font-weight:700;border-radius:8px">Solid Button</div>
+            <div id="pvBtnOutline" style="padding:9px 22px;background:transparent;color:#2563eb;border:2px solid #2563eb;font-size:12.5px;font-weight:700;border-radius:8px">Outline Button</div>
+        </div>
+        <div id="pvCard" style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin-bottom:14px">
+            <div style="font-weight:700;font-size:13px;margin-bottom:4px">Beispiel-Karte</div>
+            <div style="font-size:12px;color:#64748b">Mit gewähltem Shadow und Radius.</div>
+        </div>
+        <div id="pvInput" style="display:inline-block;background:#fff;border:2px solid #cbd5e1;border-radius:8px;padding:9px 14px;font-size:12px;color:#64748b">E-Mail eingeben...</div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="goSection(2)">← Spacing</button>
+        <button class="btn btn-primary" onclick="goSection(4)">Weiter zu Stimmung →</button>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 5: DESIGN-STIMMUNG     -->
+<!-- ============================== -->
+<div class="section" id="sec4">
+    <h2 class="section-title">🎭 Design-Stimmung</h2>
+    <p class="section-desc">Charakter und Ausstrahlung der Plattform definieren.</p>
+
+    <div class="card">
+        <div class="card-title">✨ Overall Style</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="overallStyle" data-val="minimalistisch" onclick="selectOpt(this)">
+                <div class="opt-icon">◻</div>
+                <div class="opt-label">Minimalistisch</div>
+                <div class="opt-desc">Clean, viel Weißraum</div>
+            </div>
+            <div class="opt-card selected" data-key="overallStyle" data-val="modern" onclick="selectOpt(this)">
+                <div class="opt-icon">◇</div>
+                <div class="opt-label">Modern & Dynamisch</div>
+                <div class="opt-desc">Frisch, lebendig</div>
+            </div>
+            <div class="opt-card" data-key="overallStyle" data-val="corporate" onclick="selectOpt(this)">
+                <div class="opt-icon">▣</div>
+                <div class="opt-label">Professionell & Seriös</div>
+                <div class="opt-desc">Vertrauenswürdig</div>
+            </div>
+            <div class="opt-card" data-key="overallStyle" data-val="premium" onclick="selectOpt(this)">
+                <div class="opt-icon">◆</div>
+                <div class="opt-label">Premium & Elegant</div>
+                <div class="opt-desc">Hochwertig</div>
+            </div>
+            <div class="opt-card" data-key="overallStyle" data-val="luxus" onclick="selectOpt(this)">
+                <div class="opt-icon">❖</div>
+                <div class="opt-label">Dunkel & Edel</div>
+                <div class="opt-desc">Dark Mode</div>
+            </div>
+            <div class="opt-card" data-key="overallStyle" data-val="natuerlich" onclick="selectOpt(this)">
+                <div class="opt-icon">🌿</div>
+                <div class="opt-label">Natürlich & Organisch</div>
+                <div class="opt-desc">Warm, einladend</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🖼️ Bild-Stil</div>
+        <div class="opt-grid">
+            <div class="opt-card selected" data-key="imageStyle" data-val="fotografie" onclick="selectOpt(this)">
+                <div class="opt-icon">📸</div>
+                <div class="opt-label">Fotografie</div>
+            </div>
+            <div class="opt-card" data-key="imageStyle" data-val="illustrationen" onclick="selectOpt(this)">
+                <div class="opt-icon">🎨</div>
+                <div class="opt-label">Illustrationen</div>
+            </div>
+            <div class="opt-card" data-key="imageStyle" data-val="icons" onclick="selectOpt(this)">
+                <div class="opt-icon">✦</div>
+                <div class="opt-label">Icons</div>
+            </div>
+            <div class="opt-card" data-key="imageStyle" data-val="gemischt" onclick="selectOpt(this)">
+                <div class="opt-icon">◈</div>
+                <div class="opt-label">Gemischt</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Preview -->
+    <div class="preview-box">
+        <div class="preview-label">Stimmung-Vorschau</div>
+        <div id="moodPreview" style="border-radius:12px;padding:24px;transition:all 0.4s">
+            <div style="font-weight:800;margin-bottom:6px;font-size:18px">Visuelles Coaching</div>
+            <div style="font-size:13px;opacity:0.8;margin-bottom:14px">Professionelle Trainingspläne für Augen und Gehirn</div>
+            <div style="display:flex;gap:8px">
+                <div class="demo-hero-btn" style="font-size:11px;padding:7px 16px">Jetzt starten</div>
+                <div style="padding:7px 16px;border-radius:8px;font-size:11px;font-weight:700;border:1.5px solid currentColor;opacity:0.7">Mehr erfahren</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="goSection(3)">← Komponenten</button>
+        <button class="btn btn-primary" onclick="goSection(5)">Weiter zu Plattform →</button>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 6: PLATTFORM           -->
+<!-- ============================== -->
+<div class="section" id="sec5">
+    <h2 class="section-title">🚀 Plattform-spezifisch</h2>
+    <p class="section-desc">Design-Entscheidungen für die ViCo Trainingsplattform.</p>
+
+    <div class="card">
+        <div class="card-title">🎬 Hero Section</div>
+        <div class="opt-grid">
+            <div class="opt-card" data-key="heroStyle" data-val="fullwidth" onclick="selectOpt(this)">
+                <div class="opt-icon">🌈</div>
+                <div class="opt-label">Full-Width</div>
+            </div>
+            <div class="opt-card selected" data-key="heroStyle" data-val="split" onclick="selectOpt(this)">
+                <div class="opt-icon">⬛</div>
+                <div class="opt-label">Split</div>
+            </div>
+            <div class="opt-card" data-key="heroStyle" data-val="video" onclick="selectOpt(this)">
+                <div class="opt-icon">▶</div>
+                <div class="opt-label">Video</div>
+            </div>
+            <div class="opt-card" data-key="heroStyle" data-val="gradient" onclick="selectOpt(this)">
+                <div class="opt-icon">◐</div>
+                <div class="opt-label">Gradient</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">💰 Preis-Tabelle</div>
+        <div class="opt-grid">
+            <div class="opt-card selected" data-key="pricingStyle" data-val="cards" onclick="selectOpt(this)">
+                <div class="opt-icon">🃏</div>
+                <div class="opt-label">Cards</div>
+            </div>
+            <div class="opt-card" data-key="pricingStyle" data-val="tabelle" onclick="selectOpt(this)">
+                <div class="opt-icon">📋</div>
+                <div class="opt-label">Tabelle</div>
+            </div>
+            <div class="opt-card" data-key="pricingStyle" data-val="toggle" onclick="selectOpt(this)">
+                <div class="opt-icon">🔄</div>
+                <div class="opt-label">Toggle</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🧭 Navigation</div>
+        <div class="opt-grid">
+            <div class="opt-card selected" data-key="navigation" data-val="topbar" onclick="selectOpt(this)">
+                <div class="opt-icon">➖</div>
+                <div class="opt-label">Top Bar</div>
+            </div>
+            <div class="opt-card" data-key="navigation" data-val="sidebar" onclick="selectOpt(this)">
+                <div class="opt-icon">║</div>
+                <div class="opt-label">Sidebar</div>
+            </div>
+            <div class="opt-card" data-key="navigation" data-val="mega" onclick="selectOpt(this)">
+                <div class="opt-icon">☰</div>
+                <div class="opt-label">Mega Menu</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🖱️ CTA Button</div>
+        <div class="opt-grid">
+            <div class="opt-card selected" data-key="ctaStyle" data-val="solid" onclick="selectOpt(this)">
+                <div class="opt-icon">◼</div>
+                <div class="opt-label">Solid</div>
+            </div>
+            <div class="opt-card" data-key="ctaStyle" data-val="outline" onclick="selectOpt(this)">
+                <div class="opt-icon">◻</div>
+                <div class="opt-label">Outline</div>
+            </div>
+            <div class="opt-card" data-key="ctaStyle" data-val="gradient" onclick="selectOpt(this)">
+                <div class="opt-icon">◐</div>
+                <div class="opt-label">Gradient</div>
+            </div>
+            <div class="opt-card" data-key="ctaStyle" data-val="ghost" onclick="selectOpt(this)">
+                <div class="opt-icon">◻</div>
+                <div class="opt-label">Ghost</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">🤝 Trust Elements</div>
+        <div class="tag-wrap">
+            <div class="tag-chip selected" data-key="trust_testimonials" onclick="toggleTag(this)">⭐ Testimonials</div>
+            <div class="tag-chip selected" data-key="trust_logos" onclick="toggleTag(this)">🏢 Partner-Logos</div>
+            <div class="tag-chip" data-key="trust_stats" onclick="toggleTag(this)">📊 Statistiken</div>
+            <div class="tag-chip" data-key="trust_zertifikate" onclick="toggleTag(this)">🏆 Zertifikate</div>
+            <div class="tag-chip" data-key="trust_guarantee" onclick="toggleTag(this)">✅ Geld-zurück</div>
+        </div>
+    </div>
+
+    <!-- ===== SUMMARY ===== -->
+    <div class="summary-wrap" id="summaryWrap">
+        <h3>📋 Zusammenfassung</h3>
+        <div class="summary-grid" id="summaryGrid"></div>
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-success" onclick="exportJSON()">📥 JSON Exportieren</button>
+        <button class="btn btn-outline" onclick="copyJSON()">📋 JSON Kopieren</button>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-outline" onclick="goSection(4)">← Stimmung</button>
+        <div></div>
+    </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ============================== -->
+<!-- JAVASCRIPT                     -->
+<!-- ============================== -->
 <script>
-// State
-const state = {
-  primary: '#1E88E5',
-  secondary: '#2E7D32',
-  accent: '#FFA726',
-  font: 'Inter',
-  radius: '8px',
-  radiusLabel: 'Leicht abgerundet',
-  style: 'modern',
-  styleLabel: 'Modern',
-  wishes: ''
+// ===== STATE =====
+var S = {};
+
+// Font definitions
+var FONTS = [
+    { name: 'Inter', fallback: "'Inter', system-ui, sans-serif", desc: 'Modern & Clean' },
+    { name: 'Poppins', fallback: "'Poppins', sans-serif", desc: 'Rund & Freundlich' },
+    { name: 'Roboto', fallback: "'Roboto', sans-serif", desc: 'Google Standard' },
+    { name: 'Open Sans', fallback: "'Open Sans', sans-serif", desc: 'Neutral & Lesbar' },
+    { name: 'Montserrat', fallback: "'Montserrat', sans-serif", desc: 'Geometrisch & Modern' },
+    { name: 'Lato', fallback: "'Lato', sans-serif", desc: 'Elegant & Harmonisch' },
+    { name: 'Nunito', fallback: "'Nunito', sans-serif", desc: 'Weich & Ansprechend' },
+    { name: 'Playfair Display', fallback: "'Playfair Display', serif", desc: 'Klassisch & Edel' }
+];
+
+// Shadow map
+var SHADOWS = {
+    none: 'none',
+    subtle: '0 1px 3px rgba(0,0,0,0.08)',
+    medium: '0 4px 12px rgba(0,0,0,0.1)',
+    strong: '0 8px 24px rgba(0,0,0,0.16)'
 };
 
-let currentStep = 1;
-const totalSteps = 6;
+// Mood styles for preview
+var MOOD_STYLES = {
+    minimalistisch: { bg: '#fafafa', color: '#1a1a1a' },
+    modern:         { bg: 'linear-gradient(135deg, #2563eb, #7c3aed)', color: '#fff' },
+    corporate:      { bg: 'linear-gradient(135deg, #1e3a5f, #2d5986)', color: '#fff' },
+    premium:        { bg: 'linear-gradient(135deg, #1a1a2e, #16213e)', color: '#e2e8f0' },
+    luxus:          { bg: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', color: '#c9a96e' },
+    natuerlich:     { bg: 'linear-gradient(135deg, #065f46, #047857)', color: '#ecfdf5' }
+};
 
-// Step Navigation
-function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const step = document.getElementById('step' + n);
-  if (step) step.classList.add('active');
-  currentStep = n;
-  document.getElementById('progressFill').style.width = (n / totalSteps * 100) + '%';
-  document.getElementById('progressText').textContent = 'Schritt ' + n + ' von ' + totalSteps;
-  if (n === 6) buildSummary();
+// ===== INIT =====
+function init() {
+    // Colors
+    S.primary = '#2563eb'; S.secondary = '#64748b'; S.accent = '#f59e0b';
+    S.bg = '#f8fafc'; S.surface = '#ffffff';
+    S.text = '#0f172a'; S.textSec = '#475569';
+    S.success = '#10b981'; S.warning = '#f59e0b'; S.error = '#ef4444';
+
+    // Typography
+    S.font = 'Inter';
+    S.h1Size = 36; S.h1Weight = 800;
+    S.h2Size = 22; S.h2Weight = 700;
+    S.bodySize = 14; S.bodyWeight = 400;
+    S.captionSize = 11; S.captionWeight = 500;
+
+    // Layout
+    S.spacingBase = 8; S.containerWidth = 1200; S.grid = '12';
+
+    // Components
+    S.btnRadius = 12; S.cardRadius = 16; S.inputRadius = 12;
+    S.cardShadow = 'medium'; S.inputBorder = 'solid';
+
+    // Style
+    S.overallStyle = 'modern'; S.imageStyle = 'fotografie';
+
+    // Platform
+    S.heroStyle = 'split'; S.pricingStyle = 'cards';
+    S.navigation = 'topbar'; S.ctaStyle = 'solid';
+
+    // Trust (multi-select)
+    S.trust_testimonials = true; S.trust_logos = true;
+    S.trust_stats = false; S.trust_zertifikate = false; S.trust_guarantee = false;
+
+    // Track completion
+    S.completed = [false, false, false, false, false, false];
+
+    buildFontList();
+    updateSpacingVis();
+    updateContainerVis();
+    syncAllDemos();
+    updateProgress();
 }
 
-function nextStep() { if (currentStep < totalSteps) showStep(currentStep + 1); }
-function prevStep() { if (currentStep > 1) showStep(currentStep - 1); }
+// ===== NAVIGATION =====
+function goSection(idx) {
+    // Mark previous as completed
+    S.completed[idx] = true;
 
-// Color Selection
-document.querySelectorAll('.color-swatch').forEach(sw => {
-  sw.addEventListener('click', function() {
-    const target = this.dataset.target;
-    const color = this.dataset.color;
-    const container = this.parentElement;
-    container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-    this.classList.add('selected');
-    state[target] = color;
-    updatePreview();
-  });
-});
+    document.querySelectorAll('.section').forEach(function(s, i) {
+        s.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab').forEach(function(t, i) {
+        t.classList.toggle('active', i === idx);
+        if (S.completed[i]) t.classList.add('done');
+    });
 
-document.querySelectorAll('.color-custom input').forEach(input => {
-  input.addEventListener('input', function() {
-    const target = this.dataset.target;
-    const color = this.value;
-    const container = this.parentElement.parentElement;
-    container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-    state[target] = color;
-    updatePreview();
-  });
-});
+    // Build summary when reaching section 6
+    if (idx === 5) buildSummary();
 
-// Font Selection
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateProgress();
+}
+
+// ===== COLOR HANDLERS =====
+function onColorPick(el) {
+    var key = el.getAttribute('data-key');
+    var val = el.value;
+    S['color_' + key] = val;
+    // Sync hex input
+    var row = el.closest('.color-row');
+    var hex = row.querySelector('.color-hex');
+    if (hex) hex.value = val;
+    // Sync bar
+    var bar = document.getElementById('bar_' + key);
+    if (bar) bar.style.background = val;
+    syncAllDemos();
+    updateProgress();
+}
+
+function onColorHex(el) {
+    var val = el.value.trim();
+    if (!/^#[0-9a-fA-F]{6}$/.test(val)) return;
+    var key = el.getAttribute('data-key');
+    S['color_' + key] = val;
+    // Sync color picker
+    var row = el.closest('.color-row');
+    var picker = row.querySelector('input[type="color"]');
+    if (picker) picker.value = val;
+    // Sync bar
+    var bar = document.getElementById('bar_' + key);
+    if (bar) bar.style.background = val;
+    syncAllDemos();
+    updateProgress();
+}
+
+// ===== FONT HANDLER =====
+function buildFontList() {
+    var container = document.getElementById('fontList');
+    var html = '';
+    FONTS.forEach(function(f, i) {
+        html += '<div class="font-opt' + (i === 0 ? ' selected' : '') + '" data-font="' + f.name + '" onclick="selectFont(this)">';
+        html += '<div class="font-radio"></div>';
+        html += '<div style="flex:1"><div class="font-label">' + f.name + ' — ' + f.desc + '</div>';
+        html += '<div class="font-sample" style="font-family:' + f.fallback + '">Ihr Weg zur besseren Performance</div></div>';
+        html += '</div>';
+    });
+    container.innerHTML = html;
+}
+
 function selectFont(el) {
-  document.querySelectorAll('#fontGrid .font-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.font = el.dataset.font;
-  updatePreview();
+    el.closest('.card').querySelectorAll('.font-opt').forEach(function(f) { f.classList.remove('selected'); });
+    el.classList.add('selected');
+    S.font = el.getAttribute('data-font');
+    syncAllDemos();
+    updateProgress();
 }
 
-// Radius Selection
-function selectRadius(el) {
-  document.querySelectorAll('#radiusGrid .radius-option').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.radius = el.dataset.radius;
-  state.radiusLabel = el.querySelector('.radius-option-label').textContent;
-  updatePreview();
+function getFontFallback(name) {
+    var f = FONTS.find(function(x) { return x.name === name; });
+    return f ? f.fallback : 'sans-serif';
 }
 
-// Style Selection
-function selectStyle(el) {
-  document.querySelectorAll('#styleGrid .style-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.style = el.dataset.style;
-  state.styleLabel = el.querySelector('.style-card-name').textContent;
-  updatePreview();
-}
-
-// Update Live Preview
-function updatePreview() {
-  const root = document.documentElement;
-  root.style.setProperty('--primary', state.primary);
-  root.style.setProperty('--secondary', state.secondary);
-  root.style.setProperty('--accent', state.accent);
-  root.style.setProperty('--font', "'" + state.font + "', sans-serif");
-  root.style.setProperty('--radius', state.radius);
-
-  const pc = document.getElementById('previewContent');
-  pc.className = 'browser-content preview-content ' + state.style;
-
-  const isDark = state.style === 'dark';
-  const isModern = state.style === 'modern';
-
-  // Nav
-  const nav = pc.querySelector('.preview-nav');
-  if (state.style === 'modern') {
-    nav.style.background = 'linear-gradient(135deg,' + state.primary + ',' + state.accent + ')';
-  } else if (state.style === 'dark') {
-    nav.style.background = '#1a1a2e';
-  } else if (state.style === 'playful') {
-    nav.style.background = '#FFF3E0';
-  } else if (state.style === 'classic') {
-    nav.style.background = '#FAF7F2';
-  } else {
-    nav.style.background = '#fff';
-  }
-
-  // Hero
-  const hero = pc.querySelector('.preview-hero');
-  if (state.style === 'modern') {
-    hero.style.background = 'linear-gradient(135deg,' + state.primary + ',' + state.accent + ')';
-  } else if (state.style === 'dark') {
-    hero.style.background = '#16213e';
-  } else if (state.style === 'playful') {
-    hero.style.background = 'linear-gradient(135deg,#FF6B6B,#FFE66D)';
-  } else if (state.style === 'classic') {
-    hero.style.background = '#FAF7F2';
-  } else {
-    hero.style.background = '#fff';
-  }
-
-  // CTA Button
-  const cta = pc.querySelector('.preview-hero-btn');
-  if (state.style === 'modern') {
-    cta.style.background = '#fff';
-    cta.style.color = state.primary;
-  } else if (state.style === 'dark') {
-    cta.style.background = state.accent;
-    cta.style.color = '#fff';
-  } else if (state.style === 'classic') {
-    cta.style.background = '#3E2723';
-    cta.style.color = '#FAF7F2';
-  } else {
-    cta.style.background = state.primary;
-    cta.style.color = '#fff';
-  }
-  cta.style.borderRadius = state.radius;
-
-  // Cards
-  pc.querySelectorAll('.preview-card').forEach(card => {
-    card.style.borderRadius = state.radius;
-    if (state.style === 'modern') {
-      card.style.background = '#fff';
-      card.style.boxShadow = '0 2px 8px rgba(0,0,0,.08)';
-    } else if (state.style === 'dark') {
-      card.style.background = '#1a1a2e';
-      card.style.border = '1px solid rgba(255,255,255,.1)';
-    } else if (state.style === 'playful') {
-      card.style.background = '#FFF8E1';
-      card.style.borderRadius = '16px';
-    } else if (state.style === 'classic') {
-      card.style.background = '#FAF7F2';
-      card.style.border = '1px solid #D7CCC8';
+// ===== SLIDER HANDLER =====
+function onSlider(el) {
+    var key = el.getAttribute('data-key');
+    var val = parseFloat(el.value);
+    S[key] = val;
+    var valSpan = el.closest('.slider-group').querySelector('.slider-val span');
+    if (key.indexOf('Weight') > -1) {
+        valSpan.textContent = val;
     } else {
-      card.style.background = '#fff';
-      card.style.border = '1px solid #eee';
+        valSpan.textContent = val + 'px';
     }
-  });
-
-  // Fonts in preview
-  const ff = "'" + state.font + "', sans-serif";
-  pc.style.fontFamily = ff;
-  pc.querySelector('.preview-logo').style.fontFamily = ff;
-  pc.querySelector('.preview-hero h1').style.fontFamily = ff;
-  pc.querySelector('.preview-hero p').style.fontFamily = ff;
-  pc.querySelector('.preview-hero-btn').style.fontFamily = ff;
+    if (key === 'spacingBase') updateSpacingVis();
+    if (key === 'containerWidth') updateContainerVis();
+    syncAllDemos();
+    updateProgress();
 }
 
-// Summary
+// ===== OPTION SELECTOR =====
+function selectOpt(el) {
+    el.closest('.card').querySelectorAll('.opt-card').forEach(function(o) { o.classList.remove('selected'); });
+    el.classList.add('selected');
+    var key = el.getAttribute('data-key');
+    var val = el.getAttribute('data-val');
+    S[key] = val;
+
+    // Update specific demos
+    if (key === 'overallStyle') updateMoodPreview();
+    if (key === 'btnRadius' || key === 'cardRadius' || key === 'inputRadius' || key === 'cardShadow' || key === 'inputBorder') {
+        updateComponentPreview();
+    }
+    syncAllDemos();
+    updateProgress();
+}
+
+// ===== TAG TOGGLE =====
+function toggleTag(el) {
+    el.classList.toggle('selected');
+    S[el.getAttribute('data-key')] = el.classList.contains('selected');
+    updateProgress();
+}
+
+// ===== DEMO SYNC (THE BIG ONE) =====
+function syncAllDemos() {
+    var demos = document.querySelectorAll('.demo');
+    var ff = getFontFallback(S.font);
+
+    demos.forEach(function(demo) {
+        // Colors
+        demo.style.setProperty('--dp', S.color_primary || S.primary);
+        demo.style.setProperty('--ds', S.color_secondary || S.secondary);
+        demo.style.setProperty('--da', S.color_accent || S.accent);
+        demo.style.setProperty('--dbg', S.color_bg || S.bg);
+        demo.style.setProperty('--dsf', S.color_surface || S.surface);
+        demo.style.setProperty('--dt', S.color_text || S.text);
+        demo.style.setProperty('--dts', S.color_textSec || S.textSec);
+
+        // Font
+        demo.style.setProperty('--df', ff);
+        demo.style.fontFamily = ff;
+
+        // Radii
+        demo.style.setProperty('--dr', (S.cardRadius || 16) + 'px');
+        demo.style.setProperty('--dbr', (S.btnRadius || 12) + 'px');
+        demo.style.setProperty('--dcr', (S.cardRadius || 16) + 'px');
+        demo.style.setProperty('--dir', (S.inputRadius || 12) + 'px');
+
+        // Shadow
+        demo.style.setProperty('--dsh', SHADOWS[S.cardShadow] || SHADOWS.medium);
+    });
+
+    // Typography previews
+    var h1 = document.getElementById('typoH1');
+    var body = document.getElementById('typoBody');
+    var caption = document.getElementById('typoCaption');
+    if (h1) {
+        h1.style.fontSize = S.h1Size + 'px';
+        h1.style.fontWeight = S.h1Weight;
+        h1.style.fontFamily = ff;
+    }
+    if (body) {
+        body.style.fontSize = S.bodySize + 'px';
+        body.style.fontWeight = S.bodyWeight;
+        body.style.fontFamily = ff;
+    }
+    if (caption) {
+        caption.style.fontSize = S.captionSize + 'px';
+        caption.style.fontWeight = S.captionWeight;
+        caption.style.fontFamily = ff;
+    }
+
+    updateComponentPreview();
+    updateMoodPreview();
+}
+
+// ===== COMPONENT PREVIEW =====
+function updateComponentPreview() {
+    var br = S.btnRadius || 12;
+    var cr = S.cardRadius || 16;
+    var ir = S.inputRadius || 12;
+    var sh = SHADOWS[S.cardShadow] || SHADOWS.medium;
+    var ib = S.inputBorder || 'solid';
+
+    var bs = document.getElementById('pvBtnSolid');
+    var bo = document.getElementById('pvBtnOutline');
+    var cd = document.getElementById('pvCard');
+    var inp = document.getElementById('pvInput');
+
+    if (bs) bs.style.borderRadius = br + 'px';
+    if (bo) bo.style.borderRadius = br + 'px';
+    if (cd) { cd.style.borderRadius = cr + 'px'; cd.style.boxShadow = sh; }
+    if (inp) {
+        inp.style.borderRadius = ir + 'px';
+        inp.style.border = '';
+        inp.style.borderBottom = '';
+        inp.style.background = '#fff';
+        if (ib === 'solid') inp.style.border = '2px solid #cbd5e1';
+        else if (ib === 'dashed') inp.style.border = '2px dashed #cbd5e1';
+        else if (ib === 'bottom') inp.style.borderBottom = '2px solid #cbd5e1';
+        else inp.style.background = '#f1f5f9';
+    }
+}
+
+// ===== MOOD PREVIEW =====
+function updateMoodPreview() {
+    var el = document.getElementById('moodPreview');
+    if (!el) return;
+    var style = MOOD_STYLES[S.overallStyle] || MOOD_STYLES.modern;
+    el.style.background = style.bg;
+    el.style.color = style.color;
+}
+
+// ===== SPACING VIS =====
+function updateSpacingVis() {
+    var box = document.getElementById('spacingVis');
+    if (!box) return;
+    var s = S.spacingBase || 8;
+    var html = '';
+    for (var i = 1; i <= 5; i++) {
+        var w = s * i;
+        html += '<div style="width:' + w + 'px;height:' + w + 'px;background:var(--q-primary);opacity:' + (0.25 + i * 0.15) + ';border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:' + (s < 6 ? 9 : 11) + 'px;font-weight:700">' + w + '</div>';
+    }
+    box.innerHTML = html;
+}
+
+// ===== CONTAINER VIS =====
+function updateContainerVis() {
+    var el = document.getElementById('containerVis');
+    if (!el) return;
+    var w = S.containerWidth || 1200;
+    var maxW = el.parentElement.offsetWidth - 24;
+    var pct = Math.min((w / maxW) * 100, 100);
+    el.style.width = pct + '%';
+    el.textContent = w + 'px';
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+    var done = 0;
+    // Check each section has at least one meaningful choice
+    if (S.color_primary) done++;
+    if (S.font) done++;
+    if (S.spacingBase) done++;
+    if (S.btnRadius !== undefined) done++;
+    if (S.overallStyle) done++;
+    if (S.heroStyle) done++;
+
+    var pct = Math.round((done / 6) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / 6';
+}
+
+// ===== SUMMARY =====
 function buildSummary() {
-  document.getElementById('sumPrimary').style.background = state.primary;
-  document.getElementById('sumPrimaryHex').textContent = state.primary;
-  document.getElementById('sumSecondary').style.background = state.secondary;
-  document.getElementById('sumSecondaryHex').textContent = state.secondary;
-  document.getElementById('sumAccent').style.background = state.accent;
-  document.getElementById('sumAccentHex').textContent = state.accent;
-  document.getElementById('sumFont').textContent = state.font;
-  document.getElementById('sumRadius').textContent = state.radius + ' — ' + state.radiusLabel;
-  document.getElementById('sumStyle').textContent = state.styleLabel;
-  state.wishes = document.getElementById('wishesText').value.trim();
-  const wRow = document.getElementById('sumWishesRow');
-  if (state.wishes) {
-    wRow.style.display = 'flex';
-    document.getElementById('sumWishes').textContent = state.wishes;
-  } else {
-    wRow.style.display = 'none';
-  }
+    var grid = document.getElementById('summaryGrid');
+    if (!grid) return;
+
+    var colorLabels = {
+        primary: 'Primärfarbe', secondary: 'Sekundärfarbe', accent: 'Akzentfarbe',
+        bg: 'Hintergrund', surface: 'Surface',
+        text: 'Text primär', textSec: 'Text sekundär',
+        success: 'Erfolg', warning: 'Warnung', error: 'Fehler'
+    };
+
+    var weightNames = { 300:'Light', 400:'Regular', 500:'Medium', 600:'Semi-Bold', 700:'Bold', 800:'Extra-Bold' };
+
+    var html = '';
+
+    // Colors
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">🎨 Farben</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">';
+    for (var k in colorLabels) {
+        var cv = S['color_' + k] || '';
+        if (!cv) continue;
+        html += '<div class="summary-item"><div class="summary-item-label">' + colorLabels[k] + '</div>';
+        html += '<div class="summary-item-value"><span class="swatch" style="background:' + cv + '"></span>' + cv + '</div></div>';
+    }
+    html += '</div></div>';
+
+    // Typography
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">📝 Typografie</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    html += '<div class="summary-item"><div class="summary-item-label">Schriftart</div><div class="summary-item-value">' + S.font + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">H1</div><div class="summary-item-value">' + S.h1Size + 'px / ' + (weightNames[S.h1Weight]||S.h1Weight) + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">H2</div><div class="summary-item-value">' + S.h2Size + 'px / ' + (weightNames[S.h2Weight]||S.h2Weight) + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Body</div><div class="summary-item-value">' + S.bodySize + 'px / ' + (weightNames[S.bodyWeight]||S.bodyWeight) + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Caption</div><div class="summary-item-value">' + S.captionSize + 'px / ' + (weightNames[S.captionWeight]||S.captionWeight) + '</div></div>';
+    html += '</div></div>';
+
+    // Layout
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">📐 Layout</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    html += '<div class="summary-item"><div class="summary-item-label">Basis-Spacing</div><div class="summary-item-value">' + S.spacingBase + 'px</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Container</div><div class="summary-item-value">' + S.containerWidth + 'px</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Raster</div><div class="summary-item-value">' + S.grid + ' Spalten</div></div>';
+    html += '</div></div>';
+
+    // Components
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">🧩 Komponenten</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    html += '<div class="summary-item"><div class="summary-item-label">Button Radius</div><div class="summary-item-value">' + S.btnRadius + 'px</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Card Radius</div><div class="summary-item-value">' + S.cardRadius + 'px</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Input Radius</div><div class="summary-item-value">' + S.inputRadius + 'px</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Shadow</div><div class="summary-item-value">' + S.cardShadow + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Input Border</div><div class="summary-item-value">' + S.inputBorder + '</div></div>';
+    html += '</div></div>';
+
+    // Style
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">🎭 Stimmung</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    html += '<div class="summary-item"><div class="summary-item-label">Overall Style</div><div class="summary-item-value">' + S.overallStyle + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Bild-Stil</div><div class="summary-item-value">' + S.imageStyle + '</div></div>';
+    html += '</div></div>';
+
+    // Platform
+    html += '<div style="grid-column:1/-1;background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;border:1px solid rgba(255,255,255,0.06)">';
+    html += '<div style="font-size:13px;font-weight:700;margin-bottom:10px;opacity:0.7">🚀 Plattform</div>';
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px">';
+    html += '<div class="summary-item"><div class="summary-item-label">Hero</div><div class="summary-item-value">' + S.heroStyle + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Preise</div><div class="summary-item-value">' + S.pricingStyle + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">Navigation</div><div class="summary-item-value">' + S.navigation + '</div></div>';
+    html += '<div class="summary-item"><div class="summary-item-label">CTA</div><div class="summary-item-value">' + S.ctaStyle + '</div></div>';
+    var trusts = [];
+    if (S.trust_testimonials) trusts.push('Testimonials');
+    if (S.trust_logos) trusts.push('Partner-Logos');
+    if (S.trust_stats) trusts.push('Statistiken');
+    if (S.trust_zertifikate) trusts.push('Zertifikate');
+    if (S.trust_guarantee) trusts.push('Geld-zurück');
+    if (trusts.length) html += '<div class="summary-item"><div class="summary-item-label">Trust</div><div class="summary-item-value">' + trusts.join(', ') + '</div></div>';
+    html += '</div></div>';
+
+    grid.innerHTML = html;
 }
 
-// Download JSON
-function downloadJSON() {
-  const data = {
-    primaryColor: state.primary,
-    secondaryColor: state.secondary,
-    accentColor: state.accent,
-    fontFamily: state.font,
-    borderRadius: state.radius,
-    style: state.style,
-    wishes: state.wishes || ''
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'design-antworten-coaching.json';
-  a.click();
-  URL.revokeObjectURL(url);
+// ===== EXPORT =====
+function getExportData() {
+    return {
+        projectName: 'ViCo Trainingsplattform',
+        exportDate: new Date().toISOString(),
+        colors: {
+            primary: S.color_primary || S.primary,
+            secondary: S.color_secondary || S.secondary,
+            accent: S.color_accent || S.accent,
+            background: S.color_bg || S.bg,
+            surface: S.color_surface || S.surface,
+            textPrimary: S.color_text || S.text,
+            textSecondary: S.color_textSec || S.textSec,
+            success: S.color_success || S.success,
+            warning: S.color_warning || S.warning,
+            error: S.color_error || S.error
+        },
+        typography: {
+            fontFamily: S.font,
+            h1: { size: S.h1Size, weight: S.h1Weight },
+            h2: { size: S.h2Size, weight: S.h2Weight },
+            body: { size: S.bodySize, weight: S.bodyWeight },
+            caption: { size: S.captionSize, weight: S.captionWeight }
+        },
+        layout: {
+            spacingBase: S.spacingBase,
+            containerWidth: S.containerWidth,
+            grid: S.grid
+        },
+        components: {
+            buttonRadius: S.btnRadius,
+            cardRadius: S.cardRadius,
+            inputRadius: S.inputRadius,
+            cardShadow: S.cardShadow,
+            inputBorder: S.inputBorder
+        },
+        style: {
+            overall: S.overallStyle,
+            image: S.imageStyle
+        },
+        platform: {
+            hero: S.heroStyle,
+            pricing: S.pricingStyle,
+            navigation: S.navigation,
+            cta: S.ctaStyle,
+            trust: {
+                testimonials: S.trust_testimonials,
+                logos: S.trust_logos,
+                stats: S.trust_stats,
+                zertifikate: S.trust_zertifikate,
+                guarantee: S.trust_guarantee
+            }
+        }
+    };
 }
 
-// Init
-updatePreview();
+function exportJSON() {
+    var data = JSON.stringify(getExportData(), null, 2);
+    var blob = new Blob([data], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'vico-design-config-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ JSON erfolgreich exportiert!');
+}
+
+function copyJSON() {
+    var data = JSON.stringify(getExportData(), null, 2);
+    navigator.clipboard.writeText(data).then(function() {
+        showToast('✅ JSON in Zwischenablage kopiert!');
+    });
+}
+
+function showToast(msg) {
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 3000);
+}
+
+// ===== BOOT =====
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
