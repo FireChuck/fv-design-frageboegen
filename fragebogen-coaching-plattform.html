@@ -96,14 +96,14 @@
         .monitor-bezel-top{display:flex;align-items:center;justify-content:space-between;padding:0 8px 12px}
         .monitor-logo{width:30px;height:18px;border-radius:2px;background:linear-gradient(180deg,#333,#222);border:1px solid #444}
         .monitor-camera{width:6px;height:6px;border-radius:50%;background:radial-gradient(circle,#1a3a1a 30%,#0a1a0a 70%);border:1px solid #333}
-        .monitor-screen{background:#000;border-radius:6px;overflow:hidden;border:2px solid #111;box-shadow:inset 0 0 30px rgba(0,0,0,.5)}
+        .monitor-screen{background:#000;border-radius:6px;overflow:hidden;border:2px solid #111;box-shadow:inset 0 0 30px rgba(0,0,0,.5);aspect-ratio:16/10}
         .monitor-chin{display:flex;align-items:center;justify-content:center;padding:12px 0 4px}
         .monitor-brand{font-size:10px;color:#555;font-weight:600;letter-spacing:3px;text-transform:uppercase}
         .monitor-stand-neck{width:60px;height:30px;background:linear-gradient(90deg,#222,#333,#222);margin:0 auto;border-radius:0 0 4px 4px}
         .monitor-stand-base{width:140px;height:8px;background:linear-gradient(180deg,#333,#222);margin:0 auto;border-radius:0 0 10px 10px;box-shadow:0 4px 10px rgba(0,0,0,.3)}
 
         /* DEMO WEBSITE */
-        .demo-website{font-family:var(--font);background:var(--bg);min-height:380px;color:var(--text-primary);transition:all .3s ease;overflow:hidden}
+        .demo-website{font-family:var(--font);background:var(--bg);color:var(--text-primary);transition:all .3s ease;overflow:hidden;width:100%;height:100%}
         .demo-header{background:var(--primary);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;transition:background .3s ease}
         .demo-logo{color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px}
         .demo-logo-icon{width:22px;height:22px;background:rgba(255,255,255,.2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:12px;transition:border-radius .3s ease}
@@ -516,24 +516,33 @@ function refreshDemo(){
     const r = document.documentElement;
     const c = S.colors;
     const demo = document.getElementById('demoWebsite');
+    const rp = S.radius + 'px';
 
-    // CSS custom properties
+    // Determine effective colors based on style mode
+    let effBg = c.bg, effSurface = c.surface, effTextPri = c.textPrimary, effTextSec = c.textSecondary, effBorder = '#E5E7EB';
+    if(S.style==='dark'){
+        effBg='#0F172A'; effSurface='#1E293B'; effTextPri='#F1F5F9'; effTextSec='#94A3B8'; effBorder='#334155';
+    } else if(S.style==='nature'){
+        effBg='#F0F4E8'; effSurface='#FAFBF5'; effTextPri='#1A2E1A'; effTextSec='#5A6B5A'; effBorder='#C5D1B8';
+    }
+
+    // CSS custom properties on :root
     r.style.setProperty('--primary', c.primary);
     r.style.setProperty('--secondary', c.secondary);
     r.style.setProperty('--accent', c.accent);
-    r.style.setProperty('--bg', c.bg);
-    r.style.setProperty('--surface', c.surface);
-    r.style.setProperty('--text-primary', c.textPrimary);
-    r.style.setProperty('--text-secondary', c.textSecondary);
-    r.style.setProperty('--radius', S.radius+'px');
+    r.style.setProperty('--bg', effBg);
+    r.style.setProperty('--surface', effSurface);
+    r.style.setProperty('--text-primary', effTextPri);
+    r.style.setProperty('--text-secondary', effTextSec);
+    r.style.setProperty('--border', effBorder);
+    r.style.setProperty('--radius', rp);
 
-    // Shadow
     const shadows = {none:'none',subtle:'0 1px 3px rgba(0,0,0,0.08)',medium:'0 4px 12px rgba(0,0,0,0.12)',strong:'0 8px 24px rgba(0,0,0,0.18)'};
-    r.style.setProperty('--shadow', shadows[S.shadow] || shadows.medium);
+    const sh = shadows[S.shadow] || shadows.medium;
+    r.style.setProperty('--shadow', sh);
 
-    // Font
-    r.style.setProperty('--font', "'"+S.font+"',-apple-system,BlinkMacSystemFont,sans-serif");
-    demo.style.fontFamily = "'"+S.font+"',-apple-system,BlinkMacSystemFont,sans-serif";
+    const fontStr = "'"+S.font+"',-apple-system,BlinkMacSystemFont,sans-serif";
+    r.style.setProperty('--font', fontStr);
 
     // Style modes
     demo.classList.remove('dark-mode','playful-mode','nature-mode');
@@ -541,11 +550,24 @@ function refreshDemo(){
     if(S.style==='playful') demo.classList.add('playful-mode');
     if(S.style==='nature') demo.classList.add('nature-mode');
 
-    // Card images update
-    document.getElementById('demoCardImg1').style.background = 'linear-gradient(135deg,'+c.primary+','#9B8AFF)';
-    document.getElementById('demoCardImg2').style.background = 'linear-gradient(135deg,'+c.secondary+','#4ED8C0)';
+    // === DIRECT inline styles on demo elements (guaranteed immediate update) ===
 
-    // Dark mode overrides for hero
+    // Demo website root
+    demo.style.fontFamily = fontStr;
+    demo.style.background = effBg;
+    demo.style.color = effTextPri;
+
+    // Header
+    const hdr = document.getElementById('demoHeader');
+    if(S.style==='dark'){
+        hdr.style.background = '#1E293B';
+    } else if(S.style==='nature'){
+        hdr.style.background = '#2D5016';
+    } else {
+        hdr.style.background = c.primary;
+    }
+
+    // Hero
     const hero = document.getElementById('demoHero');
     if(S.style==='dark'){
         hero.style.background = 'linear-gradient(135deg,'+c.primary+','+c.secondary+')';
@@ -559,36 +581,75 @@ function refreshDemo(){
         hero.style.background = 'linear-gradient(135deg,'+c.primary+','+c.secondary+')';
     }
 
-    // Dark mode: override header
-    const hdr = document.getElementById('demoHeader');
-    if(S.style==='dark'){
-        hdr.style.background = '#1E293B';
-    } else if(S.style==='nature'){
-        hdr.style.background = '#2D5016';
-    } else {
-        hdr.style.background = c.primary;
-    }
+    // Hero button
+    demo.querySelector('.demo-hero-btn').style.background = c.accent;
+    demo.querySelector('.demo-hero-btn').style.borderRadius = rp;
 
-    // Dark mode surface colors
-    if(S.style==='dark'){
-        r.style.setProperty('--bg','#0F172A');
-        r.style.setProperty('--surface','#1E293B');
-        r.style.setProperty('--text-primary','#F1F5F9');
-        r.style.setProperty('--text-secondary','#94A3B8');
-        r.style.setProperty('--border','#334155');
-    } else if(S.style==='nature'){
-        r.style.setProperty('--bg','#F0F4E8');
-        r.style.setProperty('--surface','#FAFBF5');
-        r.style.setProperty('--text-primary','#1A2E1A');
-        r.style.setProperty('--text-secondary','#5A6B5A');
-        r.style.setProperty('--border','#C5D1B8');
-    } else {
-        r.style.setProperty('--bg', c.bg);
-        r.style.setProperty('--surface', c.surface);
-        r.style.setProperty('--text-primary', c.textPrimary);
-        r.style.setProperty('--text-secondary', c.textSecondary);
-        r.style.setProperty('--border','#E5E7EB');
-    }
+    // Logo icon
+    demo.querySelector('.demo-logo-icon').style.borderRadius = rp;
+
+    // Card images
+    document.getElementById('demoCardImg1').style.background = 'linear-gradient(135deg,'+c.primary+','#9B8AFF)';
+    document.getElementById('demoCardImg2').style.background = 'linear-gradient(135deg,'+c.secondary+','#4ED8C0)';
+
+    // Cards — direct inline styles for radius, shadow, surface, text
+    demo.querySelectorAll('.demo-card').forEach(card => {
+        card.style.background = effSurface;
+        card.style.borderRadius = rp;
+        card.style.boxShadow = sh;
+    });
+
+    // Card titles
+    demo.querySelectorAll('.demo-card-title').forEach(el => {
+        el.style.color = effTextPri;
+    });
+
+    // Card text
+    demo.querySelectorAll('.demo-card-text').forEach(el => {
+        el.style.color = effTextSec;
+    });
+
+    // Card tags (secondary)
+    demo.querySelectorAll('.demo-card-tag:not(.accent)').forEach(el => {
+        el.style.background = c.secondary;
+        el.style.borderRadius = rp;
+    });
+
+    // Card tags (accent)
+    demo.querySelectorAll('.demo-card-tag.accent').forEach(el => {
+        el.style.background = c.accent;
+        el.style.borderRadius = rp;
+    });
+
+    // Stats
+    demo.querySelectorAll('.demo-stat').forEach(el => {
+        el.style.background = effSurface;
+        el.style.borderRadius = rp;
+        el.style.boxShadow = sh;
+    });
+    demo.querySelectorAll('.demo-stat-num').forEach(el => {
+        el.style.color = c.primary;
+    });
+    demo.querySelectorAll('.demo-stat-label').forEach(el => {
+        el.style.color = effTextSec;
+    });
+
+    // Content title
+    demo.querySelectorAll('.demo-content-title').forEach(el => {
+        el.style.color = effTextPri;
+    });
+
+    // Footer
+    const footer = demo.querySelector('.demo-footer');
+    footer.style.background = effSurface;
+    footer.style.borderTop = '1px solid ' + effBorder;
+    demo.querySelectorAll('.demo-footer-text').forEach(el => { el.style.color = effTextSec; });
+    demo.querySelectorAll('.demo-footer-link').forEach(el => { el.style.color = c.primary; });
+
+    // Nav links
+    demo.querySelectorAll('.demo-nav-link').forEach(el => {
+        el.style.borderRadius = rp;
+    });
 }
 
 function darkenColor(hex,percent){
