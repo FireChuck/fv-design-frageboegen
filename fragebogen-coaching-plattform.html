@@ -121,31 +121,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .monitor-frame::before{content:'';position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:100px;height:6px;background:linear-gradient(180deg,#444,#333);border-radius:0 0 4px 4px;z-index:10}
 .monitor-frame::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:40px;height:16px;background:linear-gradient(180deg,#444,#222);border-radius:0 0 8px 8px;z-index:10}
 .monitor-screen{width:100%;height:100%;border-radius:6px;overflow:hidden;background:#e8e8e8;position:relative}
-.monitor-scaler{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.monitor-scaler-inner{transform-origin:center center;overflow:hidden;border-radius:6px;position:relative}
+.monitor-desktop{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
 
 /* ── Desktop Content (dynamic) ── */
-.monitor-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:48px;font-size:13px;font-weight:600;z-index:5;border-bottom:1px solid rgba(0,0,0,0.08)}
-.monitor-topbar-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700}
-.monitor-topbar-nav{display:flex;gap:24px;font-size:13px;font-weight:500}
-.monitor-topbar-nav span{opacity:0.5;cursor:default}
-.monitor-topbar-nav span.active{opacity:1}
-.monitor-topbar-user{display:flex;align-items:center;gap:8px;font-size:13px}
-.monitor-topbar-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
-.monitor-hero{display:flex;align-items:center;gap:24px;padding:24px}
+.monitor-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 3%;height:13%;font-weight:600;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,0.08)}
+.monitor-topbar-logo{display:flex;align-items:center;gap:6px;font-size:clamp(10px,1.4vw,16px);font-weight:700}
+.monitor-topbar-nav{display:flex;gap:clamp(8px,2vw,24px);font-size:clamp(8px,1.1vw,13px);font-weight:500}
+.monitor-topbar-nav span{opacity:0.5}
+.monitor-topbar-user{display:flex;align-items:center;gap:6px;font-size:clamp(8px,1.1vw,13px)}
+.monitor-topbar-avatar{width:clamp(16px,2vw,28px);height:clamp(16px,2vw,28px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(8px,0.9vw,12px);color:#fff}
+.monitor-hero{display:flex;align-items:center;gap:3%;padding:2% 3%;flex-shrink:0}
 .monitor-hero-text{flex:1}
-.monitor-hero-text h2{font-size:22px;font-weight:700;margin-bottom:4px}
-.monitor-hero-text p{font-size:13px;opacity:0.7}
-.monitor-hero-stats{display:flex;gap:16px;margin-top:12px}
-.monitor-hero-stat{text-align:center;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.15)}
-.monitor-hero-stat .num{font-size:20px;font-weight:700}
-.monitor-hero-stat .lbl{font-size:11px;opacity:0.7}
-.monitor-cards-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:0 24px}
-.monitor-card{border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.monitor-card-title{font-size:14px;font-weight:600;margin-bottom:6px}
-.monitor-card-text{font-size:12px;opacity:0.6;line-height:1.4}
-.monitor-card-icon{font-size:28px;margin-bottom:8px}
-.monitor-bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;font-size:12px;opacity:0.5;margin-top:auto;border-top:1px solid rgba(0,0,0,0.06)}
+.monitor-hero-text h2{font-size:clamp(11px,1.8vw,22px);font-weight:700;margin-bottom:2px}
+.monitor-hero-text p{font-size:clamp(8px,1vw,13px);opacity:0.7}
+.monitor-hero-stats{display:flex;gap:clamp(6px,1.2vw,16px);margin-top:2%}
+.monitor-hero-stat{text-align:center;padding:clamp(4px,0.6vw,8px) clamp(8px,1.2vw,16px);border-radius:6px}
+.monitor-hero-stat .num{font-size:clamp(12px,1.8vw,20px);font-weight:700}
+.monitor-hero-stat .lbl{font-size:clamp(7px,0.8vw,11px);opacity:0.7}
+.monitor-cards-row{display:flex;gap:clamp(6px,1.2vw,16px);padding:2% 3%;flex:1;min-height:0}
+.monitor-card{flex:1;border-radius:8px;padding:clamp(8px,1.2vw,20px);box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;flex-direction:column}
+.monitor-card-icon{font-size:clamp(14px,2vw,28px);margin-bottom:clamp(4px,0.5vw,8px)}
+.monitor-card-title{font-size:clamp(9px,1.1vw,14px);font-weight:600;margin-bottom:2px}
+.monitor-card-text{font-size:clamp(7px,0.9vw,12px);opacity:0.6;line-height:1.3;flex:1}
+.monitor-bottombar{display:flex;align-items:center;justify-content:space-between;padding:0 3%;height:10%;font-size:clamp(7px,0.8vw,11px);opacity:0.5;flex-shrink:0;border-top:1px solid rgba(0,0,0,0.06)}
 
 /* ── Summary ── */
 .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
@@ -497,105 +495,92 @@ function updatePreview() {
   const klassisch = s.style === 'klassisch';
   const modern = s.style === 'modern';
 
-  let bg, topbarBg, topbarText, topbarNavBg, cardBg, textCol, textLight, heroBg, heroText, heroSubText, borderCol, footerBorder;
+  let bg, topbarBg, topbarText, cardBg, textCol, textLight, heroBg, heroText, heroSubText, borderCol, footerBorder;
 
   if (dark) {
-    bg = '#121212'; topbarBg = '#1E1E1E'; topbarText = '#E0E0E0'; topbarNavBg = '#1E1E1E'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = 'rgba(255,255,255,0.06)'; footerBorder = 'rgba(255,255,255,0.08)';
+    bg = '#121212'; topbarBg = '#1E1E1E'; topbarText = '#E0E0E0'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = 'rgba(255,255,255,0.06)'; footerBorder = 'rgba(255,255,255,0.08)';
   } else if (minimal) {
-    bg = '#FFFFFF'; topbarBg = '#FFFFFF'; topbarText = '#111'; topbarNavBg = '#fff'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; heroBg = '#111'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0F0F0'; footerBorder = '#eee';
+    bg = '#FFFFFF'; topbarBg = '#FFFFFF'; topbarText = '#111'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; heroBg = '#111'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0F0F0'; footerBorder = '#eee';
   } else if (klassisch) {
-    bg = '#F5F5F0'; topbarBg = '#FAFAF5'; topbarText = '#2C2C2C'; topbarNavBg = '#FAFAF5'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; heroBg = '#37474F'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#E8E8E0'; footerBorder = '#DDD';
+    bg = '#F5F5F0'; topbarBg = '#FAFAF5'; topbarText = '#2C2C2C'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; heroBg = '#37474F'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#E8E8E0'; footerBorder = '#DDD';
   } else if (playful) {
-    bg = '#FFFDE7'; topbarBg = '#FFF9C4'; topbarText = '#333'; topbarNavBg = '#FFF9C4'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0E8C0'; footerBorder = '#F0E8C0';
+    bg = '#FFFDE7'; topbarBg = '#FFF9C4'; topbarText = '#333'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0E8C0'; footerBorder = '#F0E8C0';
   } else {
-    bg = '#F5F7FA'; topbarBg = '#fff'; topbarText = '#222'; topbarNavBg = '#fff'; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#ECEFF4'; footerBorder = '#E0E0E0';
+    bg = '#F5F7FA'; topbarBg = '#fff'; topbarText = '#222'; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#ECEFF4'; footerBorder = '#E0E0E0';
   }
 
   const screen = document.getElementById('monitorScreen');
-  const virtualW = 1280;
-  const virtualH = 720;
+  const statBg = dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)';
 
   screen.innerHTML = `
-    <div class="monitor-scaler">
-      <div class="monitor-scaler-inner" id="monitorScalerInner" style="width:${virtualW}px;height:${virtualH}px;background:${bg};font-family:${s.fontFamily};display:flex;flex-direction:column;overflow:hidden">
-        <!-- Top Bar -->
-        <div class="monitor-topbar" style="background:${topbarBg};color:${topbarText};border-color:${borderCol}">
-          <div class="monitor-topbar-logo">
-            <span style="color:${s.primaryColor};font-size:20px">⚡</span>
-            <span>ViCo Plattform</span>
-          </div>
-          <div class="monitor-topbar-nav" style="color:${topbarText}">
-            <span class="active" style="color:${s.primaryColor}">Dashboard</span>
-            <span>Trainings</span>
-            <span>Coachings</span>
-            <span>Statistiken</span>
-          </div>
-          <div class="monitor-topbar-user" style="color:${topbarText}">
-            <div class="monitor-topbar-avatar" style="background:${s.primaryColor}">M</div>
-            <span>Max Mustermann</span>
-          </div>
+    <div class="monitor-desktop" style="background:${bg};font-family:${s.fontFamily};color:${topbarText}">
+      <!-- Top Bar -->
+      <div class="monitor-topbar" style="background:${topbarBg};color:${topbarText};border-color:${borderCol}">
+        <div class="monitor-topbar-logo">
+          <span style="color:${s.primaryColor}">⚡</span>
+          <span>ViCo Plattform</span>
         </div>
-        ${modern ? `<div style="height:3px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor});flex-shrink:0"></div>` : ''}
+        <div class="monitor-topbar-nav" style="color:${topbarText}">
+          <span style="color:${s.primaryColor};opacity:1">Dashboard</span>
+          <span>Trainings</span>
+          <span>Coachings</span>
+          <span>Statistiken</span>
+        </div>
+        <div class="monitor-topbar-user">
+          <div class="monitor-topbar-avatar" style="background:${s.primaryColor}">M</div>
+          <span>Max Mustermann</span>
+        </div>
+      </div>
+      ${modern ? `<div style="height:2px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor});flex-shrink:0"></div>` : ''}
 
-        <!-- Hero Section -->
-        <div class="monitor-hero" style="background:${heroBg};color:${heroText};flex-shrink:0">
-          <div class="monitor-hero-text">
-            <h2 style="color:${heroText}">Willkommen zurück, Max 👋</h2>
-            <p style="color:${heroSubText}">Dein Fortschritt diese Woche</p>
-            <div class="monitor-hero-stats">
-              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
-                <div class="num" style="color:${heroText}">12</div>
-                <div class="lbl" style="color:${heroSubText}">Trainings</div>
-              </div>
-              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
-                <div class="num" style="color:${heroText}">4h</div>
-                <div class="lbl" style="color:${heroSubText}">Diese Woche</div>
-              </div>
-              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
-                <div class="num" style="color:${heroText}">89%</div>
-                <div class="lbl" style="color:${heroSubText}">Ziel erreicht</div>
-              </div>
+      <!-- Hero Section -->
+      <div class="monitor-hero" style="background:${heroBg}">
+        <div class="monitor-hero-text">
+          <h2 style="color:${heroText}">Willkommen zurück, Max 👋</h2>
+          <p style="color:${heroSubText}">Dein Fortschritt diese Woche</p>
+          <div class="monitor-hero-stats">
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">12</div>
+              <div class="lbl" style="color:${heroSubText}">Trainings</div>
+            </div>
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">4h</div>
+              <div class="lbl" style="color:${heroSubText}">Diese Woche</div>
+            </div>
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">89%</div>
+              <div class="lbl" style="color:${heroSubText}">Ziel erreicht</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Cards Grid -->
-        <div class="monitor-cards-grid" style="flex:1;padding:20px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-content:start">
-          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.primaryColor}">
-            <div class="monitor-card-icon">👁️</div>
-            <div class="monitor-card-title" style="color:${textCol}">Augen-Training</div>
-            <div class="monitor-card-text" style="color:${textLight}">12 Übungen verfügbar · Nächstes Level freischalten</div>
-          </div>
-          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.secondaryColor}">
-            <div class="monitor-card-icon">🧠</div>
-            <div class="monitor-card-title" style="color:${textCol}">Gehirn-Training</div>
-            <div class="monitor-card-text" style="color:${textLight}">8 Kurse freigeschaltet · 3 neu</div>
-          </div>
-          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.accentColor}">
-            <div class="monitor-card-icon">🎯</div>
-            <div class="monitor-card-title" style="color:${textCol}">Fokus-Übungen</div>
-            <div class="monitor-card-text" style="color:${textLight}">5 Sessions diese Woche · Bestzeit: 14min</div>
-          </div>
+      <!-- Cards Row -->
+      <div class="monitor-cards-row">
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.primaryColor}">
+          <div class="monitor-card-icon">👁️</div>
+          <div class="monitor-card-title" style="color:${textCol}">Augen-Training</div>
+          <div class="monitor-card-text" style="color:${textLight}">12 Übungen verfügbar · Nächstes Level freischalten</div>
         </div>
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.secondaryColor}">
+          <div class="monitor-card-icon">🧠</div>
+          <div class="monitor-card-title" style="color:${textCol}">Gehirn-Training</div>
+          <div class="monitor-card-text" style="color:${textLight}">8 Kurse freigeschaltet · 3 neu</div>
+        </div>
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.accentColor}">
+          <div class="monitor-card-icon">🎯</div>
+          <div class="monitor-card-title" style="color:${textCol}">Fokus-Übungen</div>
+          <div class="monitor-card-text" style="color:${textLight}">5 Sessions diese Woche · Bestzeit: 14min</div>
+        </div>
+      </div>
 
-        <!-- Footer Bar -->
-        <div class="monitor-bottombar" style="background:${topbarBg};color:${textLight};border-color:${footerBorder}">
-          <span>© 2025 ViCo Trainingsplattform</span>
-          <span>Hilfe · Datenschutz · Kontakt</span>
-        </div>
+      <!-- Footer Bar -->
+      <div class="monitor-bottombar" style="background:${topbarBg};color:${textLight};border-color:${footerBorder}">
+        <span>© 2025 ViCo Trainingsplattform</span>
+        <span>Hilfe · Datenschutz · Kontakt</span>
       </div>
     </div>
   `;
-
-  // Scale virtual desktop to fit within monitor frame
-  requestAnimationFrame(() => {
-    const inner = document.getElementById('monitorScalerInner');
-    if (!inner) return;
-    const cW = screen.clientWidth;
-    const cH = screen.clientHeight;
-    const scale = Math.min(cW / virtualW, cH / virtualH);
-    inner.style.transform = `scale(${scale})`;
-  });
 }
 
 // ── Summary ──
