@@ -124,26 +124,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .monitor-scaler{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .monitor-scaler-inner{transform-origin:center center;overflow:hidden;border-radius:6px;position:relative}
 
-/* ── Phone Content (dynamic) ── */
-.monitor-statusbar{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 6px;font-size:12px;font-weight:600;z-index:5}
-.monitor-statusbar.dark-text{color:#000}
-.monitor-statusbar.light-text{color:#fff}
-.monitor-header{padding:16px 20px 12px}
-.monitor-header h2{font-size:20px;font-weight:700}
-.monitor-header p{font-size:13px;opacity:0.7;margin-top:2px}
-.monitor-card{margin:0 16px 12px;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+/* ── Desktop Content (dynamic) ── */
+.monitor-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:48px;font-size:13px;font-weight:600;z-index:5;border-bottom:1px solid rgba(0,0,0,0.08)}
+.monitor-topbar-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700}
+.monitor-topbar-nav{display:flex;gap:24px;font-size:13px;font-weight:500}
+.monitor-topbar-nav span{opacity:0.5;cursor:default}
+.monitor-topbar-nav span.active{opacity:1}
+.monitor-topbar-user{display:flex;align-items:center;gap:8px;font-size:13px}
+.monitor-topbar-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.monitor-hero{display:flex;align-items:center;gap:24px;padding:24px}
+.monitor-hero-text{flex:1}
+.monitor-hero-text h2{font-size:22px;font-weight:700;margin-bottom:4px}
+.monitor-hero-text p{font-size:13px;opacity:0.7}
+.monitor-hero-stats{display:flex;gap:16px;margin-top:12px}
+.monitor-hero-stat{text-align:center;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.15)}
+.monitor-hero-stat .num{font-size:20px;font-weight:700}
+.monitor-hero-stat .lbl{font-size:11px;opacity:0.7}
+.monitor-cards-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:0 24px}
+.monitor-card{border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
 .monitor-card-title{font-size:14px;font-weight:600;margin-bottom:6px}
 .monitor-card-text{font-size:12px;opacity:0.6;line-height:1.4}
-.monitor-list-item{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(0,0,0,0.06)}
-.monitor-list-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.monitor-list-label{font-size:13px;font-weight:500}
-.monitor-list-sub{font-size:11px;opacity:0.5}
-.monitor-fab{position:absolute;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.2);cursor:default}
-.monitor-btn{margin:12px 16px;padding:12px;text-align:center;color:#fff;font-size:14px;font-weight:600;border:none;cursor:default}
-.monitor-nav{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around;padding:8px 0 16px;background:#fff;border-top:1px solid rgba(0,0,0,0.08)}
-.monitor-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;opacity:0.4}
-.monitor-nav-item.active{opacity:1}
-.monitor-nav-item svg{width:20px;height:20px}
+.monitor-card-icon{font-size:28px;margin-bottom:8px}
+.monitor-bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;font-size:12px;opacity:0.5;margin-top:auto;border-top:1px solid rgba(0,0,0,0.06)}
 
 /* ── Summary ── */
 .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
@@ -485,7 +487,7 @@ function goStep(n) {
   if (n === 6) buildSummary();
 }
 
-// ── Phone Preview ──
+// ── Desktop Landscape Preview ──
 function updatePreview() {
   const s = state;
   const r = s.borderRadius;
@@ -495,103 +497,97 @@ function updatePreview() {
   const klassisch = s.style === 'klassisch';
   const modern = s.style === 'modern';
 
-  let bg, headerBg, cardBg, textCol, textLight, listBorder, navBg, navBorder;
+  let bg, topbarBg, topbarText, topbarNavBg, cardBg, textCol, textLight, heroBg, heroText, heroSubText, borderCol, footerBorder;
 
   if (dark) {
-    bg = '#121212'; headerBg = '#1E1E1E'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; listBorder = 'rgba(255,255,255,0.06)'; navBg = '#1A1A1A'; navBorder = 'rgba(255,255,255,0.08)';
+    bg = '#121212'; topbarBg = '#1E1E1E'; topbarText = '#E0E0E0'; topbarNavBg = '#1E1E1E'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = 'rgba(255,255,255,0.06)'; footerBorder = 'rgba(255,255,255,0.08)';
   } else if (minimal) {
-    bg = '#FFFFFF'; headerBg = '#FFFFFF'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; listBorder = '#F0F0F0'; navBg = '#fff'; navBorder = '#eee';
+    bg = '#FFFFFF'; topbarBg = '#FFFFFF'; topbarText = '#111'; topbarNavBg = '#fff'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; heroBg = '#111'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0F0F0'; footerBorder = '#eee';
   } else if (klassisch) {
-    bg = '#F5F5F0'; headerBg = '#FAFAF5'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; listBorder = '#E8E8E0'; navBg = '#FAFAF5'; navBorder = '#DDD';
+    bg = '#F5F5F0'; topbarBg = '#FAFAF5'; topbarText = '#2C2C2C'; topbarNavBg = '#FAFAF5'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; heroBg = '#37474F'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#E8E8E0'; footerBorder = '#DDD';
   } else if (playful) {
-    bg = '#FFFDE7'; headerBg = '#FFF9C4'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; listBorder = '#F0E8C0'; navBg = '#FFFDE7'; navBorder = '#F0E8C0';
+    bg = '#FFFDE7'; topbarBg = '#FFF9C4'; topbarText = '#333'; topbarNavBg = '#FFF9C4'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0E8C0'; footerBorder = '#F0E8C0';
   } else {
-    bg = '#F5F7FA'; headerBg = s.primaryColor; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; listBorder = '#ECEFF4'; navBg = '#fff'; navBorder = '#E0E0E0';
+    bg = '#F5F7FA'; topbarBg = '#fff'; topbarText = '#222'; topbarNavBg = '#fff'; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#ECEFF4'; footerBorder = '#E0E0E0';
   }
 
-  const headerText = (dark || modern) ? '#fff' : textCol;
-  const headerSubText = (dark || modern) ? 'rgba(255,255,255,0.7)' : textLight;
-
-  const navIconCol = dark ? s.primaryColor : textLight;
-  const navActiveCol = dark ? s.primaryColor : s.primaryColor;
-
   const screen = document.getElementById('monitorScreen');
-  const virtualW = 390;
+  const virtualW = 1280;
   const virtualH = 720;
 
   screen.innerHTML = `
     <div class="monitor-scaler">
-      <div class="monitor-scaler-inner" id="monitorScalerInner" style="width:${virtualW}px;height:${virtualH}px;background:${bg};font-family:${s.fontFamily}">
-        <!-- Status Bar -->
-        <div class="monitor-statusbar ${(dark || modern) ? 'light-text' : 'dark-text'}" style="background:${modern ? s.primaryColor : (dark ? '#121212' : bg)}">
-          <span>9:41</span>
-          <span>📶 🔋</span>
-        </div>
-        <!-- Header -->
-        <div class="monitor-header" style="background:${headerBg}">
-          <h2 style="color:${headerText}">Mitarbeiter Portal</h2>
-          <p style="color:${headerSubText}">Willkommen zurück, Max 👋</p>
-        </div>
-        ${modern ? `<div style="height:3px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor})"></div>` : ''}
-
-        <!-- Cards -->
-        <div style="padding-top:12px">
-          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-left:4px solid ${s.primaryColor}">
-            <div class="monitor-card-title" style="color:${textCol}">👁️ Augen-Training</div>
-            <div class="monitor-card-text" style="color:${textLight}">12 Übungen verfügbar · Nächstes Level unlocken</div>
+      <div class="monitor-scaler-inner" id="monitorScalerInner" style="width:${virtualW}px;height:${virtualH}px;background:${bg};font-family:${s.fontFamily};display:flex;flex-direction:column;overflow:hidden">
+        <!-- Top Bar -->
+        <div class="monitor-topbar" style="background:${topbarBg};color:${topbarText};border-color:${borderCol}">
+          <div class="monitor-topbar-logo">
+            <span style="color:${s.primaryColor};font-size:20px">⚡</span>
+            <span>ViCo Plattform</span>
           </div>
-          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-left:4px solid ${s.secondaryColor}">
-            <div class="monitor-card-title" style="color:${textCol}">🧠 Gehirn-Training</div>
-            <div class="monitor-card-text" style="color:${textLight}">8 Kurse freigeschaltet</div>
+          <div class="monitor-topbar-nav" style="color:${topbarText}">
+            <span class="active" style="color:${s.primaryColor}">Dashboard</span>
+            <span>Trainings</span>
+            <span>Coachings</span>
+            <span>Statistiken</span>
+          </div>
+          <div class="monitor-topbar-user" style="color:${topbarText}">
+            <div class="monitor-topbar-avatar" style="background:${s.primaryColor}">M</div>
+            <span>Max Mustermann</span>
           </div>
         </div>
+        ${modern ? `<div style="height:3px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor});flex-shrink:0"></div>` : ''}
 
-        <!-- List -->
-        <div style="margin-top:8px">
-          <div class="monitor-list-item" style="border-color:${listBorder}">
-            <div class="monitor-list-icon" style="background:${s.primaryColor}20;color:${s.primaryColor};border-radius:${r}px">📊</div>
-            <div><div class="monitor-list-label" style="color:${textCol}">Auswertung</div><div class="monitor-list-sub" style="color:${textLight}">Monatsübersicht</div></div>
-          </div>
-          <div class="monitor-list-item" style="border-color:${listBorder}">
-            <div class="monitor-list-icon" style="background:${s.secondaryColor}20;color:${s.secondaryColor};border-radius:${r}px">💬</div>
-            <div><div class="monitor-list-label" style="color:${textCol}">Statistiken</div><div class="monitor-list-sub" style="color:${textLight}">3 ungelesen</div></div>
-          </div>
-          <div class="monitor-list-item" style="border-color:${listBorder}">
-            <div class="monitor-list-icon" style="background:${s.accentColor}20;color:${s.accentColor};border-radius:${r}px">⚙️</div>
-            <div><div class="monitor-list-label" style="color:${textCol}">Einstellungen</div><div class="monitor-list-sub" style="color:${textLight}">Einstellungen & mehr</div></div>
+        <!-- Hero Section -->
+        <div class="monitor-hero" style="background:${heroBg};color:${heroText};flex-shrink:0">
+          <div class="monitor-hero-text">
+            <h2 style="color:${heroText}">Willkommen zurück, Max 👋</h2>
+            <p style="color:${heroSubText}">Dein Fortschritt diese Woche</p>
+            <div class="monitor-hero-stats">
+              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
+                <div class="num" style="color:${heroText}">12</div>
+                <div class="lbl" style="color:${heroSubText}">Trainings</div>
+              </div>
+              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
+                <div class="num" style="color:${heroText}">4h</div>
+                <div class="lbl" style="color:${heroSubText}">Diese Woche</div>
+              </div>
+              <div class="monitor-hero-stat" style="background:${dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)'}">
+                <div class="num" style="color:${heroText}">89%</div>
+                <div class="lbl" style="color:${heroSubText}">Ziel erreicht</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Button -->
-        <div class="monitor-btn" style="background:${s.primaryColor};color:#fff;border-radius:${r}px">Neue Schicht anlegen</div>
+        <!-- Cards Grid -->
+        <div class="monitor-cards-grid" style="flex:1;padding:20px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-content:start">
+          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.primaryColor}">
+            <div class="monitor-card-icon">👁️</div>
+            <div class="monitor-card-title" style="color:${textCol}">Augen-Training</div>
+            <div class="monitor-card-text" style="color:${textLight}">12 Übungen verfügbar · Nächstes Level freischalten</div>
+          </div>
+          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.secondaryColor}">
+            <div class="monitor-card-icon">🧠</div>
+            <div class="monitor-card-title" style="color:${textCol}">Gehirn-Training</div>
+            <div class="monitor-card-text" style="color:${textLight}">8 Kurse freigeschaltet · 3 neu</div>
+          </div>
+          <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.accentColor}">
+            <div class="monitor-card-icon">🎯</div>
+            <div class="monitor-card-title" style="color:${textCol}">Fokus-Übungen</div>
+            <div class="monitor-card-text" style="color:${textLight}">5 Sessions diese Woche · Bestzeit: 14min</div>
+          </div>
+        </div>
 
-        <!-- FAB -->
-        <div class="monitor-fab" style="background:${s.accentColor};border-radius:50%">+</div>
-
-        <!-- Bottom Nav -->
-        <div class="monitor-nav" style="background:${navBg};border-color:${navBorder}">
-          <div class="monitor-nav-item active" style="color:${navActiveCol}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>Home</span>
-          </div>
-          <div class="monitor-nav-item" style="color:${navIconCol}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-            <span>Plan</span>
-          </div>
-          <div class="monitor-nav-item" style="color:${navIconCol}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-            <span>Chat</span>
-          </div>
-          <div class="monitor-nav-item" style="color:${navIconCol}">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            <span>Einstellungen</span>
-          </div>
+        <!-- Footer Bar -->
+        <div class="monitor-bottombar" style="background:${topbarBg};color:${textLight};border-color:${footerBorder}">
+          <span>© 2025 ViCo Trainingsplattform</span>
+          <span>Hilfe · Datenschutz · Kontakt</span>
         </div>
       </div>
     </div>
   `;
 
-  // Scale virtual phone to fit within monitor frame
+  // Scale virtual desktop to fit within monitor frame
   requestAnimationFrame(() => {
     const inner = document.getElementById('monitorScalerInner');
     if (!inner) return;
