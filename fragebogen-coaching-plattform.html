@@ -49,6 +49,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .color-circle.custom input{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
 .color-circle.custom::after{content:'+';font-size:18px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);pointer-events:none}
 
+/* ── Color Wheel ── */
+.color-wheel-box{position:relative;width:200px;height:200px;margin:8px auto 4px}
+.color-wheel-canvas{width:200px;height:200px;border-radius:50%;cursor:crosshair;box-shadow:0 2px 12px rgba(0,0,0,0.15);display:block}
+.color-wheel-indicator{position:absolute;width:16px;height:16px;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,0.3),0 2px 4px rgba(0,0,0,0.3);transform:translate(-50%,-50%);pointer-events:none;display:none;top:50%;left:50%}
+.color-wheel-fallback{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.color-wheel-fallback input[type="color"]{width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none}
+.color-wheel-fallback input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+.color-wheel-fallback input[type="color"]::-webkit-color-swatch{border:2px solid var(--border);border-radius:4px}
+.color-wheel-fallback span{font-size:11px;color:var(--text-light)}
+
 /* ── Font Cards ── */
 .font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .font-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all var(--transition);text-align:center}
@@ -195,6 +205,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
       <div class="color-section">
         <div class="color-label">Hauptfarbe <span class="current" id="previewPrimary" style="background:#1E88E5"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelPrimary" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorPrimary"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativePrimary" value="#1E88E5" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
         <div class="color-row" data-target="primary">
           <div class="color-circle selected" style="background:#1E88E5" data-color="#1E88E5"></div>
           <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
@@ -206,6 +224,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
       <div class="color-section">
         <div class="color-label">Sekundärfarbe <span class="current" id="previewSecondary" style="background:#43A047"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelSecondary" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorSecondary"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativeSecondary" value="#43A047" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
         <div class="color-row" data-target="secondary">
           <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
           <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
@@ -236,6 +262,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
       <div class="color-section">
         <div class="color-label">Akzentfarbe <span class="current" id="previewAccent" style="background:#FFB300"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelAccent" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorAccent"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativeAccent" value="#FFB300" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
         <div class="color-row" data-target="accent">
           <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
           <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
@@ -334,38 +368,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="mood-grid">
         <div class="mood-card" data-mood="minimalistisch" onclick="selectMood(this)">
           <div class="mood-card-label">Minimalistisch</div>
-          <div class="mood-preview-mini minimal">
-            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-            <div class="mini-btn"></div>
-          </div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Klare Linien, viel Weißraum, wenig Deko. Fokus auf den Inhalt, ohne unnötige Ablenkung.</p>
         </div>
         <div class="mood-card selected" data-mood="modern" onclick="selectMood(this)">
           <div class="mood-card-label">Modern</div>
-          <div class="mood-preview-mini modern">
-            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-            <div class="mini-btn"></div>
-          </div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Aktuelle Trends, kräftige Farben und dynamische Formen. Mutig und ausdrucksstark.</p>
         </div>
         <div class="mood-card" data-mood="spielerisch" onclick="selectMood(this)">
           <div class="mood-card-label">Spielerisch</div>
-          <div class="mood-preview-mini playful">
-            <div class="mini-bar mini-b1"></div><div class="mini-bar mini-b2"></div><div class="mini-bar mini-b3"></div>
-            <div class="mini-btn"></div>
-          </div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Runde Formen, bunte Akzente, freundlich und einladend. Perfekt für eine junge Zielgruppe.</p>
         </div>
         <div class="mood-card" data-mood="klassisch" onclick="selectMood(this)">
           <div class="mood-card-label">Klassisch</div>
-          <div class="mood-preview-mini classic">
-            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-            <div class="mini-btn"></div>
-          </div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Zeitlos elegant, dezente Farben, seriös und vertrauenswürdig. Professioneller Auftritt.</p>
         </div>
         <div class="mood-card" data-mood="dunkel" onclick="selectMood(this)">
           <div class="mood-card-label">Dunkel</div>
-          <div class="mood-preview-mini dunkel">
-            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
-            <div class="mini-btn"></div>
-          </div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Dunkles Farbschema mit leuchtenden Akzenten. Modern und edel, gleichzeitig augenschonend.</p>
         </div>
       </div>
       <div class="nav-buttons">
@@ -472,7 +491,6 @@ function selectMood(el) {
   document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.style = el.dataset.mood;
-  updatePreview();
 }
 
 // ── Step Navigation ──
@@ -661,8 +679,60 @@ function downloadJSON() {
   URL.revokeObjectURL(url);
 }
 
+// ── Color Wheel ──
+function hslToRgb(h,s,l){s/=100;l/=100;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;let r,g,b;if(h<60){r=c;g=x;b=0}else if(h<120){r=x;g=c;b=0}else if(h<180){r=0;g=c;b=x}else if(h<240){r=0;g=x;b=c}else if(h<300){r=x;g=0;b=c}else{r=c;g=0;b=x}return[Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)]}
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('')}
+
+function drawColorWheel(canvas){const size=canvas.width,ctx=canvas.getContext('2d'),imageData=ctx.createImageData(size,size),data=imageData.data,cx=size/2,cy=size/2,radius=size/2-4;for(let y=0;y<size;y++){for(let x=0;x<size;x++){const dx=x-cx,dy=y-cy,dist=Math.sqrt(dx*dx+dy*dy),idx=(y*size+x)*4;if(dist<=radius){let hue=Math.atan2(dy,dx)*180/Math.PI;if(hue<0)hue+=360;const sat=Math.round((dist/radius)*100);const[rv,gv,bv]=hslToRgb(hue,sat,50);data[idx]=rv;data[idx+1]=gv;data[idx+2]=bv;data[idx+3]=255}}}ctx.putImageData(imageData,0,0)}
+
+function initViCoColorWheel(canvasId,indicatorId,nativeId,targetKey){
+  const canvas=document.getElementById(canvasId),indicator=document.getElementById(indicatorId),nativeInput=document.getElementById(nativeId);
+  drawColorWheel(canvas);
+  function pick(e){
+    e.preventDefault();const rect=canvas.getBoundingClientRect(),scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+    const clientX=e.touches?e.touches[0].clientX:e.clientX,clientY=e.touches?e.touches[0].clientY:e.clientY;
+    const x=(clientX-rect.left)*scaleX,y=(clientY-rect.top)*scaleY;
+    const ctx=canvas.getContext('2d'),pixel=ctx.getImageData(Math.round(x),Math.round(y),1,1).data;
+    if(pixel[3]===0)return;const hex=rgbToHex(pixel[0],pixel[1],pixel[2]);
+    applyViCoWheelColor(targetKey,hex,canvas,indicator,nativeInput);
+  }
+  canvas.addEventListener('click',pick);
+  canvas.addEventListener('touchstart',pick,{passive:false});
+  nativeInput.addEventListener('input',function(){applyViCoWheelColor(targetKey,this.value,canvas,indicator,nativeInput)});
+}
+
+function applyViCoWheelColor(targetKey,hex,canvas,indicator,nativeInput){
+  state[targetKey+'Color']=hex;
+  if(targetKey==='primary')document.getElementById('previewPrimary').style.background=hex;
+  if(targetKey==='secondary')document.getElementById('previewSecondary').style.background=hex;
+  if(targetKey==='accent')document.getElementById('previewAccent').style.background=hex;
+  nativeInput.value=hex;
+  updatePreview();
+  // Position indicator
+  const size=canvas.width,cx=size/2,cy=size/2;
+  const rv=parseInt(hex.slice(1,3),16),gv=parseInt(hex.slice(3,5),16),bv=parseInt(hex.slice(5,7),16);
+  const max=Math.max(rv,gv,bv),min=Math.min(rv,gv,bv);let h=0,s=0,l=(max+min)/2/255;
+  if(max!==min){const d=(max-min)/255;s=l>0.5?d/(2-max/255-min/255):d/(max/255+min/255);if(max===rv)h=((gv-bv)/255/d+(gv<bv?6:0))*60;else if(max===gv)h=((bv-rv)/255/d+2)*60;else h=((rv-gv)/255/d+4)*60}
+  const radius=size/2-4,dist=s*radius,angle=h*Math.PI/180,px=cx+dist*Math.cos(angle),py=cy+dist*Math.sin(angle);
+  indicator.style.display='block';indicator.style.background=hex;
+  const rect=canvas.getBoundingClientRect();
+  indicator.style.left=((px/canvas.width)*rect.width)+'px';
+  indicator.style.top=((py/canvas.height)*rect.height)+'px';
+  // Add as circle
+  const row=document.querySelector(`.color-row[data-target="${targetKey}"]`);
+  if(!row)return;
+  const existing=row.querySelector(`[data-color="${hex}"]`);
+  if(existing){row.querySelectorAll('.color-circle').forEach(c=>c.classList.remove('selected'));existing.classList.add('selected');return}
+  const circle=document.createElement('div');circle.className='color-circle selected';circle.style.background=hex;circle.dataset.color=hex;
+  const customEl=row.querySelector('.color-circle.custom');row.insertBefore(circle,customEl);
+  row.querySelectorAll('.color-circle').forEach(c=>c.classList.remove('selected'));circle.classList.add('selected');
+}
+
 // ── Init ──
 updatePreview();
+initViCoColorWheel('wheelPrimary','indicatorPrimary','nativePrimary','primary');
+initViCoColorWheel('wheelSecondary','indicatorSecondary','nativeSecondary','secondary');
+initViCoColorWheel('wheelAccent','indicatorAccent','nativeAccent','accent');
 </script>
 </body>
 </html>
