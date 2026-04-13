@@ -201,6 +201,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
           <div class="color-circle" style="background:#42A5F5" data-color="#42A5F5"></div>
           <div class="color-circle" style="background:#0D47A1" data-color="#0D47A1"></div>
+          <div class="color-circle" style="background:#2196F3" data-color="#2196F3"></div>
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
+          <div class="color-circle" style="background:#66BB6A" data-color="#66BB6A"></div>
+          <div class="color-circle" style="background:#1B5E20" data-color="#1B5E20"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#C62828" data-color="#C62828"></div>
+          <div class="color-circle" style="background:#EF5350" data-color="#EF5350"></div>
+          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#F57C00" data-color="#F57C00"></div>
+          <div class="color-circle" style="background:#FFA726" data-color="#FFA726"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#7B1FA2" data-color="#7B1FA2"></div>
+          <div class="color-circle" style="background:#AB47BC" data-color="#AB47BC"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#00838F" data-color="#00838F"></div>
+          <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#455A64" data-color="#455A64"></div>
           <div class="custom-color-row">
             <label class="custom-color-btn">
               <input type="color" id="pickerPrimary" value="#E91E63" oninput="pickCustomColor('primary', this.value)">
@@ -214,7 +236,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="color-section">
         <div class="color-label">Sekundärfarbe <span class="current" id="previewSecondary" style="background:#43A047"></span></div>
         <div class="color-row" data-target="secondary">
-          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#1E88E5" data-color="#1E88E5"></div>
+          <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
+          <div class="color-circle" style="background:#42A5F5" data-color="#42A5F5"></div>
+          <div class="color-circle" style="background:#0D47A1" data-color="#0D47A1"></div>
+          <div class="color-circle" style="background:#2196F3" data-color="#2196F3"></div>
+          <div class="color-circle selected" style="background:#43A047" data-color="#43A047"></div>
           <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
           <div class="color-circle" style="background:#66BB6A" data-color="#66BB6A"></div>
           <div class="color-circle" style="background:#1B5E20" data-color="#1B5E20"></div>
@@ -224,19 +251,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
           <div class="color-circle" style="background:#F57C00" data-color="#F57C00"></div>
           <div class="color-circle" style="background:#FFA726" data-color="#FFA726"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
           <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
           <div class="color-circle" style="background:#7B1FA2" data-color="#7B1FA2"></div>
           <div class="color-circle" style="background:#AB47BC" data-color="#AB47BC"></div>
           <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
           <div class="color-circle" style="background:#00838F" data-color="#00838F"></div>
           <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
-          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
-          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
           <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
           <div class="color-circle" style="background:#455A64" data-color="#455A64"></div>
-          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
-          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
-          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
           <div class="custom-color-row">
             <label class="custom-color-btn">
               <input type="color" id="pickerSecondary" value="#2196F3" oninput="pickCustomColor('secondary', this.value)">
@@ -250,18 +275,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="color-section">
         <div class="color-label">Akzentfarbe <span class="current" id="previewAccent" style="background:#FFB300"></span></div>
         <div class="color-row" data-target="accent">
-          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
-          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
-          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
-          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
-          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
-          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
-          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
-          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
           <div class="color-circle" style="background:#1E88E5" data-color="#1E88E5"></div>
-          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
-          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
+          <div class="color-circle" style="background:#42A5F5" data-color="#42A5F5"></div>
+          <div class="color-circle" style="background:#0D47A1" data-color="#0D47A1"></div>
+          <div class="color-circle" style="background:#2196F3" data-color="#2196F3"></div>
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
+          <div class="color-circle" style="background:#66BB6A" data-color="#66BB6A"></div>
+          <div class="color-circle" style="background:#1B5E20" data-color="#1B5E20"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#C62828" data-color="#C62828"></div>
+          <div class="color-circle" style="background:#EF5350" data-color="#EF5350"></div>
+          <div class="color-circle selected" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#F57C00" data-color="#F57C00"></div>
+          <div class="color-circle" style="background:#FFA726" data-color="#FFA726"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#7B1FA2" data-color="#7B1FA2"></div>
+          <div class="color-circle" style="background:#AB47BC" data-color="#AB47BC"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#00838F" data-color="#00838F"></div>
           <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#455A64" data-color="#455A64"></div>
           <div class="custom-color-row">
             <label class="custom-color-btn">
               <input type="color" id="pickerAccent" value="#FF9800" oninput="pickCustomColor('accent', this.value)">
