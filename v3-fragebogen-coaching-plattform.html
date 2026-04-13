@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design-Fragebogen — ViCo Trainingsplattform</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1E88E5;--secondary:#43A047;--accent:#FFB300;
+  --font:'Inter',sans-serif;--radius:8px;
+  --bg:#FAFAFA;--text:#212121;--text-light:#757575;
+  --surface:#fff;--border:#E0E0E0;
+  --transition:0.3s ease;
+}
+html{font-size:16px;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+
+/* ── Progress Bar ── */
+.progress-bar{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;gap:16px}
+.progress-bar h1{font-size:15px;font-weight:600;white-space:nowrap;color:var(--text)}
+.progress-track{flex:1;height:6px;background:#E8E8E8;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);border-radius:3px;transition:width var(--transition);width:16.66%}
+.progress-step{font-size:13px;color:var(--text-light);white-space:nowrap;font-weight:500}
+
+/* ── Layout ── */
+.main-layout{display:flex;min-height:calc(100vh - 52px)}
+.panel-left{width:40%;padding:32px;overflow-y:auto;max-height:calc(100vh - 52px)}
+.panel-right{width:60%;display:flex;align-items:center;justify-content:center;padding:32px;background:#F0F0F0;overflow-y:auto;max-height:calc(100vh - 52px)}
+
+/* ── Steps ── */
+.step{display:none}
+.step.active{display:block;animation:fadeSlide 0.35s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.step-title{font-size:22px;font-weight:700;margin-bottom:4px}
+.step-desc{font-size:14px;color:var(--text-light);margin-bottom:24px}
+
+/* ── Color Section ── */
+.color-section{margin-bottom:28px}
+.color-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.color-label .current{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid var(--border);vertical-align:middle}
+.color-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.color-circle{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all var(--transition);position:relative;flex-shrink:0}
+.color-circle:hover{transform:scale(1.15)}
+.color-circle.selected{border-color:var(--text);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--text)}
+.color-circle.custom{background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);position:relative;display:flex;align-items:center;justify-content:center}
+.color-circle.custom input{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}
+.color-circle.custom::after{content:'+';font-size:18px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);pointer-events:none}
+
+/* ── Color Wheel ── */
+.color-wheel-box{position:relative;width:200px;height:200px;margin:8px auto 4px}
+.color-wheel-canvas{width:200px;height:200px;border-radius:50%;cursor:crosshair;box-shadow:0 2px 12px rgba(0,0,0,0.15);display:block}
+.color-wheel-indicator{position:absolute;width:16px;height:16px;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,0.3),0 2px 4px rgba(0,0,0,0.3);transform:translate(-50%,-50%);pointer-events:none;display:none;top:50%;left:50%}
+.color-wheel-fallback{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+.color-wheel-fallback input[type="color"]{width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none}
+.color-wheel-fallback input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+.color-wheel-fallback input[type="color"]::-webkit-color-swatch{border:2px solid var(--border);border-radius:4px}
+.color-wheel-fallback span{font-size:11px;color:var(--text-light)}
+
+/* ── Font Cards ── */
+.font-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.font-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all var(--transition);text-align:center}
+.font-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.font-card.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.font-card-name{font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.font-card-preview{font-size:24px;font-weight:500;color:var(--text);line-height:1.3}
+
+/* ── Radius Options ── */
+.radius-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.radius-option{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px 12px;cursor:pointer;transition:all var(--transition);text-align:center}
+.radius-option:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.radius-option.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.radius-option-label{font-size:12px;font-weight:600;color:var(--text-light);margin-bottom:12px}
+.radius-demo-box{width:100%;height:40px;background:var(--primary);margin-bottom:8px}
+.radius-demo-btn{width:100%;padding:6px;background:var(--text);color:#fff;border:none;font-size:11px;font-weight:600;cursor:default}
+
+/* ── Style/Mood Options ── */
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.mood-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all var(--transition)}
+.mood-card:hover{border-color:var(--primary);box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.mood-card.selected{border-color:var(--primary);background:rgba(30,136,229,0.05)}
+.mood-card-label{font-size:13px;font-weight:600;text-align:center;margin-bottom:12px}
+.mood-preview-mini{height:80px;border-radius:4px;overflow:hidden;position:relative}
+
+/* Mini preview for each style */
+.mood-preview-mini.minimal{background:#fff;border:1px solid #e0e0e0;padding:8px}
+.mood-preview-mini.minimal .mini-bar{height:4px;background:#e0e0e0;border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.minimal .mini-bar:last-child{width:60%;margin-bottom:0}
+.mood-preview-mini.minimal .mini-btn{margin-top:8px;height:20px;background:#212121;border-radius:4px;width:50px}
+
+.mood-preview-mini.modern{background:linear-gradient(135deg,#667eea,#764ba2);padding:10px;border-radius:8px}
+.mood-preview-mini.modern .mini-bar{height:4px;background:rgba(255,255,255,0.4);border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.modern .mini-bar:last-child{width:55%;margin-bottom:0}
+.mood-preview-mini.modern .mini-btn{margin-top:8px;height:20px;background:rgba(255,255,255,0.9);border-radius:10px;width:50px}
+
+.mood-preview-mini.playful{background:#FFF9C4;padding:10px;border-radius:12px}
+.mood-preview-mini.playful .mini-bar{height:6px;border-radius:3px;margin-bottom:6px}
+.mood-preview-mini.playful .mini-b1{background:#FF7043}
+.mood-preview-mini.playful .mini-b2{background:#42A5F5;width:70%}
+.mood-preview-mini.playful .mini-b3{background:#66BB6A;width:45%;margin-bottom:0}
+.mood-preview-mini.playful .mini-btn{margin-top:8px;height:22px;background:#FF7043;border-radius:11px;width:55px}
+
+.mood-preview-mini.classic{background:#FAFAFA;padding:10px;border:1px solid #ccc;border-radius:2px}
+.mood-preview-mini.classic .mini-bar{height:4px;background:#ccc;border-radius:1px;margin-bottom:6px}
+.mood-preview-mini.classic .mini-bar:last-child{width:65%;margin-bottom:0}
+.mood-preview-mini.classic .mini-btn{margin-top:8px;height:20px;background:#37474F;border-radius:2px;width:50px}
+
+.mood-preview-mini.dunkel{background:#1a1a2e;padding:10px;border-radius:8px}
+.mood-preview-mini.dunkel .mini-bar{height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin-bottom:6px}
+.mood-preview-mini.dunkel .mini-bar:last-child{width:50%;margin-bottom:0}
+.mood-preview-mini.dunkel .mini-btn{margin-top:8px;height:20px;background:#BB86FC;border-radius:10px;width:50px}
+
+/* ── Textarea ── */
+.step-textarea{width:100%;min-height:160px;border:2px solid var(--border);border-radius:var(--radius);padding:16px;font-family:var(--font);font-size:15px;resize:vertical;transition:border-color var(--transition);line-height:1.6}
+.step-textarea:focus{outline:none;border-color:var(--primary)}
+
+/* ── Navigation ── */
+.nav-buttons{display:flex;gap:12px;margin-top:32px;justify-content:space-between}
+.btn{padding:12px 28px;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all var(--transition);font-family:var(--font)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--text);border:2px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:var(--primary)}
+.btn-download{background:#43A047;color:#fff;padding:14px 32px;font-size:15px}
+.btn-download:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ── Monitor Frame (Landscape Desktop) ── */
+.monitor-frame{width:100%;max-width:100%;aspect-ratio:16/9;background:linear-gradient(145deg,#2a2a2a 0%,#1a1a1a 50%,#2a2a2a 100%);border-radius:18px;padding:14px 14px 10px 14px;box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);position:relative;flex-shrink:0}
+.monitor-frame::before{content:'';position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:100px;height:6px;background:linear-gradient(180deg,#444,#333);border-radius:0 0 4px 4px;z-index:10}
+.monitor-frame::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:40px;height:16px;background:linear-gradient(180deg,#444,#222);border-radius:0 0 8px 8px;z-index:10}
+.monitor-screen{width:100%;height:100%;border-radius:6px;overflow:hidden;background:#e8e8e8;position:relative}
+.monitor-desktop{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;font-size:13px}
+
+/* ── Desktop Content (dynamic) ── */
+.monitor-topbar{display:flex;align-items:center;justify-content:space-between;padding:0 3%;height:13%;font-weight:600;flex-shrink:0;border-bottom:1px solid rgba(0,0,0,0.08)}
+.monitor-topbar-logo{display:flex;align-items:center;gap:6px;font-size:clamp(10px,1.4vw,16px);font-weight:700}
+.monitor-topbar-nav{display:flex;gap:clamp(8px,2vw,24px);font-size:clamp(8px,1.1vw,13px);font-weight:500}
+.monitor-topbar-nav span{opacity:0.5}
+.monitor-topbar-user{display:flex;align-items:center;gap:6px;font-size:clamp(8px,1.1vw,13px)}
+.monitor-topbar-avatar{width:clamp(16px,2vw,28px);height:clamp(16px,2vw,28px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(8px,0.9vw,12px);color:#fff}
+.monitor-hero{display:flex;align-items:center;gap:3%;padding:2% 3%;flex-shrink:0}
+.monitor-hero-text{flex:1}
+.monitor-hero-text h2{font-size:clamp(11px,1.8vw,22px);font-weight:700;margin-bottom:2px}
+.monitor-hero-text p{font-size:clamp(8px,1vw,13px);opacity:0.7}
+.monitor-hero-stats{display:flex;gap:clamp(6px,1.2vw,16px);margin-top:2%}
+.monitor-hero-stat{text-align:center;padding:clamp(4px,0.6vw,8px) clamp(8px,1.2vw,16px);border-radius:6px}
+.monitor-hero-stat .num{font-size:clamp(12px,1.8vw,20px);font-weight:700}
+.monitor-hero-stat .lbl{font-size:clamp(7px,0.8vw,11px);opacity:0.7}
+.monitor-cards-row{display:flex;gap:clamp(6px,1.2vw,16px);padding:2% 3%;flex:1;min-height:0}
+.monitor-card{flex:1;border-radius:8px;padding:clamp(8px,1.2vw,20px);box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;flex-direction:column}
+.monitor-card-icon{font-size:clamp(14px,2vw,28px);margin-bottom:clamp(4px,0.5vw,8px)}
+.monitor-card-title{font-size:clamp(9px,1.1vw,14px);font-weight:600;margin-bottom:2px}
+.monitor-card-text{font-size:clamp(7px,0.9vw,12px);opacity:0.6;line-height:1.3;flex:1}
+.monitor-bottombar{display:flex;align-items:center;justify-content:space-between;padding:0 3%;height:10%;font-size:clamp(7px,0.8vw,11px);opacity:0.5;flex-shrink:0;border-top:1px solid rgba(0,0,0,0.06)}
+
+/* ── Summary ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.summary-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.summary-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light);margin-bottom:6px}
+.summary-value{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.summary-value .swatch{width:20px;height:20px;border-radius:50%;border:2px solid var(--border)}
+.summary-full{grid-column:1/-1}
+
+/* ── Responsive ── */
+
+/* Tablet 768-1023px */
+@media(min-width:768px) and (max-width:1023px){
+  .panel-left{width:35%}
+  .panel-right{width:65%}
+}
+
+/* Mobile <768px */
+@media(max-width:767px){
+  .main-layout{flex-direction:column}
+  .panel-left,.panel-right{width:100%;max-height:none}
+  .panel-right{order:-1;padding:16px}
+  .panel-left{padding:24px 16px}
+  .font-grid{grid-template-columns:1fr}
+  .radius-grid{grid-template-columns:repeat(2,1fr)}
+  .mood-grid{grid-template-columns:1fr 1fr}
+  .summary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar">
+  <h1>🎨 Design-Fragebogen</h1>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-step" id="progressStep">1 / 6</div>
+</div>
+
+<!-- Main Layout -->
+<div class="main-layout">
+  <!-- Left Panel: Steps -->
+  <div class="panel-left">
+
+    <!-- STEP 1: Colors -->
+    <div class="step active" data-step="1">
+      <h2 class="step-title">🎨 Farben</h2>
+      <p class="step-desc">Wähle die drei Hauptfarben deiner App. Kreise anklicken oder Custom wählen.</p>
+
+      <div class="color-section">
+        <div class="color-label">Hauptfarbe <span class="current" id="previewPrimary" style="background:#1E88E5"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelPrimary" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorPrimary"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativePrimary" value="#1E88E5" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
+        <div class="color-row" data-target="primary">
+          <div class="color-circle selected" style="background:#1E88E5" data-color="#1E88E5"></div>
+          <div class="color-circle" style="background:#1565C0" data-color="#1565C0"></div>
+          <div class="color-circle" style="background:#42A5F5" data-color="#42A5F5"></div>
+          <div class="color-circle" style="background:#0D47A1" data-color="#0D47A1"></div>
+          <div class="color-circle custom"><input type="color" value="#1E88E5" data-target="primary"></div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="color-label">Sekundärfarbe <span class="current" id="previewSecondary" style="background:#43A047"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelSecondary" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorSecondary"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativeSecondary" value="#43A047" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
+        <div class="color-row" data-target="secondary">
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#2E7D32" data-color="#2E7D32"></div>
+          <div class="color-circle" style="background:#66BB6A" data-color="#66BB6A"></div>
+          <div class="color-circle" style="background:#1B5E20" data-color="#1B5E20"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#C62828" data-color="#C62828"></div>
+          <div class="color-circle" style="background:#EF5350" data-color="#EF5350"></div>
+          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#F57C00" data-color="#F57C00"></div>
+          <div class="color-circle" style="background:#FFA726" data-color="#FFA726"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#7B1FA2" data-color="#7B1FA2"></div>
+          <div class="color-circle" style="background:#AB47BC" data-color="#AB47BC"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#00838F" data-color="#00838F"></div>
+          <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
+          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#455A64" data-color="#455A64"></div>
+          <div class="color-circle" style="background:#212121" data-color="#212121"></div>
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle custom"><input type="color" value="#43A047" data-target="secondary"></div>
+        </div>
+      </div>
+
+      <div class="color-section">
+        <div class="color-label">Akzentfarbe <span class="current" id="previewAccent" style="background:#FFB300"></span></div>
+        <div class="color-wheel-box">
+          <canvas id="wheelAccent" class="color-wheel-canvas" width="400" height="400"></canvas>
+          <div class="color-wheel-indicator" id="indicatorAccent"></div>
+        </div>
+        <div class="color-wheel-fallback">
+          <input type="color" id="nativeAccent" value="#FFB300" title="Alternativer Farbwähler">
+          <span>Alternativ</span>
+        </div>
+        <div class="color-row" data-target="accent">
+          <div class="color-circle" style="background:#FFB300" data-color="#FFB300"></div>
+          <div class="color-circle" style="background:#FF8F00" data-color="#FF8F00"></div>
+          <div class="color-circle" style="background:#FB8C00" data-color="#FB8C00"></div>
+          <div class="color-circle" style="background:#E53935" data-color="#E53935"></div>
+          <div class="color-circle" style="background:#EC407A" data-color="#EC407A"></div>
+          <div class="color-circle" style="background:#8E24AA" data-color="#8E24AA"></div>
+          <div class="color-circle" style="background:#00ACC1" data-color="#00ACC1"></div>
+          <div class="color-circle" style="background:#43A047" data-color="#43A047"></div>
+          <div class="color-circle" style="background:#1E88E5" data-color="#1E88E5"></div>
+          <div class="color-circle" style="background:#37474F" data-color="#37474F"></div>
+          <div class="color-circle" style="background:#D81B60" data-color="#D81B60"></div>
+          <div class="color-circle" style="background:#26C6DA" data-color="#26C6DA"></div>
+          <div class="color-circle custom"><input type="color" value="#FFB300" data-target="accent"></div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="goStep(2)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Font -->
+    <div class="step" data-step="2">
+      <h2 class="step-title">✏️ Schriftart</h2>
+      <p class="step-desc">Wähle die Haupschriftart. Jede Karte zeigt eine Live-Vorschau.</p>
+      <div class="font-grid">
+        <div class="font-card selected" data-font="'Inter',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Inter</div>
+          <div class="font-card-preview" style="font-family:'Inter',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Poppins',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Poppins</div>
+          <div class="font-card-preview" style="font-family:'Poppins',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Montserrat',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Montserrat</div>
+          <div class="font-card-preview" style="font-family:'Montserrat',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Roboto',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Roboto</div>
+          <div class="font-card-preview" style="font-family:'Roboto',sans-serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Playfair Display',serif" onclick="selectFont(this)">
+          <div class="font-card-name">Playfair Display</div>
+          <div class="font-card-preview" style="font-family:'Playfair Display',serif">ABC abc 123</div>
+        </div>
+        <div class="font-card" data-font="'Space Grotesk',sans-serif" onclick="selectFont(this)">
+          <div class="font-card-name">Space Grotesk</div>
+          <div class="font-card-preview" style="font-family:'Space Grotesk',sans-serif">ABC abc 123</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(1)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(3)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Radius -->
+    <div class="step" data-step="3">
+      <h2 class="step-title">⬜ Eckrundung</h2>
+      <p class="step-desc">Wie abgerundet sollen Karten und Buttons sein?</p>
+      <div class="radius-grid">
+        <div class="radius-option" data-radius="0" onclick="selectRadius(this)">
+          <div class="radius-option-label">Eckig</div>
+          <div class="radius-demo-box" style="border-radius:0"></div>
+          <div class="radius-demo-btn" style="border-radius:0">Button</div>
+        </div>
+        <div class="radius-option selected" data-radius="8" onclick="selectRadius(this)">
+          <div class="radius-option-label">Leicht</div>
+          <div class="radius-demo-box" style="border-radius:8px"></div>
+          <div class="radius-demo-btn" style="border-radius:8px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="16" onclick="selectRadius(this)">
+          <div class="radius-option-label">Stark</div>
+          <div class="radius-demo-box" style="border-radius:16px"></div>
+          <div class="radius-demo-btn" style="border-radius:16px">Button</div>
+        </div>
+        <div class="radius-option" data-radius="999" onclick="selectRadius(this)">
+          <div class="radius-option-label">Pills</div>
+          <div class="radius-demo-box" style="border-radius:999px"></div>
+          <div class="radius-demo-btn" style="border-radius:999px">Button</div>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(2)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(4)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Style/Mood -->
+    <div class="step" data-step="4">
+      <h2 class="step-title">🎭 Stil & Stimmung</h2>
+      <p class="step-desc">Welcher Gesamteindruck soll die App machen?</p>
+      <div class="mood-grid">
+        <div class="mood-card" data-mood="minimalistisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Minimalistisch</div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Klare Linien, viel Weißraum, wenig Deko. Fokus auf den Inhalt, ohne unnötige Ablenkung.</p>
+        </div>
+        <div class="mood-card selected" data-mood="modern" onclick="selectMood(this)">
+          <div class="mood-card-label">Modern</div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Aktuelle Trends, kräftige Farben und dynamische Formen. Mutig und ausdrucksstark.</p>
+        </div>
+        <div class="mood-card" data-mood="spielerisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Spielerisch</div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Runde Formen, bunte Akzente, freundlich und einladend. Perfekt für eine junge Zielgruppe.</p>
+        </div>
+        <div class="mood-card" data-mood="klassisch" onclick="selectMood(this)">
+          <div class="mood-card-label">Klassisch</div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Zeitlos elegant, dezente Farben, seriös und vertrauenswürdig. Professioneller Auftritt.</p>
+        </div>
+        <div class="mood-card" data-mood="dunkel" onclick="selectMood(this)">
+          <div class="mood-card-label">Dunkel</div>
+          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Dunkles Farbschema mit leuchtenden Akzenten. Modern und edel, gleichzeitig augenschonend.</p>
+        </div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(3)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(5)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Wishes -->
+    <div class="step" data-step="5">
+      <h2 class="step-title">💬 Wünsche & Anmerkungen</h2>
+      <p class="step-desc">Alles was dir noch wichtig ist — oder lass einfach leer.</p>
+      <textarea class="step-textarea" id="wishesText" placeholder="z.B. &quot;Schlicht, nicht zu bunt&quot; oder &quot;Im Dunkel-Modus bitte lavender Akzente&quot;..." oninput="state.wishes=this.value;updatePreview()"></textarea>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(4)">← Zurück</button>
+        <button class="btn btn-primary" onclick="goStep(6)">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Summary -->
+    <div class="step" data-step="6">
+      <h2 class="step-title">✅ Zusammenfassung</h2>
+      <p class="step-desc">Prüfe deine Auswahl und lade das Ergebnis herunter.</p>
+      <div class="summary-grid" id="summaryGrid"></div>
+      <div style="text-align:center;margin-top:8px">
+        <button class="btn btn-download" onclick="downloadJSON()">⬇ JSON herunterladen</button>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goStep(5)">← Zurück</button>
+        <div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Panel: Phone Preview -->
+  <div class="panel-right">
+    <div class="monitor-frame">
+      <div class="monitor-screen" id="monitorScreen"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──
+const state = {
+  primaryColor: '#1E88E5',
+  secondaryColor: '#43A047',
+  accentColor: '#FFB300',
+  fontFamily: "'Inter',sans-serif",
+  borderRadius: 8,
+  style: 'modern',
+  wishes: '',
+  currentStep: 1
+};
+
+// ── Color Selection ──
+document.querySelectorAll('.color-row').forEach(row => {
+  const target = row.dataset.target;
+  row.querySelectorAll('.color-circle[data-color]').forEach(circle => {
+    circle.addEventListener('click', () => {
+      row.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+      circle.classList.add('selected');
+      const color = circle.dataset.color;
+      state[target + 'Color'] = color;
+      if (target === 'primary') document.getElementById('previewPrimary').style.background = color;
+      if (target === 'secondary') document.getElementById('previewSecondary').style.background = color;
+      if (target === 'accent') document.getElementById('previewAccent').style.background = color;
+      updatePreview();
+    });
+  });
+  row.querySelectorAll('input[type=color]').forEach(input => {
+    input.addEventListener('input', () => {
+      const color = input.value;
+      state[input.dataset.target + 'Color'] = color;
+      row.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+      input.parentElement.classList.add('selected');
+      if (input.dataset.target === 'primary') document.getElementById('previewPrimary').style.background = color;
+      if (input.dataset.target === 'secondary') document.getElementById('previewSecondary').style.background = color;
+      if (input.dataset.target === 'accent') document.getElementById('previewAccent').style.background = color;
+      updatePreview();
+    });
+  });
+});
+
+// ── Font Selection ──
+function selectFont(el) {
+  document.querySelectorAll('.font-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.fontFamily = el.dataset.font;
+  updatePreview();
+}
+
+// ── Radius Selection ──
+function selectRadius(el) {
+  document.querySelectorAll('.radius-option').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.borderRadius = parseInt(el.dataset.radius);
+  updatePreview();
+}
+
+// ── Mood Selection ──
+function selectMood(el) {
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.style = el.dataset.mood;
+}
+
+// ── Step Navigation ──
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  state.currentStep = n;
+  document.getElementById('progressFill').style.width = ((n / 6) * 100) + '%';
+  document.getElementById('progressStep').textContent = n + ' / 6';
+  if (n === 6) buildSummary();
+}
+
+// ── Desktop Landscape Preview ──
+function updatePreview() {
+  const s = state;
+  const r = s.borderRadius;
+  const dark = s.style === 'dunkel';
+  const playful = s.style === 'spielerisch';
+  const minimal = s.style === 'minimalistisch';
+  const klassisch = s.style === 'klassisch';
+  const modern = s.style === 'modern';
+
+  let bg, topbarBg, topbarText, cardBg, textCol, textLight, heroBg, heroText, heroSubText, borderCol, footerBorder;
+
+  if (dark) {
+    bg = '#121212'; topbarBg = '#1E1E1E'; topbarText = '#E0E0E0'; cardBg = '#1E1E2E'; textCol = '#E0E0E0'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = 'rgba(255,255,255,0.06)'; footerBorder = 'rgba(255,255,255,0.08)';
+  } else if (minimal) {
+    bg = '#FFFFFF'; topbarBg = '#FFFFFF'; topbarText = '#111'; cardBg = '#FAFAFA'; textCol = '#111'; textLight = '#999'; heroBg = '#111'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0F0F0'; footerBorder = '#eee';
+  } else if (klassisch) {
+    bg = '#F5F5F0'; topbarBg = '#FAFAF5'; topbarText = '#2C2C2C'; cardBg = '#FFFFFF'; textCol = '#2C2C2C'; textLight = '#888'; heroBg = '#37474F'; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#E8E8E0'; footerBorder = '#DDD';
+  } else if (playful) {
+    bg = '#FFFDE7'; topbarBg = '#FFF9C4'; topbarText = '#333'; cardBg = '#FFFFFF'; textCol = '#333'; textLight = '#888'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#F0E8C0'; footerBorder = '#F0E8C0';
+  } else {
+    bg = '#F5F7FA'; topbarBg = '#fff'; topbarText = '#222'; cardBg = '#FFFFFF'; textCol = '#222'; textLight = '#777'; heroBg = s.primaryColor; heroText = '#fff'; heroSubText = 'rgba(255,255,255,0.7)'; borderCol = '#ECEFF4'; footerBorder = '#E0E0E0';
+  }
+
+  const screen = document.getElementById('monitorScreen');
+  const statBg = dark ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)';
+
+  screen.innerHTML = `
+    <div class="monitor-desktop" style="background:${bg};font-family:${s.fontFamily};color:${topbarText}">
+      <!-- Top Bar -->
+      <div class="monitor-topbar" style="background:${topbarBg};color:${topbarText};border-color:${borderCol}">
+        <div class="monitor-topbar-logo">
+          <span style="color:${s.primaryColor}">⚡</span>
+          <span>ViCo Plattform</span>
+        </div>
+        <div class="monitor-topbar-nav" style="color:${topbarText}">
+          <span style="color:${s.primaryColor};opacity:1">Dashboard</span>
+          <span>Trainings</span>
+          <span>Coachings</span>
+          <span>Statistiken</span>
+        </div>
+        <div class="monitor-topbar-user">
+          <div class="monitor-topbar-avatar" style="background:${s.primaryColor}">M</div>
+          <span>Max Mustermann</span>
+        </div>
+      </div>
+      ${modern ? `<div style="height:2px;background:linear-gradient(90deg,${s.primaryColor},${s.secondaryColor},${s.accentColor});flex-shrink:0"></div>` : ''}
+
+      <!-- Hero Section -->
+      <div class="monitor-hero" style="background:${heroBg}">
+        <div class="monitor-hero-text">
+          <h2 style="color:${heroText}">Willkommen zurück, Max 👋</h2>
+          <p style="color:${heroSubText}">Dein Fortschritt diese Woche</p>
+          <div class="monitor-hero-stats">
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">12</div>
+              <div class="lbl" style="color:${heroSubText}">Trainings</div>
+            </div>
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">4h</div>
+              <div class="lbl" style="color:${heroSubText}">Diese Woche</div>
+            </div>
+            <div class="monitor-hero-stat" style="background:${statBg}">
+              <div class="num" style="color:${heroText}">89%</div>
+              <div class="lbl" style="color:${heroSubText}">Ziel erreicht</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards Row -->
+      <div class="monitor-cards-row">
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.primaryColor}">
+          <div class="monitor-card-icon">👁️</div>
+          <div class="monitor-card-title" style="color:${textCol}">Augen-Training</div>
+          <div class="monitor-card-text" style="color:${textLight}">12 Übungen verfügbar · Nächstes Level freischalten</div>
+        </div>
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.secondaryColor}">
+          <div class="monitor-card-icon">🧠</div>
+          <div class="monitor-card-title" style="color:${textCol}">Gehirn-Training</div>
+          <div class="monitor-card-text" style="color:${textLight}">8 Kurse freigeschaltet · 3 neu</div>
+        </div>
+        <div class="monitor-card" style="background:${cardBg};border-radius:${r}px;border-top:3px solid ${s.accentColor}">
+          <div class="monitor-card-icon">🎯</div>
+          <div class="monitor-card-title" style="color:${textCol}">Fokus-Übungen</div>
+          <div class="monitor-card-text" style="color:${textLight}">5 Sessions diese Woche · Bestzeit: 14min</div>
+        </div>
+      </div>
+
+      <!-- Footer Bar -->
+      <div class="monitor-bottombar" style="background:${topbarBg};color:${textLight};border-color:${footerBorder}">
+        <span>© 2025 ViCo Trainingsplattform</span>
+        <span>Hilfe · Datenschutz · Kontakt</span>
+      </div>
+    </div>
+  `;
+}
+
+// ── Summary ──
+function buildSummary() {
+  const s = state;
+  const moodLabels = {minimalistisch:'Minimalistisch',modern:'Modern',spielerisch:'Spielerisch',klassisch:'Klassisch',dunkel:'Dunkel'};
+  const radiusLabels = {0:'Eckig (0px)',8:'Leicht (8px)',16:'Stark (16px)',999:'Pills'};
+  const fontNames = {
+    "'Inter',sans-serif":'Inter',
+    "'Poppins',sans-serif":'Poppins',
+    "'Montserrat',sans-serif":'Montserrat',
+    "'Roboto',sans-serif":'Roboto',
+    "'Playfair Display',serif":'Playfair Display',
+    "'Space Grotesk',sans-serif":'Space Grotesk'
+  };
+
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="summary-item">
+      <div class="summary-label">Hauptfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.primaryColor}"></span>${s.primaryColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Sekundärfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.secondaryColor}"></span>${s.secondaryColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Akzentfarbe</div>
+      <div class="summary-value"><span class="swatch" style="background:${s.accentColor}"></span>${s.accentColor}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Schriftart</div>
+      <div class="summary-value">${fontNames[s.fontFamily] || s.fontFamily}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Eckrundung</div>
+      <div class="summary-value">${radiusLabels[s.borderRadius] || s.borderRadius + 'px'}</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">Stil</div>
+      <div class="summary-value">${moodLabels[s.style] || s.style}</div>
+    </div>
+    ${s.wishes ? `<div class="summary-item summary-full"><div class="summary-label">Wünsche</div><div class="summary-value" style="font-weight:400;font-size:14px">${escapeHTML(s.wishes)}</div></div>` : ''}
+  `;
+}
+
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── JSON Download ──
+function downloadJSON() {
+  const s = state;
+  const fontNames = {
+    "'Inter',sans-serif":'Inter',
+    "'Poppins',sans-serif":'Poppins',
+    "'Montserrat',sans-serif":'Montserrat',
+    "'Roboto',sans-serif":'Roboto',
+    "'Playfair Display',serif":'Playfair Display',
+    "'Space Grotesk',sans-serif":'Space Grotesk'
+  };
+  const data = {
+    primaryColor: s.primaryColor,
+    secondaryColor: s.secondaryColor,
+    accentColor: s.accentColor,
+    fontFamily: fontNames[s.fontFamily] || s.fontFamily,
+    borderRadius: s.borderRadius + 'px',
+    style: s.style,
+    wishes: s.wishes
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fv-design-fragebogen-mitarbeiter-app.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── Color Wheel ──
+function hslToRgb(h,s,l){s/=100;l/=100;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2;let r,g,b;if(h<60){r=c;g=x;b=0}else if(h<120){r=x;g=c;b=0}else if(h<180){r=0;g=c;b=x}else if(h<240){r=0;g=x;b=c}else if(h<300){r=x;g=0;b=c}else{r=c;g=0;b=x}return[Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)]}
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('')}
+
+function drawColorWheel(canvas){const size=canvas.width,ctx=canvas.getContext('2d'),imageData=ctx.createImageData(size,size),data=imageData.data,cx=size/2,cy=size/2,radius=size/2-4;for(let y=0;y<size;y++){for(let x=0;x<size;x++){const dx=x-cx,dy=y-cy,dist=Math.sqrt(dx*dx+dy*dy),idx=(y*size+x)*4;if(dist<=radius){let hue=Math.atan2(dy,dx)*180/Math.PI;if(hue<0)hue+=360;const sat=Math.round((dist/radius)*100);const[rv,gv,bv]=hslToRgb(hue,sat,50);data[idx]=rv;data[idx+1]=gv;data[idx+2]=bv;data[idx+3]=255}}}ctx.putImageData(imageData,0,0)}
+
+function initViCoColorWheel(canvasId,indicatorId,nativeId,targetKey){
+  const canvas=document.getElementById(canvasId),indicator=document.getElementById(indicatorId),nativeInput=document.getElementById(nativeId);
+  drawColorWheel(canvas);
+  function pick(e){
+    e.preventDefault();const rect=canvas.getBoundingClientRect(),scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;
+    const clientX=e.touches?e.touches[0].clientX:e.clientX,clientY=e.touches?e.touches[0].clientY:e.clientY;
+    const x=(clientX-rect.left)*scaleX,y=(clientY-rect.top)*scaleY;
+    const ctx=canvas.getContext('2d'),pixel=ctx.getImageData(Math.round(x),Math.round(y),1,1).data;
+    if(pixel[3]===0)return;const hex=rgbToHex(pixel[0],pixel[1],pixel[2]);
+    applyViCoWheelColor(targetKey,hex,canvas,indicator,nativeInput);
+  }
+  canvas.addEventListener('click',pick);
+  canvas.addEventListener('touchstart',pick,{passive:false});
+  nativeInput.addEventListener('input',function(){applyViCoWheelColor(targetKey,this.value,canvas,indicator,nativeInput)});
+}
+
+function applyViCoWheelColor(targetKey,hex,canvas,indicator,nativeInput){
+  state[targetKey+'Color']=hex;
+  if(targetKey==='primary')document.getElementById('previewPrimary').style.background=hex;
+  if(targetKey==='secondary')document.getElementById('previewSecondary').style.background=hex;
+  if(targetKey==='accent')document.getElementById('previewAccent').style.background=hex;
+  nativeInput.value=hex;
+  updatePreview();
+  // Position indicator
+  const size=canvas.width,cx=size/2,cy=size/2;
+  const rv=parseInt(hex.slice(1,3),16),gv=parseInt(hex.slice(3,5),16),bv=parseInt(hex.slice(5,7),16);
+  const max=Math.max(rv,gv,bv),min=Math.min(rv,gv,bv);let h=0,s=0,l=(max+min)/2/255;
+  if(max!==min){const d=(max-min)/255;s=l>0.5?d/(2-max/255-min/255):d/(max/255+min/255);if(max===rv)h=((gv-bv)/255/d+(gv<bv?6:0))*60;else if(max===gv)h=((bv-rv)/255/d+2)*60;else h=((rv-gv)/255/d+4)*60}
+  const radius=size/2-4,dist=s*radius,angle=h*Math.PI/180,px=cx+dist*Math.cos(angle),py=cy+dist*Math.sin(angle);
+  indicator.style.display='block';indicator.style.background=hex;
+  const rect=canvas.getBoundingClientRect();
+  indicator.style.left=((px/canvas.width)*rect.width)+'px';
+  indicator.style.top=((py/canvas.height)*rect.height)+'px';
+  // Add as circle
+  const row=document.querySelector(`.color-row[data-target="${targetKey}"]`);
+  if(!row)return;
+  const existing=row.querySelector(`[data-color="${hex}"]`);
+  if(existing){row.querySelectorAll('.color-circle').forEach(c=>c.classList.remove('selected'));existing.classList.add('selected');return}
+  const circle=document.createElement('div');circle.className='color-circle selected';circle.style.background=hex;circle.dataset.color=hex;
+  const customEl=row.querySelector('.color-circle.custom');row.insertBefore(circle,customEl);
+  row.querySelectorAll('.color-circle').forEach(c=>c.classList.remove('selected'));circle.classList.add('selected');
+}
+
+// ── Init ──
+updatePreview();
+initViCoColorWheel('wheelPrimary','indicatorPrimary','nativePrimary','primary');
+initViCoColorWheel('wheelSecondary','indicatorSecondary','nativeSecondary','secondary');
+initViCoColorWheel('wheelAccent','indicatorAccent','nativeAccent','accent');
+</script>
+</body>
+</html>
