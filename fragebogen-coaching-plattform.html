@@ -368,23 +368,43 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="mood-grid">
         <div class="mood-card" data-mood="minimalistisch" onclick="selectMood(this)">
           <div class="mood-card-label">Minimalistisch</div>
-          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Klare Linien, viel Weißraum, wenig Deko. Fokus auf den Inhalt, ohne unnötige Ablenkung.</p>
+          <div class="mood-preview-mini minimal">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);line-height:1.4;margin:8px 0 0">Klare Linien, viel Weißraum, wenig Deko. Fokus auf den Inhalt.</p>
         </div>
         <div class="mood-card selected" data-mood="modern" onclick="selectMood(this)">
           <div class="mood-card-label">Modern</div>
-          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Aktuelle Trends, kräftige Farben und dynamische Formen. Mutig und ausdrucksstark.</p>
+          <div class="mood-preview-mini modern">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);line-height:1.4;margin:8px 0 0">Aktuelle Trends, kräftige Farben und dynamische Formen.</p>
         </div>
         <div class="mood-card" data-mood="spielerisch" onclick="selectMood(this)">
           <div class="mood-card-label">Spielerisch</div>
-          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Runde Formen, bunte Akzente, freundlich und einladend. Perfekt für eine junge Zielgruppe.</p>
+          <div class="mood-preview-mini playful">
+            <div class="mini-bar mini-b1"></div><div class="mini-bar mini-b2"></div><div class="mini-bar mini-b3"></div>
+            <div class="mini-btn"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);line-height:1.4;margin:8px 0 0">Runde Formen, bunte Akzente, freundlich und einladend.</p>
         </div>
         <div class="mood-card" data-mood="klassisch" onclick="selectMood(this)">
           <div class="mood-card-label">Klassisch</div>
-          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Zeitlos elegant, dezente Farben, seriös und vertrauenswürdig. Professioneller Auftritt.</p>
+          <div class="mood-preview-mini classic">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);line-height:1.4;margin:8px 0 0">Zeitlos elegant, dezente Farben, seriös und vertrauenswürdig.</p>
         </div>
         <div class="mood-card" data-mood="dunkel" onclick="selectMood(this)">
           <div class="mood-card-label">Dunkel</div>
-          <p style="font-size:13px;color:var(--text-light);line-height:1.5;margin:0">Dunkles Farbschema mit leuchtenden Akzenten. Modern und edel, gleichzeitig augenschonend.</p>
+          <div class="mood-preview-mini dunkel">
+            <div class="mini-bar"></div><div class="mini-bar"></div><div class="mini-bar"></div>
+            <div class="mini-btn"></div>
+          </div>
+          <p style="font-size:12px;color:var(--text-light);line-height:1.4;margin:8px 0 0">Dunkles Farbschema mit leuchtenden Akzenten. Modern und edel.</p>
         </div>
       </div>
       <div class="nav-buttons">
@@ -491,6 +511,7 @@ function selectMood(el) {
   document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.style = el.dataset.mood;
+  updatePreview();
 }
 
 // ── Step Navigation ──
